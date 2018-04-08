@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Through
+  - carrot
+  - interactObj
+  - Apple
   layers:
   - Default
   - TransparentFX
@@ -14,8 +16,8 @@ TagManager:
   - UI
   - 
   - 
-  - Player
-  - Ground
+  - 
+  - 
   - 
   - 
   - 
@@ -39,15 +41,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Background
-    uniqueID: 131982245
-    locked: 0
-  - name: Main
-    uniqueID: 1907945055
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Carrot
+    uniqueID: 278940473
+    locked: 0
+  - name: Spike
+    uniqueID: 4005578469
+    locked: 0
   - name: Foreground
-    uniqueID: 1632157909
+    uniqueID: 2702231425
     locked: 0

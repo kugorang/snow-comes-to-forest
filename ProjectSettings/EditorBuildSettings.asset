@@ -6,5 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TilemapStart.unity
-    guid: ef45bf5a1fe6d0c47ae7f84da2cee641
+    path: Assets/Scene/Main.unity
+    guid: 6585e41d577ca514ab8b2ee567651cd2
+  - enabled: 0
+    path: Assets/Scene/Winterstage1.unity
+    guid: e13f2248bbc4d7046874adf9a0499121
+  - enabled: 1
+    path: Assets/Scene/Winterstage1_modified.unity
+    guid: 8aaf4c4557e343042bdb7748bd58f9d1
