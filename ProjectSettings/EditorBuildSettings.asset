@@ -17,3 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scene/Tutorial.unity
     guid: db5404602ca2df04591f68ece8422a7e
+  - enabled: 1
+    path: Assets/Scene/TeddyBear.unity
+    guid: f4a1a411bd798004ea101c345198841f
