@@ -1,74 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CollisionItem : PhysicsObject
+public class CollisionItem : MonoBehaviour
 {
-    public float maxSpeed = 1.5f;
-    public float jumpTakeOffSpeed = 6;
-    public float jumpMaxValue;
+    public int jumpValue;
+    public int windValue;
 
-    private SpriteRenderer spriteRenderer;
-    private Vector2 move;
-    private int collisionNum;
-    private bool isMoved;
-
-    private void Awake()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        move = Vector2.zero;
-        collisionNum = 0;
-        isMoved = false;
-    }
-
-    protected override void ComputeVelocity()
-    {
-        if (!isMoved && collisionNum == 3)
+        if (collision.gameObject.tag == "Player")
         {
-            isMoved = true;
-            collisionNum = 0;
+            //collision.gameObject.GetComponent<PlayerPlatformerController>().jumpTakeOffSpeed *= jumpValue;
+            GameObject.Find("WindZone").GetComponent<WindZone>().windPulseMagnitude *= windValue;
 
-            if (!grounded)
-            {
-                if (velocity.y > 0)
-                {
-                    velocity.y *= 0.5f;
-                }
-
-                gravityModifier = 1.0f;
-                Debug.Log("!grounded");
-
-                targetVelocity = move * maxSpeed;
-            }
-            else
-            {
-                gravityModifier = 0.0f;
-                Debug.Log("grounded");
-            }
+            //Debug.Log("OnCollisionEnter2D");
+            //Debug.Log(collision.gameObject.GetComponent<PlayerPlatformerController>().jumpTakeOffSpeed);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
-            collisionNum += 1;
+            //collision.gameObject.GetComponent<PlayerPlatformerController>().jumpTakeOffSpeed /= jumpValue;
+            GameObject.Find("WindZone").GetComponent<WindZone>().windPulseMagnitude /= windValue;
 
-            if (grounded)
-            {
-                collision.GetComponent<PlayerPlatformerController>().jumpTakeOffSpeed *= jumpMaxValue;
-            }
-
-            GameObject.Find("WindZone").GetComponent<WindZone>().windPulseMagnitude = 2;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            collision.GetComponent<PlayerPlatformerController>().jumpTakeOffSpeed = 6;
-
-            GameObject.Find("WindZone").GetComponent<WindZone>().windPulseMagnitude = 1;
+            //Debug.Log("OnCollisionExit2D");
+            //Debug.Log(collision.gameObject.GetComponent<PlayerPlatformerController>().jumpTakeOffSpeed);
         }
     }
 }
