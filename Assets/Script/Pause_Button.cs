@@ -16,12 +16,13 @@ public class Pause_Button : MonoBehaviour {
 
     public void MainBtnPress()
     {
-        SceneManager.LoadScene("Main_modified");
+        SceneManager.LoadScene("Main");
     }
 
-    public void RestartBtnPress()
+    public void RestartBtnPress(string sceneName)
     {
-        SceneManager.LoadScene("Winterstage1_modified");
+        SceneManager.LoadScene(sceneName);
+
     }
 
     public void ResumeBtnPress()
