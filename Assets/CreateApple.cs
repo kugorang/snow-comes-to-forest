@@ -40,12 +40,13 @@ public class CreateApple : MonoBehaviour
 
     IEnumerator AppleGen()
     {
-        //genStart = true;
+        genStart = true;
 
-        Instantiate(applePrefab, generatePos.position, generatePos.rotation);
-        //yield return new WaitForSeconds(3.0f);
-        yield return null;
+        Rigidbody2D rb = Instantiate(applePrefab, generatePos.position, generatePos.rotation) as Rigidbody2D;
+        rb.gravityScale = 0.0001f;
+        yield return new WaitForSeconds(3.0f);
+        //yield return null;
 
-        //genStart = false;
+        genStart = false;
     }
 }

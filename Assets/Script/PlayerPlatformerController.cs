@@ -42,9 +42,9 @@ public class PlayerPlatformerController : PhysicsObject
                 if (beforeTouchNum != Input.touchCount)
                 {
                     //Debug.Log("touchZero : " + touchZero.position);
-                    Debug.Log("Input 2 - touchZero.phase : " + touchZero.phase);
+                    //Debug.Log("Input 2 - touchZero.phase : " + touchZero.phase);
                     //Debug.Log("touchOne : " + touchOne.position);
-                    Debug.Log("Input 2 - touchOne.phase : " + touchOne.phase);
+                    //Debug.Log("Input 2 - touchOne.phase : " + touchOne.phase);
                 }
 
                 break;
@@ -54,7 +54,7 @@ public class PlayerPlatformerController : PhysicsObject
                 if (beforeTouchNum != Input.touchCount)
                 {
                     //Debug.Log("touchZero : " + touchZero.position);
-                    Debug.Log("Input 1 - touchZero.phase : " + touchZero.phase);
+                    //Debug.Log("Input 1 - touchZero.phase : " + touchZero.phase);
                 }
 
                 break;
@@ -72,23 +72,23 @@ public class PlayerPlatformerController : PhysicsObject
             else if (touchZero.phase == TouchPhase.Moved
                 || touchZero.phase == TouchPhase.Stationary)
             {
-                Debug.Log("touchZero Phase - " + touchZero.phase);
+                //Debug.Log("touchZero Phase - " + touchZero.phase);
 
                 if (touchOne.phase == TouchPhase.Began && grounded)
                 {
                     DragJump();
-                    Debug.Log("DragJump");
+                    //Debug.Log("DragJump");
                 }
 
                 if (!isLeft)
                 {
                     move.x += maxSpeed;
-                    Debug.Log("move Right");
+                    //Debug.Log("move Right");
                 }
                 else
                 {
                     move.x -= maxSpeed;
-                    Debug.Log("move Left");
+                    //Debug.Log("move Left");
                 }
             }
             else if (touchOne.phase == TouchPhase.Moved
