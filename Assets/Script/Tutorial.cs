@@ -5,12 +5,19 @@ using UnityEngine;
 public class Tutorial : MonoBehaviour {
 
     public GameObject girlfriend;
+    public GameObject girlfriend_1;
     public GameObject bus;
+    public GameObject controlPanel;
+
+    public GameObject player;
 
     public float girlSpeed;
     public float girlTime;
 
     public float busSpeed;
+
+    private bool girlfriendOn = true;
+
 
     void FixedUpdate () {
 
@@ -18,31 +25,37 @@ public class Tutorial : MonoBehaviour {
         {
             GirlfriendMove();
         }
-        else girlfriend.SetActive(false);
+        else
+        {
+            girlfriend.SetActive(false);
+            girlfriendOn = false;
+        }
 
+        if(!girlfriendOn)
+        {
+            controlPanel.SetActive(true);
+            player.GetComponent<PlayerPlatformerController>().enabled = true;
 
-        //BusMove(); //수정 필요 (15초 후에 버스가 나타나서 이동하도록. Invoke("GameObject",시간); 사용
+        }
 
+        if(Time.time > 15)
+        {
+            BusMove();
+        }
 
-
-		
-	}
-
-
+    }
 
     private void GirlfriendMove()
     {
         girlfriend.transform.Translate(Vector2.right * girlSpeed * Time.deltaTime, Space.World);
+
     }
 
-    //private void BusMove()
-    //{
-    //    bus.SetActive(true);
-    //    bus.transform.Translate(Vector2.right * girlSpeed * Time.deltaTime, Space.World);
-    //
-    //
-    //}
+     private void BusMove()
+    {
+        bus.SetActive(true);
+        bus.transform.Translate(Vector2.right * busSpeed * Time.deltaTime, Space.World);
+       
+    }
 
-
-	
 }
