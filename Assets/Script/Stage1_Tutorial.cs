@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Tutorial : MonoBehaviour {
+public class Stage1_Tutorial : MonoBehaviour {
 
     public GameObject girlfriend;
     public GameObject girlfriend_1;
@@ -28,13 +29,20 @@ public class Tutorial : MonoBehaviour {
         else if (panelOn)
         {
             girlfriend.SetActive(false);
-            StartCoroutine("PanelOnOff");
+            controlPanel.SetActive(true);
             player.GetComponent<PlayerPlatformerController>().enabled = true;
+
+            if(player.transform.position.x>=-6)
+            {
+                controlPanel.SetActive(false);
+                panelOn = false;
+            }
 
         }
         else if (busMove)
         {
-            StartCoroutine("BusMove");
+            StartCoroutine("BusFirstMove");
+            
         }
 
     }
@@ -45,31 +53,28 @@ public class Tutorial : MonoBehaviour {
 
     }
 
-     private IEnumerator BusMove()
+     private IEnumerator BusFirstMove()
     {
         yield return new WaitForSeconds(10);
         bus.SetActive(true);
-        while (bus.transform.position.x == 3)
+        if (bus.transform.position.x <= 4)
         {
             bus.transform.Translate(Vector2.right * busSpeed * Time.deltaTime, Space.World);
         }
+        else StartCoroutine("BusSecondMove");
+
+    }
+
+    private IEnumerator BusSecondMove()
+    {
         yield return new WaitForSeconds(1);
 
         bus.transform.Translate(Vector2.right * busSpeed * Time.deltaTime, Space.World);
-        busMove = false;
-
-
-        // 버스 움직이는 코드 미완성.
-        // 버스가 멈추지 않고 무한히 달림....... 수정필요
-    }
-
-    private IEnumerator PanelOnOff()
-    {
-        controlPanel.SetActive(true);
-        yield return new WaitForSeconds(1);
-        controlPanel.SetActive(false);
-        panelOn = false;
-
+        girlfriend_1.SetActive(false);
+        if(bus.transform.position.x>=22)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
 }
