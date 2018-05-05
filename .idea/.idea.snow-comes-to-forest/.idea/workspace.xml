@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ac630045-775e-4fab-b213-7e048fb153d1" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/riderModule.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player.controller" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player.controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player_Animation.controller" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player_Animation.controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player_Run.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player_Run.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/CollisionItem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/CollisionItem.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/CreateApple.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/CreateApple.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Ground.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Ground.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Items.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Items.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Openmind Logo Colored_Busan Font.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Openmind Logo Colored_Busan Font.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Palette/New Palette.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Palette/New Palette.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scene/Appletree.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scene/Appletree.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scene/Winterstage1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scene/Winterstage1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down_100px.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down_100px.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down_100px.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down_100px.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up_100px.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up_100px.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up_100px.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up_100px.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Coordinate Brush.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Coordinate Brush/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Coordinate Brush/Scripts/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Coordinate Brush/Scripts/Editor/CoordinateBrush.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Coordinate Brush/Scripts/Editor/CoordinateBrush.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/GameObject Brush.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/GameObject Brush/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/GameObject Brush/Scripts/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/GameObject Brush/Scripts/Editor/GameObjectBrush.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/GameObject Brush/Scripts/Editor/GameObjectBrush.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Line Brush.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Line Brush/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Line Brush/Scripts/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Line Brush/Scripts/Editor/LineBrush.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Line Brush/Scripts/Editor/LineBrush.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Prefab Brush.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Prefab Brush/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Prefab Brush/Scripts/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Prefab Brush/Scripts/Editor/PrefabBrush.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Prefab Brush/Scripts/Editor/PrefabBrush.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Random Brush.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Random Brush/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Random Brush/Scripts/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Random Brush/Scripts/Editor/RandomBrush.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Random Brush/Scripts/Editor/RandomBrush.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts/Editor/TintBrushSmooth.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts/Editor/TintBrushSmooth.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts/TintTextureGenerator.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts/TintTextureGenerator.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Shaders.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Shaders/TintedTilemap.shader" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Shaders/TintedTilemap.shader.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush/Scripts/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush/Scripts/Editor/TintBrush.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush/Scripts/Editor/TintBrush.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/GridInformation.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/GridInformation/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/GridInformation/Scripts/GridInformation.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/GridInformation/Scripts/GridInformation.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Animated Tile.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Animated Tile/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Animated Tile/Scripts/AnimatedTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Animated Tile/Scripts/AnimatedTile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Pipeline Tile.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Pipeline Tile/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Pipeline Tile/Scripts/PipelineTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Pipeline Tile/Scripts/PipelineTile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Random Tile.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Random Tile/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Random Tile/Scripts/RandomTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Random Tile/Scripts/RandomTile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts/Editor/RuleTileEditor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts/Editor/RuleTileEditor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts/RuleTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts/RuleTile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Terrain Tile.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Terrain Tile/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Terrain Tile/Scripts/TerrainTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Terrain Tile/Scripts/TerrainTile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/down.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/down.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/down.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/down.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/foreground.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/foreground.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/foreground.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tiles/foreground.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/foreground.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tiles/foreground.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_down.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_down.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_down.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_down.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_up.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_up.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_up.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_up.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/up.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/up.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/up.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Tiles/up.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/apple.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/apple.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/apple.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/apple.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/apple2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/apple2.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/man.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/man.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/manTwo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/manTwo.png.meta" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="240" />
+    <option name="y" value="125" />
+    <option name="width" value="1440" />
+    <option name="height" value="765" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="UnityExplorer" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="UnityExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="" type="ad4990d8:FileSystemViewPaneBase$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="snow-comes-to-forest" type="483dac07:UnityExplorerNode$Root" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-hidden-items" value="false" />
+      </pane>
+      <pane id="SolutionExplorer">
+        <option name="show-file-system" value="false" />
+        <option name="show-all-items" value="false" />
+      </pane>
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+    </configuration>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20268457" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Errors In Solution" order="3" weight="0.3033557" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Unity" order="7" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50067115" side_tool="true" weight="0.32952926" />
+      <window_info anchor="bottom" id="Unit Tests" order="7" sideWeight="0.49932885" weight="0.32952926" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="NuGet" order="7" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityProjectConfiguration" isUnityUI="true" />
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Assets/CollisionItem.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="15" column="52" lean-forward="true" selection-start-line="15" selection-start-column="52" selection-end-line="15" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/CollisionItem.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="15" column="52" selection-start-line="15" selection-start-column="52" selection-end-line="15" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/CreateApple.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="14" column="5" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
