@@ -16,7 +16,7 @@ public class Pause_Button : MonoBehaviour {
 
     public void MainBtnPress()
     {
-        SceneManager.LoadScene("Main");
+        SceneManager.LoadScene("Main_modified");
     }
 
     public void RestartBtnPress(string sceneName)
