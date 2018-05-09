@@ -153,9 +153,11 @@ namespace Cinemachine
         /// <summary>Update all the active vcams in the scene, in the correct dependency order.</summary>
         internal void UpdateAllActiveVirtualCameras(Vector3 worldUp, float deltaTime)
         {
+            //UnityEngine.Profiling.Profiler.BeginSample("CinemachineCore.UpdateAllActiveVirtualCameras");
             int numCameras;
 
             // Pre-update child unless smart/fixed
+            //UnityEngine.Profiling.Profiler.BeginSample("CinemachineCore.UpdateAllActiveVirtualCameras.PreUpdate");
             if (CurrentUpdateFilter == UpdateFilter.Any || CurrentUpdateFilter == UpdateFilter.Late)
             {
                 numCameras = VirtualCameraCount;
@@ -168,18 +170,23 @@ namespace Cinemachine
                         mChildCameras[i][j].PreUpdateChildCameras(worldUp, deltaTime);
                 }
             }
+            //UnityEngine.Profiling.Profiler.EndSample();
 
             // Update the leaf-most cameras first
+            //UnityEngine.Profiling.Profiler.BeginSample("CinemachineCore.UpdateAllActiveVirtualCameras.leaf-most");
             for (int i = mChildCameras.Count-1; i >= 0; --i)
             {
                 numCameras = mChildCameras[i].Count;
                 for (int j = 0; j < numCameras; ++j)
                     UpdateVirtualCamera(mChildCameras[i][j], worldUp, deltaTime);
             }
+            //UnityEngine.Profiling.Profiler.EndSample();
+
             // Then all the top-level cameras
             numCameras = VirtualCameraCount;
             for (int i = 0; i < numCameras; ++i)
                 UpdateVirtualCamera(GetVirtualCamera(i), worldUp, deltaTime);
+            //UnityEngine.Profiling.Profiler.EndSample();
         }
 
         /// <summary>
@@ -233,7 +240,7 @@ namespace Cinemachine
                 status.preferredUpdate = CurrentUpdateFilter;
                 while (status.lastUpdateSubframe < subframes)
                 {
-//Debug.Log(vcam.Name + ": frame " + Time.frameCount + "." + status.lastUpdateSubframe + ", " + CurrentUpdateFilter);
+//Debug.Log(vcam.Name + ": frame " + Time.frameCount + "." + status.lastUpdateSubframe + ", " + CurrentUpdateFilter + ", deltaTime = " + deltaTime);
                     vcam.UpdateCameraState(worldUp, deltaTime);
                     ++status.lastUpdateSubframe;
                 }

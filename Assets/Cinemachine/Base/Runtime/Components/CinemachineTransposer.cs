@@ -101,8 +101,22 @@ namespace Cinemachine
 
         protected virtual void OnValidate()
         {
-            if (m_BindingMode == BindingMode.SimpleFollowWithWorldUp)
-                m_FollowOffset.x = 0;
+            m_FollowOffset = EffectiveOffset;
+        }
+        
+        /// <summary>Get the target offset, with sanitization</summary>
+        protected Vector3 EffectiveOffset 
+        { 
+            get 
+            { 
+                Vector3 offset = m_FollowOffset; 
+                if (m_BindingMode == BindingMode.SimpleFollowWithWorldUp)
+                {
+                    offset.x = 0;
+                    offset.z = -Mathf.Abs(offset.z);
+                }
+                return offset;
+            } 
         }
         
         /// <summary>True if component is enabled and has a valid Follow target</summary>
@@ -123,8 +137,9 @@ namespace Cinemachine
             {
                 Vector3 pos;
                 Quaternion orient;
-                TrackTarget(deltaTime, curState.ReferenceUp, m_FollowOffset, out pos, out orient);
-                curState.RawPosition = pos + orient * m_FollowOffset;
+                Vector3 offset = EffectiveOffset;
+                TrackTarget(deltaTime, curState.ReferenceUp, offset, out pos, out orient);
+                curState.RawPosition = pos + orient * offset;
                 curState.ReferenceUp = orient * Vector3.up;
             }
             //UnityEngine.Profiling.Profiler.EndSample();
@@ -138,6 +153,7 @@ namespace Cinemachine
             Quaternion targetOrientation = GetReferenceOrientation(VcamState.ReferenceUp);
             Vector3 localOffset = Quaternion.Inverse(targetOrientation) * delta;
             m_FollowOffset += localOffset;
+            m_FollowOffset = EffectiveOffset;
         }
 
         /// <summary>Initializes the state for previous frame if appropriate.</summary>
@@ -246,7 +262,7 @@ namespace Cinemachine
         {
             if (!IsValid)
                 return Vector3.zero;
-            return FollowTarget.position + GetReferenceOrientation(worldUp) * m_FollowOffset;
+            return FollowTarget.position + GetReferenceOrientation(worldUp) * EffectiveOffset;
         }
 
         /// <summary>State information for damping</summary>
