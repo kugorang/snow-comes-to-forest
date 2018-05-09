@@ -54,7 +54,7 @@ public class PagingScrollViewController :
         int pageIndex =
             Mathf.RoundToInt((CachedScrollRect.content.anchoredPosition.x) / pageWidth);
 
-        if (pageIndex == prevPageIndex && Mathf.Abs(eventData.delta.x) >= 4)
+        if (pageIndex == prevPageIndex && Mathf.Abs(eventData.delta.x) >= 1)
         {
             // 일정 속도 이상으로 드래그할 경우 해당 방향으로 한 페이지 진행시킨다
             CachedScrollRect.content.anchoredPosition +=
@@ -88,8 +88,6 @@ public class PagingScrollViewController :
 
         // 애니메이션 재생 중임을 나타내는 플래그를 설정한다
         isAnimating = true;
-
-
     }
 
 
@@ -120,8 +118,6 @@ public class PagingScrollViewController :
     {
         // 「Scroll Content」のPaddingを初期化する
         UpdateView();
-
-
     }
 
     // 매 프레임마다 호출된다
