@@ -177,7 +177,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Pause_Button.cs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Pause_Button.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Script/Pause_Button.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
@@ -194,20 +194,70 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="ViewController.cs" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Assets/Script/Scroll/ViewController.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="7" column="46" lean-forward="true" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+              <folding>
+                <marker date="1525839727496" expanded="true" signature="141:633" ph="{...}" />
+                <marker date="1525839727496" expanded="true" signature="270:509" ph="{...}" />
+                <marker date="1525839727496" expanded="true" signature="288:503" ph="{...}" />
+                <marker date="1525839727496" expanded="true" signature="343:440" ph="{...}" />
+                <marker date="1525839727496" expanded="true" signature="576:631" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PagingScrollViewController.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/Script/Scroll/PagingScrollViewController.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+              <folding>
+                <marker date="1525841236169" expanded="true" signature="6:72" ph="..." />
+                <marker date="1525841236169" expanded="true" signature="211:292" ph="/* ViewController 클래스를 상속하고 IBeginDragHandler 인터페이스와 ... */" />
+                <marker date="1525841236169" expanded="true" signature="292:4737" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="299:339" ph="/* 페이징 처리 구현 ... */" />
+                <marker date="1525841236169" expanded="true" signature="419:635" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="437:629" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="489:581" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="1014:1098" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="1183:2938" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="1735:1974" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="2058:2105" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="2165:2240" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="2998:3634" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="3029:3628" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="3121:3340" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="3750:3827" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="3871:4134" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="4017:4128" ph="{...}" />
+                <marker date="1525841236169" expanded="true" signature="4210:4735" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Scroll/PagingScrollViewController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Pause_Button.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Stage1_Tutorial.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Scroll/ViewController.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Assets/Script/Stage1_Tutorial.cs" />
         <option value="$PROJECT_DIR$/Assets/Script/Pause_Button.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/Scroll/ViewController.cs" />
+        <option value="$PROJECT_DIR$/Assets/Script/Scroll/PagingScrollViewController.cs" />
       </list>
     </option>
   </component>
@@ -217,11 +267,10 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="240" />
-    <option name="y" value="125" />
-    <option name="width" value="1440" />
-    <option name="height" value="765" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="953" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -229,6 +278,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="UnityExplorer">
         <subPane>
           <expand>
@@ -236,12 +286,22 @@
               <item name="" type="ad4990d8:FileSystemViewPaneBase$ProjectViewPaneTreeStructure$createRoot$1" />
               <item name="snow-comes-to-forest" type="483dac07:UnityExplorerNode$Root" />
             </path>
+            <path>
+              <item name="" type="ad4990d8:FileSystemViewPaneBase$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="snow-comes-to-forest" type="483dac07:UnityExplorerNode$Root" />
+              <item name="" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="" type="ad4990d8:FileSystemViewPaneBase$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="snow-comes-to-forest" type="483dac07:UnityExplorerNode$Root" />
+              <item name="" type="1045f7f1:UnityExplorerNode" />
+              <item name="" type="1045f7f1:UnityExplorerNode" />
+            </path>
           </expand>
           <select />
         </subPane>
         <option name="show-hidden-items" value="false" />
       </pane>
-      <pane id="Scratches" />
       <pane id="SolutionExplorer">
         <option name="show-file-system" value="false" />
         <option name="show-all-items" value="false" />
@@ -282,11 +342,12 @@
       <updated>1525503282636</updated>
       <workItem from="1525503296914" duration="481000" />
       <workItem from="1525748188245" duration="610000" />
+      <workItem from="1525836715904" duration="5952000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1091000" />
+    <option name="totallyTimeSpent" value="7043000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -298,27 +359,27 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="953" y="0" width="974" height="1047" extended-state="0" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="right" id="Errors In Solution" order="3" weight="0.3033557" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50067115" side_tool="true" weight="0.32952926" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50067115" side_tool="true" weight="0.3293348" />
       <window_info anchor="bottom" id="Unit Tests" order="7" sideWeight="0.49932885" weight="0.32952926" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15351813" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31838074" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Unity" order="7" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="NuGet" order="7" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -335,8 +396,8 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Assets/Script/Stage1_Tutorial.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="41" lean-forward="true" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+        <state relative-caret-position="405">
+          <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
           <folding>
             <marker date="1525614716625" expanded="false" signature="6:113" ph="..." />
             <marker date="1525614716625" expanded="true" signature="160:2025" ph="{...}" />
@@ -369,6 +430,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Script/Stage1_Tutorial.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="41" lean-forward="true" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+          <folding>
+            <marker date="1525614716625" expanded="false" signature="6:113" ph="..." />
+            <marker date="1525614716625" expanded="true" signature="160:2025" ph="{...}" />
+            <marker date="1525614716625" expanded="true" signature="484:1062" ph="{...}" />
+            <marker date="1525614716625" expanded="true" signature="535:585" ph="{...}" />
+            <marker date="1525614716625" expanded="true" signature="611:952" ph="{...}" />
+            <marker date="1525614716625" expanded="true" signature="833:941" ph="{...}" />
+            <marker date="1525614716625" expanded="true" signature="978:1055" ph="{...}" />
+            <marker date="1525614716625" expanded="true" signature="1097:1207" ph="{...}" />
+            <marker date="1525614716625" expanded="true" signature="1248:1537" ph="{...}" />
+            <marker date="1525614716625" expanded="true" signature="1371:1484" ph="{...}" />
+            <marker date="1525614716625" expanded="true" signature="1578:2022" ph="{...}" />
+            <marker date="1525614716625" expanded="true" signature="1798:2016" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/CollisionItem.cs" />
     <entry file="file://$PROJECT_DIR$/Assets/CollisionItem.cs" />
     <entry file="file://$PROJECT_DIR$/Assets/CreateApple.cs" />
@@ -389,6 +471,63 @@
             <marker date="1525614716625" expanded="true" signature="1371:1484" ph="{...}" />
             <marker date="1525614716625" expanded="true" signature="1578:2022" ph="{...}" />
             <marker date="1525614716625" expanded="true" signature="1798:2016" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Script/Scroll/PagingScrollViewController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <folding>
+            <marker date="1525841236169" expanded="true" signature="6:72" ph="..." />
+            <marker date="1525841236169" expanded="true" signature="211:292" ph="/* ViewController 클래스를 상속하고 IBeginDragHandler 인터페이스와 ... */" />
+            <marker date="1525841236169" expanded="true" signature="292:4737" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="299:339" ph="/* 페이징 처리 구현 ... */" />
+            <marker date="1525841236169" expanded="true" signature="419:635" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="437:629" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="489:581" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="1014:1098" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="1183:2938" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="1735:1974" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="2058:2105" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="2165:2240" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="2998:3634" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="3029:3628" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="3121:3340" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="3750:3827" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="3871:4134" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="4017:4128" ph="{...}" />
+            <marker date="1525841236169" expanded="true" signature="4210:4735" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Script/Pause_Button.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
+          <folding>
+            <marker date="1525748193987" expanded="false" signature="6:113" ph="..." />
+            <marker date="1525748193987" expanded="true" signature="157:661" ph="{...}" />
+            <marker date="1525748193987" expanded="true" signature="258:341" ph="{...}" />
+            <marker date="1525748193987" expanded="true" signature="373:434" ph="{...}" />
+            <marker date="1525748193987" expanded="true" signature="485:541" ph="{...}" />
+            <marker date="1525748193987" expanded="true" signature="575:658" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Script/Scroll/ViewController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="46" lean-forward="true" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
+          <folding>
+            <marker date="1525839727496" expanded="true" signature="141:633" ph="{...}" />
+            <marker date="1525839727496" expanded="true" signature="270:509" ph="{...}" />
+            <marker date="1525839727496" expanded="true" signature="288:503" ph="{...}" />
+            <marker date="1525839727496" expanded="true" signature="343:440" ph="{...}" />
+            <marker date="1525839727496" expanded="true" signature="576:631" ph="{...}" />
           </folding>
         </state>
       </provider>

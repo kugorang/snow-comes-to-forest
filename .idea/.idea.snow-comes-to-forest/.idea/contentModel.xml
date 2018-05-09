@@ -157,6 +157,10 @@
         <e p="Player.cs" t="Include" />
         <e p="Player_modified.cs" t="Include" />
         <e p="PlayerPlatformerController.cs" t="Include" />
+        <e p="Scroll" t="Include">
+          <e p="PagingScrollViewController.cs" t="Include" />
+          <e p="ViewController.cs" t="Include" />
+        </e>
         <e p="Setting_Button.cs" t="Include" />
         <e p="Setting_Button_modified.cs" t="Include" />
         <e p="Stage1_Tutorial.cs" t="Include" />
