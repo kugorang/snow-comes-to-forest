@@ -13,7 +13,6 @@ public class Stage1_Tutorial : MonoBehaviour {
     public GameObject player;
 
     public float girlSpeed;
-    public float girlTime;
 
     public float busSpeed;
 
@@ -22,7 +21,7 @@ public class Stage1_Tutorial : MonoBehaviour {
 
     private void FixedUpdate () {
 
-        if (Time.time < girlTime)
+        if (girlfriend.transform.position.x<=-5)
         {
             GirlfriendMove();
         }
@@ -32,7 +31,7 @@ public class Stage1_Tutorial : MonoBehaviour {
             controlPanel.SetActive(true);
             player.GetComponent<PlayerPlatformerController>().enabled = true;
 
-            if(player.transform.position.x>=-6)
+            if(player.transform.position.x>=-6.5)
             {
                 controlPanel.SetActive(false);
                 panelOn = false;
@@ -57,7 +56,7 @@ public class Stage1_Tutorial : MonoBehaviour {
     {
         yield return new WaitForSeconds(10);
         bus.SetActive(true);
-        if (bus.transform.position.x <= 4)
+        if (bus.transform.position.x <= 2)
         {
             bus.transform.Translate(Vector2.right * busSpeed * Time.deltaTime, Space.World);
         }
@@ -71,9 +70,13 @@ public class Stage1_Tutorial : MonoBehaviour {
 
         bus.transform.Translate(Vector2.right * busSpeed * Time.deltaTime, Space.World);
         girlfriend_1.SetActive(false);
-        if(bus.transform.position.x>=22)
+        if(bus.transform.position.x>=15)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			girlfriend.transform.position = new Vector3(-9.5f, -2.83f, 0);
+			girlfriend.SetActive(true);
+			panelOn = true;
+			
         }
     }
 
