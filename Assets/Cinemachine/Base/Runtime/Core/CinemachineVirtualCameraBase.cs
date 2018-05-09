@@ -115,6 +115,9 @@ namespace Cinemachine
         /// returns the owner GameObject's name.</summary>
         public string Name { get { return name; } }
 
+        /// <summary>Gets a brief debug description of this virtual camera, for use when displayiong debug info</summary>
+        public virtual string Description { get { return ""; }}
+
         /// <summary>Get the Priority of the virtual camera.  This determines its placement
         /// in the CinemachineCore's queue of eligible shots.</summary>
         public int Priority { get { return m_Priority; } set { m_Priority = value; } }

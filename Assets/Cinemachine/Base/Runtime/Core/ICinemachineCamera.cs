@@ -8,10 +8,15 @@ namespace Cinemachine
     public interface ICinemachineCamera
     {
         /// <summary>
-        /// Gets the name of this virtual camera. For used when deciding how to blend
+        /// Gets the name of this virtual camera. For use when deciding how to blend
         /// to or from this camera
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Gets a brief debug description of this virtual camera, for use when displayiong debug info
+        /// </summary>
+        string Description { get; }
 
         /// <summary>
         /// Gets the priority of this <c>ICinemachineCamera</c>. The virtual camera

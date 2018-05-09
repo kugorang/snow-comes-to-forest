@@ -155,7 +155,14 @@ namespace Cinemachine
             public float deltaTime;
             public float timeOfOverride;
             public bool Active { get { return camera != null; } }
-            public bool Expired { get { return Time.realtimeSinceStartup - timeOfOverride > Time.maximumDeltaTime; } }
+            public bool Expired 
+            { 
+                get 
+                { 
+                    return !Application.isPlaying 
+                        && Time.realtimeSinceStartup - timeOfOverride > Time.maximumDeltaTime; 
+                }
+            }
         }
         private List<OverrideStackFrame> mOverrideStack = new List<OverrideStackFrame>();
         private int mNextOverrideId = 1;
@@ -351,7 +358,7 @@ namespace Cinemachine
                     GUI.color = GetSoloGUIColor();
                 }
                 if (ActiveBlend == null)
-                    text += (vcam != null ? vcam.Name : "(none)");
+                    text += (vcam != null ? "[" + vcam.Name + "]" : "(none)");
                 else
                     text += ActiveBlend.Description;
                 Rect r = CinemachineGameWindowDebug.GetScreenPos(this, text, GUI.skin.box);
@@ -408,6 +415,7 @@ namespace Cinemachine
                 // Note: this call will cause any screen canvas attached to the camera
                 // to be painted one frame out of sync.  It will only happen in the editor when not playing.
                 float deltaTime = GetEffectiveDeltaTime(false);
+                msSubframes = 1;
                 UpdateVirtualCameras(CinemachineCore.UpdateFilter.Any, deltaTime);
                 ProcessActiveCamera(GetEffectiveDeltaTime(false));
             }
@@ -774,6 +782,7 @@ namespace Cinemachine
         public void SetState(CameraState state) { State = state; }
 
         public string Name { get; private set; }
+        public string Description { get { return ""; }}
         public int Priority { get; set; }
         public Transform LookAt { get; set; }
         public Transform Follow { get; set; }
@@ -803,7 +812,8 @@ namespace Cinemachine
 
         public CinemachineBlend Blend { get; private set; }
 
-        public string Name { get { return Blend.Description; }}
+        public string Name { get { return "Blend"; }}
+        public string Description { get { return Blend.Description; }}
         public int Priority { get; set; }
         public Transform LookAt { get; set; }
         public Transform Follow { get; set; }
@@ -819,7 +829,6 @@ namespace Cinemachine
             Blend.UpdateCameraState(worldUp, deltaTime);
             State = Blend.State;
         }
-
         public void OnTransitionFromCamera(ICinemachineCamera fromCam) {}
     }
 }

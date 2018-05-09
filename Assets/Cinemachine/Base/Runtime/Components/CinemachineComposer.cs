@@ -40,6 +40,12 @@ namespace Cinemachine
         [Range(0f, 1f)]
         public float m_LookaheadTime = 0;
 
+        /// <summary>Controls the smoothness of the lookahead algorithm.  Larger values smooth out 
+        /// jittery predictions and also increase prediction lag</summary>
+        [Tooltip("Controls the smoothness of the lookahead algorithm.  Larger values smooth out jittery predictions and also increase prediction lag")]
+        [Range(3, 30)]
+        public float m_LookaheadSmoothing = 10;
+
         /// <summary>How aggressively the camera tries to follow the target in the screen-horizontal direction.
         /// Small numbers are more responsive, rapidly orienting the camera to keep the target in
         /// the dead zone. Larger numbers give a more heavy slowly responding camera.
@@ -116,6 +122,7 @@ namespace Cinemachine
             if (LookAtTarget != null)
                 pos += LookAtTarget.transform.rotation * m_TrackedObjectOffset;
 
+            m_Predictor.Smoothing = m_LookaheadSmoothing;
             m_Predictor.AddPosition(pos);
             if (m_LookaheadTime > 0)
                 pos = m_Predictor.PredictPosition(m_LookaheadTime);

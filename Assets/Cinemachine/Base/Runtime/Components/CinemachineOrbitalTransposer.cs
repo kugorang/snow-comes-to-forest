@@ -251,17 +251,6 @@ namespace Cinemachine
             }
         }
 
-        Vector3 EffectiveOffset 
-        { 
-            get 
-            { 
-                Vector3 offset = m_FollowOffset; 
-                if (m_BindingMode == BindingMode.SimpleFollowWithWorldUp)
-                    offset.x = 0;
-                return offset;
-            } 
-        }
-
         void OnVlaidate()
         {
             m_XAxis.Validate();
@@ -346,6 +335,7 @@ namespace Cinemachine
             Vector3 localOffset = Quaternion.Inverse(targetOrientation) * delta;
             localOffset.x = 0;
             m_FollowOffset += localOffset;
+            m_FollowOffset = EffectiveOffset;
         }
         
         static string GetFullName(GameObject current)

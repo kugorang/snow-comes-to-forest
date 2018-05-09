@@ -2,148 +2,273 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac630045-775e-4fab-b213-7e048fb153d1" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/riderModule.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player.controller" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player.controller.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player_Animation.controller" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player_Animation.controller.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player_Run.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Player_Run.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/CollisionItem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/CollisionItem.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/CreateApple.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/CreateApple.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Ground.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.snow-comes-to-forest/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Asset/manTwo.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Asset/manTwo.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineBasicMultiChannelPerlinEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineBasicMultiChannelPerlinEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineBlenderSettingsEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineBlenderSettingsEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineBrainEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineBrainEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineClearShotEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineClearShotEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineColliderEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineColliderEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineComposerEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineComposerEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineConfinerEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineConfinerEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineExternalCameraEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineExternalCameraEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineFramingTransposerEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineFramingTransposerEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineFreeLookEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineFreeLookEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineGroupComposerEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineGroupComposerEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineHardLockToTargetEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineHardLockToTargetEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineHardLookAtEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineHardLookAtEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineMixingCameraEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineMixingCameraEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineOrbitalTransposerEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineOrbitalTransposerEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachinePOVEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachinePOVEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachinePathEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachinePathEditor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachinePathEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachinePathEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineScreenComposerGuides.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineScreenComposerGuides.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineSmoothPathEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineSmoothPathEditor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineSmoothPathEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineSmoothPathEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineStateDrivenCameraEditor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineStateDrivenCameraEditor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineStateDrivenCameraEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineStateDrivenCameraEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineTargetGroupEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineTargetGroupEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineTrackedDollyEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineTrackedDollyEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineTransposerEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineTransposerEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineVirtualCameraBaseEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineVirtualCameraBaseEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineVirtualCameraEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Editors/CinemachineVirtualCameraEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Menus.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Menus.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Menus/CinemachineMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Menus/CinemachineMenu.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Menus/CinemachineMenu.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Menus/CinemachineMenu.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/PropertyDrawers.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/PropertyDrawers.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/PropertyDrawers/CinemachineBlendDefinitionPropertyDrawer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/PropertyDrawers/CinemachineBlendDefinitionPropertyDrawer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/PropertyDrawers/CinemachineBlendDefinitionPropertyDrawer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/PropertyDrawers/CinemachineBlendDefinitionPropertyDrawer.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/PropertyDrawers/LensSettingsPropertyDrawer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/PropertyDrawers/LensSettingsPropertyDrawer.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Resources.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Resources.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Resources/Cinemachine_header.tif.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Resources/Cinemachine_header.tif.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Resources/cm_logo_sm.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Resources/cm_logo_sm.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility/BaseEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility/BaseEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility/EmbeddedAssetHelpers.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility/EmbeddedAssetHelpers.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility/SaveDuringPlay.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility/SaveDuringPlay.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility/ScriptableObjectUtility.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility/ScriptableObjectUtility.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility/SerializedPropertyHelper.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Utility/SerializedPropertyHelper.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Windows.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Windows.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Windows/AboutWindow.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Windows/AboutWindow.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Windows/CinemachineColliderPrefs.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Windows/CinemachineColliderPrefs.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Windows/CinemachineSettings.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Windows/CinemachineSettings.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineBrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineBrain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineBrain.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineBrain.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineClearShot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineClearShot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineClearShot.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineClearShot.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineCollider.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineCollider.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineConfiner.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineConfiner.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineDollyCart.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineDollyCart.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineExternalCamera.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineExternalCamera.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineFollowZoom.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineFollowZoom.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineFreeLook.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineFreeLook.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineFreeLook.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineFreeLook.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineMixingCamera.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineMixingCamera.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachinePath.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachinePath.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachinePipeline.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachinePipeline.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineSmoothPath.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineSmoothPath.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineSmoother.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineSmoother.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineStateDrivenCamera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineStateDrivenCamera.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineStateDrivenCamera.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineStateDrivenCamera.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineTargetGroup.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineTargetGroup.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineVirtualCamera.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Behaviours/CinemachineVirtualCamera.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineBasicMultiChannelPerlin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineBasicMultiChannelPerlin.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineBasicMultiChannelPerlin.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineBasicMultiChannelPerlin.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineComposer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineComposer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineComposer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineComposer.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineFramingTransposer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineFramingTransposer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineFramingTransposer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineFramingTransposer.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineGroupComposer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineGroupComposer.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineHardLockToTarget.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineHardLockToTarget.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineHardLookAt.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineHardLookAt.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineOrbitalTransposer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineOrbitalTransposer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineOrbitalTransposer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineOrbitalTransposer.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachinePOV.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachinePOV.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachinePOV.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachinePOV.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineTrackedDolly.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineTrackedDolly.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineTransposer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineTransposer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineTransposer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Components/CinemachineTransposer.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/AxisState.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/AxisState.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CameraState.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CameraState.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineBlend.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineBlend.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineBlend.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineBlend.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineBlenderSettings.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineBlenderSettings.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineComponentBase.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineComponentBase.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineCore.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineCore.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineCore.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineCore.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineDebugLogger.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineDebugLogger.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineExtension.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineExtension.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachinePathBase.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachinePathBase.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachinePropertyAttribute.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachinePropertyAttribute.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineVirtualCameraBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineVirtualCameraBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineVirtualCameraBase.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/CinemachineVirtualCameraBase.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/GaussianFilter.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/GaussianFilter.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/ICinemachineCamera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/ICinemachineCamera.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/ICinemachineCamera.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/ICinemachineCamera.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/ICinemachineComponent.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/ICinemachineComponent.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/LensSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/LensSettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/LensSettings.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/LensSettings.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/NoiseSettings.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/NoiseSettings.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/Predictor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/Predictor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/Predictor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/Predictor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/ReflectionHelpers.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/ReflectionHelpers.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/SplineHelpers.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/SplineHelpers.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/UnityVectorExtensions.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Base/Runtime/Core/UnityVectorExtensions.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Blackboard.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Blackboard/Blackboard.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Blackboard/Blackboard.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Blackboard/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Blackboard/Editor/ReactorEditor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Blackboard/Editor/ReactorEditor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Blackboard/Reactor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Blackboard/Reactor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/CINEMACHINE_install.pdf.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/CINEMACHINE_install.pdf.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/CinemachineAPI.chm" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/CinemachineAPI.chm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/CinemachineAPI.chm.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/CinemachineAPI.chm.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_normal_extreme.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_normal_extreme.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_normal_mild.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_normal_mild.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_normal_strong.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_normal_strong.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_tele_mild.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_tele_mild.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_tele_strong.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_tele_strong.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_wideangle_mild.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_wideangle_mild.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_wideangle_strong.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Handheld_wideangle_strong.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Vibration.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Presets/Noise/Vibration.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/ClearShot.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/ClearShot/ClearShot.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/ClearShot/ClearShot.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Composer.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Composer/Cube.controller" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Composer/Cube.controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Composer/composer.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Composer/composer.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Composer/cube A motion.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Composer/cube A motion.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Composer/cube B motion.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Composer/cube B motion.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/FollowCam.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/FollowCam/FollowCam.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/FollowCam/FollowCam.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Free Look.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Free Look/Free Look.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Free Look/Free Look.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Noise.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Noise/noise.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Noise/noise.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Scripting.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Scripting/Scripting.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Scripting/Scripting.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Scripting/ScriptingExample.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Scripting/ScriptingExample.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/State machine.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/State machine/BlenderSettings_state machine.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/State machine/BlenderSettings_state machine.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/State machine/Noise_CM_4.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/State machine/Noise_CM_4.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/State machine/state_machine.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/State machine/state_machine.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Timeline.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Timeline/Timeline.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Timeline/Timeline.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Timeline/TimelineTimeline.playable" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Timeline/TimelineTimeline.playable.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/TrackedDolly.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/TrackedDolly/CM vcam1Timeline.playable" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/TrackedDolly/CM vcam1Timeline.playable.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/TrackedDolly/DollyGroup.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/TrackedDolly/DollyGroup.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Transposer.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Transposer/Cube.controller" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Transposer/Cube.controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Transposer/cube movement.anim" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Transposer/cube movement.anim.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Transposer/transposer.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Scenes/Transposer/transposer.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Materials.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Materials/Cube.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Materials/Cube.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Materials/Ground big.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Materials/Ground big.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Materials/Ground.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Materials/Ground.mat.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Scripts/CinemachineExampleWindow.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Scripts/CinemachineExampleWindow.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Textures.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Textures/checkerboard.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Examples/Shared/Textures/checkerboard.jpg.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/LICENSE.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/LICENSE.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/PostFX.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/PostFX.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/CinemachinePostFX.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/CinemachinePostFX.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/CinemachinePostFX.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/CinemachinePostFX.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/CinemachinePostProcessing.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/CinemachinePostProcessing.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/CinemachinePostProcessing.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/CinemachinePostProcessing.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/Editor.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/Editor.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/Editor/CinemachinePostProcessingEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/Editor/CinemachinePostProcessingEditor.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/Editor/PostFXAutoImport.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/Editor/PostFXAutoImport.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/Editor/Resources.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/Editor/Resources.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/Editor/Resources/PostProcessLayer.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/PostFX/Editor/Resources/PostProcessLayer.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/ReleaseNotes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/ReleaseNotes.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/ReleaseNotes.txt.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/ReleaseNotes.txt.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Timeline.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Timeline.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/CinemachineMixer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/CinemachineMixer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/CinemachineMixer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/CinemachineMixer.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/CinemachineShot.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/CinemachineShot.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/CinemachineTrack.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/CinemachineTrack.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/Editor.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/Editor.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/Editor/CinemachineShotEditor.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Cinemachine/Timeline/Editor/CinemachineShotEditor.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Ground.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Items.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Items.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Openmind Logo Colored_Busan Font.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Openmind Logo Colored_Busan Font.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Palette/New Palette.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Palette/New Palette.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scene/Appletree.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scene/Appletree.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scene/Winterstage1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scene/Winterstage1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down_100px.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down_100px.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down_100px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Down_100px.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up_100px.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up_100px.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up_100px.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tile_Up_100px.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Coordinate Brush.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Coordinate Brush/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Coordinate Brush/Scripts/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Coordinate Brush/Scripts/Editor/CoordinateBrush.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Coordinate Brush/Scripts/Editor/CoordinateBrush.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/GameObject Brush.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/GameObject Brush/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/GameObject Brush/Scripts/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/GameObject Brush/Scripts/Editor/GameObjectBrush.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/GameObject Brush/Scripts/Editor/GameObjectBrush.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Line Brush.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Line Brush/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Line Brush/Scripts/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Line Brush/Scripts/Editor/LineBrush.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Line Brush/Scripts/Editor/LineBrush.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Prefab Brush.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Prefab Brush/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Prefab Brush/Scripts/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Prefab Brush/Scripts/Editor/PrefabBrush.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Prefab Brush/Scripts/Editor/PrefabBrush.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Random Brush.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Random Brush/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Random Brush/Scripts/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Random Brush/Scripts/Editor/RandomBrush.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Random Brush/Scripts/Editor/RandomBrush.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts/Editor/TintBrushSmooth.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts/Editor/TintBrushSmooth.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts/TintTextureGenerator.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Scripts/TintTextureGenerator.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Shaders.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Shaders/TintedTilemap.shader" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush Smooth/Shaders/TintedTilemap.shader.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush/Scripts/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush/Scripts/Editor/TintBrush.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Brushes/Tint Brush/Scripts/Editor/TintBrush.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/GridInformation.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/GridInformation/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/GridInformation/Scripts/GridInformation.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/GridInformation/Scripts/GridInformation.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Animated Tile.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Animated Tile/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Animated Tile/Scripts/AnimatedTile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Animated Tile/Scripts/AnimatedTile.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Pipeline Tile.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Pipeline Tile/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Pipeline Tile/Scripts/PipelineTile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Pipeline Tile/Scripts/PipelineTile.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Random Tile.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Random Tile/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Random Tile/Scripts/RandomTile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Random Tile/Scripts/RandomTile.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts/Editor/RuleTileEditor.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts/Editor/RuleTileEditor.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts/RuleTile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Rule Tile/Scripts/RuleTile.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Terrain Tile.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Terrain Tile/Scripts.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Terrain Tile/Scripts/TerrainTile.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tilemap/Tiles/Terrain Tile/Scripts/TerrainTile.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/down.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/down.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/down.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/down.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/foreground.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/foreground.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/foreground.png" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tiles/foreground.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/foreground.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Tiles/foreground.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_down.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_down.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_down.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_down.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_up.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_up.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_up.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/tile_up.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/up.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/up.asset.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/up.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Tiles/up.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/apple.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/apple.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/apple.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/apple.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/apple2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/apple2.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/man.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/man.png.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/manTwo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/manTwo.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Animated Tile.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Animated Tile/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Animated Tile/Scripts/AnimatedTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Animated Tile/Scripts/AnimatedTile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Pipeline Tile.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Pipeline Tile/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Pipeline Tile/Scripts/PipelineTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Pipeline Tile/Scripts/PipelineTile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Random Tile.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Random Tile/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Random Tile/Scripts/RandomTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Random Tile/Scripts/RandomTile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Rule Tile.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Rule Tile/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Rule Tile/Scripts/Editor.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Rule Tile/Scripts/Editor/RuleTileEditor.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Rule Tile/Scripts/Editor/RuleTileEditor.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Rule Tile/Scripts/RuleTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Rule Tile/Scripts/RuleTile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Terrain Tile.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Terrain Tile/Scripts.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Terrain Tile/Scripts/TerrainTile.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Tilemap/Tiles/Terrain Tile/Scripts/TerrainTile.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnityPackageManager/manifest.json" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -154,87 +279,80 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Stage1_Tutorial.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Assets/Script/Stage1_Tutorial.cs">
+      <file leaf-file-name="VFXController.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/VFXController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+            <state relative-caret-position="1908">
+              <caret line="109" selection-start-line="109" selection-end-line="109" />
               <folding>
-                <marker date="1525614716625" expanded="false" signature="6:113" ph="..." />
-                <marker date="1525614716625" expanded="true" signature="160:2025" ph="{...}" />
-                <marker date="1525614716625" expanded="true" signature="484:1062" ph="{...}" />
-                <marker date="1525614716625" expanded="true" signature="535:585" ph="{...}" />
-                <marker date="1525614716625" expanded="true" signature="611:952" ph="{...}" />
-                <marker date="1525614716625" expanded="true" signature="833:941" ph="{...}" />
-                <marker date="1525614716625" expanded="true" signature="978:1055" ph="{...}" />
-                <marker date="1525614716625" expanded="true" signature="1097:1207" ph="{...}" />
-                <marker date="1525614716625" expanded="true" signature="1248:1537" ph="{...}" />
-                <marker date="1525614716625" expanded="true" signature="1371:1484" ph="{...}" />
-                <marker date="1525614716625" expanded="true" signature="1578:2022" ph="{...}" />
-                <marker date="1525614716625" expanded="true" signature="1798:2016" ph="{...}" />
+                <marker date="1525870288114" expanded="false" signature="6:106" ph="..." />
+                <marker date="1525870288114" expanded="true" signature="176:616" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="245:337" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="722:2317" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="1001:1291" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="1330:1698" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="1517:1615" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="1736:2069" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="1807:1878" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="2120:2188" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="2237:2310" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="2394:2407" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="2455:7560" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="2506:2827" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="2532:2817" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="2931:3129" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="3189:3554" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="3459:3544" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="3851:4966" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="3895:3985" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="4074:4956" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="4407:4877" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="5103:5214" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="5348:5928" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="5434:5517" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="5534:5918" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="5584:5804" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="5951:6712" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="6042:6172" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="6253:6427" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="6528:6702" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="6820:7440" ph="{...}" />
+                <marker date="1525870288114" expanded="true" signature="7493:7552" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Pause_Button.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Assets/Script/Pause_Button.cs">
+      <file leaf-file-name="ObjectPool.cs" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Core/ObjectPool.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
+            <state relative-caret-position="513">
+              <caret line="37" column="5" lean-forward="true" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
               <folding>
-                <marker date="1525748193987" expanded="false" signature="6:113" ph="..." />
-                <marker date="1525748193987" expanded="true" signature="157:661" ph="{...}" />
-                <marker date="1525748193987" expanded="true" signature="258:341" ph="{...}" />
-                <marker date="1525748193987" expanded="true" signature="373:434" ph="{...}" />
-                <marker date="1525748193987" expanded="true" signature="485:541" ph="{...}" />
-                <marker date="1525748193987" expanded="true" signature="575:658" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ViewController.cs" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Assets/Script/Scroll/ViewController.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="46" lean-forward="true" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
-              <folding>
-                <marker date="1525839727496" expanded="true" signature="141:633" ph="{...}" />
-                <marker date="1525839727496" expanded="true" signature="270:509" ph="{...}" />
-                <marker date="1525839727496" expanded="true" signature="288:503" ph="{...}" />
-                <marker date="1525839727496" expanded="true" signature="343:440" ph="{...}" />
-                <marker date="1525839727496" expanded="true" signature="576:631" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PagingScrollViewController.cs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Assets/Script/Scroll/PagingScrollViewController.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-              <folding>
-                <marker date="1525841236169" expanded="true" signature="6:72" ph="..." />
-                <marker date="1525841236169" expanded="true" signature="211:292" ph="/* ViewController 클래스를 상속하고 IBeginDragHandler 인터페이스와 ... */" />
-                <marker date="1525841236169" expanded="true" signature="292:4737" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="299:339" ph="/* 페이징 처리 구현 ... */" />
-                <marker date="1525841236169" expanded="true" signature="419:635" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="437:629" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="489:581" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="1014:1098" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="1183:2938" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="1735:1974" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="2058:2105" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="2165:2240" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="2998:3634" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="3029:3628" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="3121:3340" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="3750:3827" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="3871:4134" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="4017:4128" ph="{...}" />
-                <marker date="1525841236169" expanded="true" signature="4210:4735" ph="{...}" />
+                <marker date="1518462414000" expanded="false" signature="6:66" ph="..." />
+                <marker date="1518462414000" expanded="true" signature="87:3790" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="299:1091" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="326:533" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="391:523" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="581:1085" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="640:862" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="690:848" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="1268:2757" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="1455:1662" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="1520:1652" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="1711:2073" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="2111:2607" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="2170:2388" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="2220:2374" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="2661:2751" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="2987:3058" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="3040:3052" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="3238:3788" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="3388:3468" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="3516:3528" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="3566:3578" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="3615:3627" ph="{...}" />
+                <marker date="1518462414000" expanded="true" signature="3671:3782" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -242,22 +360,38 @@
       </file>
     </leaf>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>GroundedLayerMask</find>
+      <find>groundedLayerMask</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Script/Scroll/PagingScrollViewController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/Pause_Button.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/Stage1_Tutorial.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Script/Scroll/ViewController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/CharacterController2D.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/Bullet.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/VFXController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Core/ObjectPool.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Utility/AutoCameraSetup.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/EnemyBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/Windows/AboutWindow.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Objects/Platforms/PlatformCatcher.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Player_modified.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/PlayerCharacter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/StateMachineBehaviours/Player/TriggerVFX.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Script/Stage1_Tutorial.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/Pause_Button.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/Scroll/ViewController.cs" />
-        <option value="$PROJECT_DIR$/Assets/Script/Scroll/PagingScrollViewController.cs" />
+        <option value="$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/VFXController.cs" />
+        <option value="$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/Bullet.cs" />
+        <option value="$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/PlayerCharacter.cs" />
+        <option value="$PROJECT_DIR$/Assets/2DGamekit/Scripts/Objects/Platforms/PlatformCatcher.cs" />
+        <option value="$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/StateMachineBehaviours/Player/TriggerVFX.cs" />
+        <option value="$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/CharacterController2D.cs" />
+        <option value="$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/EnemyBehaviour.cs" />
       </list>
     </option>
   </component>
@@ -267,10 +401,11 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="953" />
-    <option name="width" value="974" />
-    <option name="height" value="1047" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="240" />
+    <option name="y" value="125" />
+    <option name="width" value="1440" />
+    <option name="height" value="765" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -278,7 +413,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="UnityExplorer">
         <subPane>
           <expand>
@@ -302,6 +436,7 @@
         </subPane>
         <option name="show-hidden-items" value="false" />
       </pane>
+      <pane id="Scratches" />
       <pane id="SolutionExplorer">
         <option name="show-file-system" value="false" />
         <option name="show-all-items" value="false" />
@@ -310,7 +445,6 @@
   </component>
   <component name="PropertiesComponent">
     <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -330,25 +464,6 @@
       <option name="pid" />
     </configuration>
   </component>
-  <component name="SvnConfiguration">
-    <configuration />
-  </component>
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="ac630045-775e-4fab-b213-7e048fb153d1" name="Default" comment="" />
-      <created>1525503282636</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1525503282636</updated>
-      <workItem from="1525503296914" duration="481000" />
-      <workItem from="1525748188245" duration="610000" />
-      <workItem from="1525836715904" duration="5952000" />
-    </task>
-    <servers />
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7043000" />
-  </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
@@ -359,31 +474,28 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="953" y="0" width="974" height="1047" extended-state="0" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21610738" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="right" id="Errors In Solution" order="3" weight="0.3033557" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50067115" side_tool="true" weight="0.3293348" />
-      <window_info anchor="bottom" id="Unit Tests" order="7" sideWeight="0.49932885" weight="0.32952926" />
-      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31838074" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Unity" order="7" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50067115" side_tool="true" weight="0.32952926" />
+      <window_info anchor="bottom" id="Unit Tests" order="7" sideWeight="0.49932885" weight="0.32952926" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="NuGet" order="7" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Unity" order="7" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -394,140 +506,264 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Assets/Script/Stage1_Tutorial.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/VFXController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+        <state relative-caret-position="1908">
+          <caret line="109" selection-start-line="109" selection-end-line="109" />
           <folding>
-            <marker date="1525614716625" expanded="false" signature="6:113" ph="..." />
-            <marker date="1525614716625" expanded="true" signature="160:2025" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="484:1062" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="535:585" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="611:952" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="833:941" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="978:1055" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1097:1207" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1248:1537" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1371:1484" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1578:2022" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1798:2016" ph="{...}" />
+            <marker date="1525870288114" expanded="false" signature="6:106" ph="..." />
+            <marker date="1525870288114" expanded="true" signature="176:616" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="245:337" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="722:2317" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1001:1291" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1330:1698" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1517:1615" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1736:2069" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1807:1878" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2120:2188" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2237:2310" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2394:2407" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2455:7560" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2506:2827" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2532:2817" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2931:3129" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3189:3554" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3459:3544" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3851:4966" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3895:3985" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="4074:4956" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="4407:4877" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5103:5214" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5348:5928" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5434:5517" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5534:5918" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5584:5804" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5951:6712" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6042:6172" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6253:6427" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6528:6702" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6820:7440" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="7493:7552" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Script/Pause_Button.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Core/ObjectPool.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
+        <state relative-caret-position="1044">
+          <caret line="60" selection-start-line="60" selection-end-line="60" />
           <folding>
-            <marker date="1525748193987" expanded="false" signature="6:113" ph="..." />
-            <marker date="1525748193987" expanded="true" signature="157:661" ph="{...}" />
-            <marker date="1525748193987" expanded="true" signature="258:341" ph="{...}" />
-            <marker date="1525748193987" expanded="true" signature="373:434" ph="{...}" />
-            <marker date="1525748193987" expanded="true" signature="485:541" ph="{...}" />
-            <marker date="1525748193987" expanded="true" signature="575:658" ph="{...}" />
+            <marker date="1518462414000" expanded="false" signature="6:66" ph="..." />
+            <marker date="1518462414000" expanded="true" signature="87:3790" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="299:1091" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="326:533" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="391:523" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="581:1085" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="640:862" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="690:848" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="1268:2757" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="1455:1662" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="1520:1652" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="1711:2073" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="2111:2607" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="2170:2388" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="2220:2374" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="2661:2751" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="2987:3058" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3040:3052" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3238:3788" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3388:3468" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3516:3528" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3566:3578" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3615:3627" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3671:3782" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Script/Stage1_Tutorial.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/VFXController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="41" lean-forward="true" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+        <state relative-caret-position="1908">
+          <caret line="109" column="49" selection-start-line="109" selection-start-column="49" selection-end-line="109" selection-end-column="49" />
           <folding>
-            <marker date="1525614716625" expanded="false" signature="6:113" ph="..." />
-            <marker date="1525614716625" expanded="true" signature="160:2025" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="484:1062" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="535:585" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="611:952" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="833:941" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="978:1055" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1097:1207" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1248:1537" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1371:1484" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1578:2022" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1798:2016" ph="{...}" />
+            <marker date="1525870288114" expanded="false" signature="6:106" ph="..." />
+            <marker date="1525870288114" expanded="true" signature="176:616" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="245:337" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="722:2317" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1001:1291" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1330:1698" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1517:1615" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1736:2069" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1807:1878" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2120:2188" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2237:2310" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2394:2407" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2455:7560" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2506:2827" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2532:2817" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2931:3129" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3189:3554" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3459:3544" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3851:4966" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3895:3985" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="4074:4956" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="4407:4877" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5103:5214" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5348:5928" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5434:5517" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5534:5918" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5584:5804" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5951:6712" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6042:6172" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6253:6427" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6528:6702" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6820:7440" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="7493:7552" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Utility/AutoCameraSetup.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/CollisionItem.cs" />
     <entry file="file://$PROJECT_DIR$/Assets/CollisionItem.cs" />
     <entry file="file://$PROJECT_DIR$/Assets/CreateApple.cs" />
-    <entry file="file://$PROJECT_DIR$/Assets/Script/Stage1_Tutorial.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/Script/PlatformCatcher.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/Script/CharacterController2D.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/Script/MovingPlatform.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Utility/AutoCameraSetup.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="30" column="41" selection-start-line="30" selection-start-column="41" selection-end-line="30" selection-end-column="41" />
+        <state relative-caret-position="36">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Script/Player_modified.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Cinemachine/Base/Editor/PropertyDrawers/CinemachineTagFieldPropertyDrawer.cs" />
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/StateMachineBehaviours/Player/TriggerVFX.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/EnemyBehaviour.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-494">
+          <caret line="190" column="148" selection-start-line="190" selection-start-column="148" selection-end-line="190" selection-end-column="148" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/PlayerCharacter.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="4" column="27" selection-start-line="4" selection-start-column="27" selection-end-line="4" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/Bullet.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" column="27" selection-start-line="1" selection-start-column="27" selection-end-line="1" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/CharacterController2D.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="19" column="40" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Objects/Platforms/PlatformCatcher.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Character/MonoBehaviours/VFXController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1908">
+          <caret line="109" selection-start-line="109" selection-end-line="109" />
           <folding>
-            <marker date="1525614716625" expanded="false" signature="6:113" ph="..." />
-            <marker date="1525614716625" expanded="true" signature="160:2025" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="484:1062" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="535:585" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="611:952" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="833:941" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="978:1055" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1097:1207" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1248:1537" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1371:1484" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1578:2022" ph="{...}" />
-            <marker date="1525614716625" expanded="true" signature="1798:2016" ph="{...}" />
+            <marker date="1525870288114" expanded="false" signature="6:106" ph="..." />
+            <marker date="1525870288114" expanded="true" signature="176:616" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="245:337" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="722:2317" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1001:1291" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1330:1698" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1517:1615" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1736:2069" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="1807:1878" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2120:2188" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2237:2310" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2394:2407" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2455:7560" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2506:2827" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2532:2817" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="2931:3129" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3189:3554" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3459:3544" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3851:4966" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="3895:3985" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="4074:4956" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="4407:4877" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5103:5214" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5348:5928" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5434:5517" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5534:5918" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5584:5804" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="5951:6712" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6042:6172" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6253:6427" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6528:6702" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="6820:7440" ph="{...}" />
+            <marker date="1525870288114" expanded="true" signature="7493:7552" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Script/Scroll/PagingScrollViewController.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/2DGamekit/Scripts/Core/ObjectPool.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        <state relative-caret-position="513">
+          <caret line="37" column="5" lean-forward="true" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
           <folding>
-            <marker date="1525841236169" expanded="true" signature="6:72" ph="..." />
-            <marker date="1525841236169" expanded="true" signature="211:292" ph="/* ViewController 클래스를 상속하고 IBeginDragHandler 인터페이스와 ... */" />
-            <marker date="1525841236169" expanded="true" signature="292:4737" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="299:339" ph="/* 페이징 처리 구현 ... */" />
-            <marker date="1525841236169" expanded="true" signature="419:635" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="437:629" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="489:581" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="1014:1098" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="1183:2938" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="1735:1974" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="2058:2105" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="2165:2240" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="2998:3634" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="3029:3628" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="3121:3340" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="3750:3827" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="3871:4134" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="4017:4128" ph="{...}" />
-            <marker date="1525841236169" expanded="true" signature="4210:4735" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Script/Pause_Button.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
-          <folding>
-            <marker date="1525748193987" expanded="false" signature="6:113" ph="..." />
-            <marker date="1525748193987" expanded="true" signature="157:661" ph="{...}" />
-            <marker date="1525748193987" expanded="true" signature="258:341" ph="{...}" />
-            <marker date="1525748193987" expanded="true" signature="373:434" ph="{...}" />
-            <marker date="1525748193987" expanded="true" signature="485:541" ph="{...}" />
-            <marker date="1525748193987" expanded="true" signature="575:658" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Script/Scroll/ViewController.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="46" lean-forward="true" selection-start-line="7" selection-start-column="46" selection-end-line="7" selection-end-column="46" />
-          <folding>
-            <marker date="1525839727496" expanded="true" signature="141:633" ph="{...}" />
-            <marker date="1525839727496" expanded="true" signature="270:509" ph="{...}" />
-            <marker date="1525839727496" expanded="true" signature="288:503" ph="{...}" />
-            <marker date="1525839727496" expanded="true" signature="343:440" ph="{...}" />
-            <marker date="1525839727496" expanded="true" signature="576:631" ph="{...}" />
+            <marker date="1518462414000" expanded="false" signature="6:66" ph="..." />
+            <marker date="1518462414000" expanded="true" signature="87:3790" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="299:1091" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="326:533" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="391:523" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="581:1085" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="640:862" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="690:848" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="1268:2757" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="1455:1662" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="1520:1652" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="1711:2073" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="2111:2607" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="2170:2388" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="2220:2374" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="2661:2751" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="2987:3058" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3040:3052" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3238:3788" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3388:3468" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3516:3528" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3566:3578" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3615:3627" ph="{...}" />
+            <marker date="1518462414000" expanded="true" signature="3671:3782" ph="{...}" />
           </folding>
         </state>
       </provider>
