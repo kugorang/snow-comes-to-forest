@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\1reds\.Rider2018.1\system\resharper-host\local\Transient\ReSharperHost\v12\SolutionCaches\_snow-comes-to-forest.959174080.00" t="ExcludeRecursive" />
-    <e p="E:\Unity Projects\snow-comes-to-forest" t="IncludeRecursive">
+    <e p="C:\Users\hyunji\.Rider2018.1\system\resharper-host\local\Transient\ReSharperHost\v12\SolutionCaches\_snow-comes-to-forest.-997824677.00" t="ExcludeRecursive" />
+    <e p="C:\Users\hyunji\Documents\GitHub\snow-comes-to-forest" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
@@ -575,8 +575,13 @@
           <e p="Player.cs" t="Include" />
           <e p="Player_modified.cs" t="Include" />
           <e p="PlayerPlatformerController.cs" t="Include" />
+          <e p="Scroll" t="Include">
+            <e p="PagingScrollViewController.cs" t="Include" />
+            <e p="ViewController.cs" t="Include" />
+          </e>
           <e p="Setting_Button.cs" t="Include" />
           <e p="Setting_Button_modified.cs" t="Include" />
+          <e p="SpeechBubble.cs" t="Include" />
           <e p="Stage1_Tutorial.cs" t="Include" />
           <e p="Stage_Button.cs" t="Include" />
           <e p="Stage_Button_modified.cs" t="Include" />

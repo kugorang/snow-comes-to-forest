@@ -8,6 +8,7 @@ TagManager:
   - interactObj
   - Apple
   - Girlfriend
+  - speechBubble
   layers:
   - Default
   - TransparentFX
