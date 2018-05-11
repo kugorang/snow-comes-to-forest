@@ -5,24 +5,21 @@ using UnityEngine;
 public class SpeechBubble : MonoBehaviour {
 
     private Rigidbody2D rb2D;
-    public float jumpForce = 100;
+	public float jumpForce;
 
     public bool isTouching = false;
   
     void Start()
     {
         rb2D = this.gameObject.GetComponent<Rigidbody2D>();
-        Debug.Log("Start");
     }
 
     void FixedUpdate()
     {
         if (isTouching)
         {
-
             rb2D.AddForce(Vector2.up * jumpForce);
-            Debug.Log("jump");
-        }
+         }
 
     }
     
@@ -31,7 +28,6 @@ public class SpeechBubble : MonoBehaviour {
         if (other.gameObject.CompareTag("speechBubble"))
         {
             isTouching = true;
-            Debug.Log("In");
         }
 
     }
@@ -41,7 +37,6 @@ public class SpeechBubble : MonoBehaviour {
         if (other.gameObject.CompareTag("speechBubble"))
         {
             isTouching = false;
-            Debug.Log("Out");
         }
 
     }
