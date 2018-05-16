@@ -16,6 +16,8 @@ public class PlayerPlatformerController : PhysicsObject
     private bool isLeft;
     //private int lastInput;
 
+    private Animator anim;
+
     // Use this for initialization
     private void Awake()
     {
@@ -162,16 +164,16 @@ public class PlayerPlatformerController : PhysicsObject
 
         if (move.x > 0.01f)
         {
-            if (spriteRenderer.flipX)
+            if (!spriteRenderer.flipX)
             {
-                spriteRenderer.flipX = false;
+                spriteRenderer.flipX = true;
             }
         }
         else if (move.x < -0.01f)
         {
-            if (!spriteRenderer.flipX)
+            if (spriteRenderer.flipX)
             {
-                spriteRenderer.flipX = true;
+                spriteRenderer.flipX = false;
             }
         }
 
