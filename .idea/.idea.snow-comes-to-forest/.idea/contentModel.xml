@@ -585,7 +585,6 @@
           <e p="Stage1_Tutorial.cs" t="Include" />
           <e p="Stage_Button.cs" t="Include" />
           <e p="Stage_Button_modified.cs" t="Include" />
-          <e p="StageFinish.cs" t="Include" />
           <e p="Teddy.cs" t="Include" />
           <e p="Tilemap" t="Include">
             <e p="Brushes" t="Include">
@@ -650,6 +649,9 @@
             </e>
           </e>
           <e p="Tutorial.cs" t="Include" />
+        </e>
+        <e p="Shader" t="Include">
+          <e p="Gray Colored.shader" t="Include" />
         </e>
       </e>
       <e p="Library" t="ExcludeRecursive" />

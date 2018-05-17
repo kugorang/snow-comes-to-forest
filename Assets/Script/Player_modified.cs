@@ -7,14 +7,15 @@ public class Player_modified : MonoBehaviour {
 
     public GameObject player;
     public int height;
+    public string nextStage;
+    public string tag;
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("carrot"))
+        if (other.gameObject.CompareTag(tag))
         {
-            other.gameObject.SetActive(false);
+            SceneManager.LoadScene(nextStage);
         }
-
     }
 
     void FixedUpdate()
@@ -29,4 +30,6 @@ public class Player_modified : MonoBehaviour {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
+
+
 }
