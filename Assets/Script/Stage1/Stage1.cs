@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Stage1_Tutorial : MonoBehaviour {
+public class Stage1 : MonoBehaviour {
 
     public GameObject girlfriend;
     public GameObject girlfriend_1;
@@ -13,8 +13,6 @@ public class Stage1_Tutorial : MonoBehaviour {
     public GameObject controlPanel1;
     public GameObject controlPanel2;
     public GameObject player;
-    public GameObject mainCamera;
-    public GameObject playerCamera;
 
     public float girlSpeed;
     public float busSpeed;

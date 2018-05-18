@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Stage_Button_modified : MonoBehaviour
+public class Stage_Button : MonoBehaviour
 { 
 
     public void StageLoad(string sceneName)
