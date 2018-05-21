@@ -578,10 +578,12 @@
           <e p="Restart.cs" t="Include" />
           <e p="Stage1" t="Include">
             <e p="Stage1.cs" t="Include" />
+            <e p="Stage1EndCondition.cs" t="Include" />
           </e>
-          <e p="StageEndCondition.cs" t="Include" />
           <e p="UI" t="Include">
             <e p="Exit_Button.cs" t="Include" />
+            <e p="FadeIn.cs" t="Include" />
+            <e p="FadeOut.cs" t="Include" />
             <e p="Pause_Button.cs" t="Include" />
             <e p="Scroll" t="Include">
               <e p="PagingScrollViewController.cs" t="Include" />

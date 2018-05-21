@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Stage1 : MonoBehaviour {
 
@@ -18,19 +20,30 @@ public class Stage1 : MonoBehaviour {
     public float busSpeed;
 
     private bool panel2On = false;
+    
+    public float animTime = 2f;
 
-    public UnityEngine.UI.Image fade;
-    private float fades = 1.0f;
-    private float time = 0;
-    private bool isFade = true;
+    public GameObject fade;
+    private Image fadeImage;
+
+    private float startFI = 1f;
+    private float endFI = 0f;
+    private float timeFI = 0f;
+    
+    private bool isPlaying = false;
+
+    private void Awake()
+    {
+        fadeImage = fade.GetComponent<Image>();
+    }
+
+    private void Start()
+    {
+        StartFadeInAnim();
+    }
 
     private void FixedUpdate () {
-
-        if (isFade)
-        {
-            FadeIn();
-        }
-        
+       
         if(player.transform.position.x < 5)
         {
             controlPanel1.SetActive(false);
@@ -103,23 +116,6 @@ public class Stage1 : MonoBehaviour {
         }
     }
 
-    private void FadeIn()
-    {
-        time += Time.deltaTime;
-        if (fades > 0.0f && time >= 0.1f)
-        {
-            fades -= 0.1f;
-            fade.color = new Color(0, 0, 0, fades);
-            time = 0;
-        }
-        else if (fades <= 0.0f)
-        {
-            player.GetComponent<PlayerPlatformerController>().enabled = true;
-            isFade = false;
-            controlPanel1.SetActive(true);
-            time = 0;
-        }
-    }
 
     private bool isLeft()
     {
@@ -127,5 +123,39 @@ public class Stage1 : MonoBehaviour {
             return true;
         else return false;
     }
+    
+    public void StartFadeInAnim()
+    {
+        Debug.Log("fade in");
+			
+        if (isPlaying == true)
+            return;
 
+        StartCoroutine("PlayFadeIn");
+    }
+
+    IEnumerator PlayFadeIn()
+    {
+        isPlaying = true;
+
+        Color color = fadeImage.color;
+        timeFI = 0f;
+        color.a = Mathf.Lerp(startFI, endFI, timeFI);
+
+        while (color.a > 0f)
+        {
+            timeFI += Time.deltaTime / animTime;
+
+            color.a = Mathf.Lerp(startFI, endFI, timeFI);
+
+            fadeImage.color = color;
+
+            yield return null;
+        }
+
+        isPlaying = false;
+        player.GetComponent<PlayerPlatformerController>().enabled = true;
+        controlPanel1.SetActive(true);
+    }
+    
 }
