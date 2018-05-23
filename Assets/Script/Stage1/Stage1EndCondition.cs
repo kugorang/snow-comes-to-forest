@@ -9,6 +9,7 @@ public class Stage1EndCondition : MonoBehaviour
 
 	public string tag;
 	public bool isEnd = false;
+	public bool isNextStage;
 	
 	public string nextStage;
 
@@ -21,18 +22,23 @@ public class Stage1EndCondition : MonoBehaviour
 
 	public GameObject fade;
 	private Image fadeImage;
+	public GameObject endingfade;
+	private Image endingfadeImage;
 
-	private float startFO = 0f;
-	private float endFO = 1f;
-	private float timeFO = 0f;
+	private float start = 0f;
+	private float end = 1f;
+	private float time = 0f;
 	
 	private bool isPlaying = false;
+	private bool sceneload = false;
 
 	public GameObject endingMessage;
+	public GameObject endingMessageImage;
 
-	private void Start()
+	private void Awake()
 	{
 		fadeImage = fade.GetComponent<Image>();
+
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)
@@ -50,22 +56,28 @@ public class Stage1EndCondition : MonoBehaviour
 			textCanvas.SetActive(true);
 			this.GetComponent<PlayerPlatformerController>().enabled = false;
 			sceneManager.SetActive(false);
+		}		
+	}
+
+	private void Update()
+	{
+		if(isNextStage && Input.GetMouseButtonDown(0))
+		{
+			SceneManager.LoadScene(nextStage);
+			/*sceneload = true;
+			StartFadeOutAnim();
+			fade.transform.SetAsLastSibling();*/
 		}
+
 	}
 
 	public void NextBtnPress()
 	{
-		Debug.Log("Btn Press");
-		StartFadeOutAnim();
-		endingMessage.SetActive(true);
-		EndStage();
-
+		StartCoroutine(EndStage());
 	}
 	
 	public void StartFadeOutAnim()
 	{
-		Debug.Log("fade out");
-			
 		if (isPlaying == true)
 			return;
 
@@ -77,14 +89,14 @@ public class Stage1EndCondition : MonoBehaviour
 		isPlaying = true;
 
 		Color color = fadeImage.color;
-		timeFO = 0f;
-		color.a = Mathf.Lerp(startFO, endFO, timeFO);
+		time = 0f;
+		color.a = Mathf.Lerp(start, end, time);
 
 		while (color.a < 1f)
 		{
-			timeFO += Time.deltaTime / animTime;
+			time += Time.deltaTime / animTime;
 
-			color.a = Mathf.Lerp(startFO, endFO, timeFO);
+			color.a = Mathf.Lerp(start, end, time);
 
 			fadeImage.color = color;
 
@@ -92,15 +104,18 @@ public class Stage1EndCondition : MonoBehaviour
 		}
 
 		isPlaying = false;
-
+		/*if(sceneload)
+		{
+			SceneManager.LoadScene(nextStage);
+		}*/
 	}
 
 	private IEnumerator EndStage()
 	{
-		yield return new WaitForSeconds(5);
-		StartFadeOutAnim();
-		SceneManager.LoadScene(nextStage);
+		yield return StartCoroutine(PlayFadeOut());
+		endingMessage.SetActive(true);
+		yield return new WaitForSeconds(1);
+		endingMessageImage.SetActive(true);
+		isNextStage = true;
 	}
-	
-
 }

@@ -26,9 +26,9 @@ public class Stage1 : MonoBehaviour {
     public GameObject fade;
     private Image fadeImage;
 
-    private float startFI = 1f;
-    private float endFI = 0f;
-    private float timeFI = 0f;
+    private float start = 1f;
+    private float end = 0f;
+    private float time = 0f;
     
     private bool isPlaying = false;
 
@@ -54,7 +54,7 @@ public class Stage1 : MonoBehaviour {
             if (!panel2On)
             {
                 player.GetComponent<PlayerPlatformerController>().enabled = false;
-                if (girlfriend.transform.position.x<=-2)
+                if (girlfriend.transform.position.x<0)
                 {
                     girlfriend.transform.Translate(Vector2.right * girlSpeed * Time.deltaTime, Space.World);
                     if (isLeft())
@@ -139,14 +139,14 @@ public class Stage1 : MonoBehaviour {
         isPlaying = true;
 
         Color color = fadeImage.color;
-        timeFI = 0f;
-        color.a = Mathf.Lerp(startFI, endFI, timeFI);
+        time = 0f;
+        color.a = Mathf.Lerp(start, end, time);
 
         while (color.a > 0f)
         {
-            timeFI += Time.deltaTime / animTime;
+            time += Time.deltaTime / animTime;
 
-            color.a = Mathf.Lerp(startFI, endFI, timeFI);
+            color.a = Mathf.Lerp(start, end, time);
 
             fadeImage.color = color;
 
