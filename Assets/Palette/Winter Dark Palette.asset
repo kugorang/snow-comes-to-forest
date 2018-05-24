@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d746e0082aaaaf0458b2b02bb4d45a47, type: 3}
+  m_Name: Winter Dark Palette
+  m_EditorClassIdentifier: 
+  m_DefaultSprite: {fileID: 21300000, guid: 317d53adbd9bc1c4197b85f577f2c47c, type: 3}
+  m_DefaultColliderType: 2
+  m_TilingRules:
+  - m_Neighbors: 0000000001000000000000000200000001000000000000000000000000000000
+    m_Sprites:
+    - {fileID: 21300000, guid: e1a0fa609a862354e91c2ba150e87618, type: 3}
+    m_AnimationSpeed: 1
+    m_PerlinScale: 0.999
+    m_AutoTransform: 0
+    m_Output: 0
+    m_ColliderType: 2
+  - m_Neighbors: 0000000001000000000000000100000001000000000000000000000000000000
+    m_Sprites:
+    - {fileID: 21300000, guid: 3fadcbc1cdc2c7a4691f373b1b9cef17, type: 3}
+    m_AnimationSpeed: 1
+    m_PerlinScale: 0.5
+    m_AutoTransform: 0
+    m_Output: 0
+    m_ColliderType: 2
+  - m_Neighbors: 0000000001000000000000000100000002000000000000000000000000000000
+    m_Sprites:
+    - {fileID: 21300000, guid: 2c2297ffdc2f8664ba5f578889202de0, type: 3}
+    m_AnimationSpeed: 1
+    m_PerlinScale: 0.891
+    m_AutoTransform: 0
+    m_Output: 0
+    m_ColliderType: 2
+  - m_Neighbors: 0000000002000000000000000200000001000000000000000000000000000000
+    m_Sprites:
+    - {fileID: 21300000, guid: 7903766c9b7a83041ad0bb7c2a452aad, type: 3}
+    m_AnimationSpeed: 1
+    m_PerlinScale: 0.5
+    m_AutoTransform: 0
+    m_Output: 0
+    m_ColliderType: 2
+  - m_Neighbors: 0000000002000000000000000100000001000000000000000000000000000000
+    m_Sprites:
+    - {fileID: 21300000, guid: 317d53adbd9bc1c4197b85f577f2c47c, type: 3}
+    m_AnimationSpeed: 1
+    m_PerlinScale: 0.5
+    m_AutoTransform: 0
+    m_Output: 0
+    m_ColliderType: 2
+  - m_Neighbors: 0000000002000000000000000100000002000000000000000000000000000000
+    m_Sprites:
+    - {fileID: 21300000, guid: 2a8a842dcd22cca4e81eaf2519a44467, type: 3}
+    m_AnimationSpeed: 1
+    m_PerlinScale: 0.5
+    m_AutoTransform: 0
+    m_Output: 0
+    m_ColliderType: 2
+  - m_Neighbors: 0000000001000000000000000200000002000000000000000000000000000000
+    m_Sprites:
+    - {fileID: 21300000, guid: 3fadcbc1cdc2c7a4691f373b1b9cef17, type: 3}
+    m_AnimationSpeed: 1
+    m_PerlinScale: 0.5
+    m_AutoTransform: 0
+    m_Output: 0
+    m_ColliderType: 0
