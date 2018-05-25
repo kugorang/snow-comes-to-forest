@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class Monster : MonoBehaviour {
 
@@ -37,14 +37,6 @@ public class Monster : MonoBehaviour {
         else if (isright == false)
         {
             this.transform.Translate(Vector2.left * speed * Time.deltaTime, Space.World);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D coll)
-    {
-        if(coll.gameObject.tag=="Player")
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
