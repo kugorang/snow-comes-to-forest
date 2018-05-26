@@ -579,8 +579,9 @@
           <e p="Stage1.cs" t="Include" />
           <e p="Stage1EndCondition.cs" t="Include" />
         </e>
-        <e p="Stage2" t="Include">
-          <e p="Stage2.cs" t="Include" />
+        <e p="Stage3" t="Include">
+          <e p="Stage3.cs" t="Include" />
+          <e p="Stage3_modified.cs" t="Include" />
         </e>
         <e p="UI" t="Include">
           <e p="Exit_Button.cs" t="Include" />

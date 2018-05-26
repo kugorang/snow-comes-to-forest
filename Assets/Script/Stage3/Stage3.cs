@@ -4,13 +4,25 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Stage2_modified : MonoBehaviour
+public class Stage3 : MonoBehaviour
 {
+
+	public GameObject firstCard;
+	public GameObject secondCard;
+	public GameObject thirdCard;
+	public GameObject monster;
+
+	public GameObject monsterHealth3;
+	public GameObject monsterHealth2;
+	public GameObject monsterHealth1;
+
 	public GameObject textBox;
 
 	public bool getCard = false;
 	public bool alreadyHave = false;
 	public bool isClear = false;
+
+	private int touchCount = 0;
 	
 	private void OnTriggerEnter2D(Collider2D other)
 	{
@@ -29,7 +41,7 @@ public class Stage2_modified : MonoBehaviour
 		{
 			if (getCard)
 			{
-                other.gameObject.SetActive(false);
+				touchCount++;
 				getCard = false;
 				alreadyHave = false;
 			}
@@ -52,6 +64,27 @@ public class Stage2_modified : MonoBehaviour
 			}
 		}
 		
+	}
+
+	private void Update()
+	{
+		switch (touchCount)
+		{
+		case 1 :
+			monsterHealth3.SetActive(false);
+			monsterHealth2.SetActive(true);
+			break;
+		case 2 :
+			monsterHealth2.SetActive(false);
+			monsterHealth1.SetActive(true);
+			break;
+		case 3 :
+			monster.SetActive(false);
+			isClear = true;
+			break;
+		default:
+			break;
+		}
 	}
 
 	public void NextBtnPress()

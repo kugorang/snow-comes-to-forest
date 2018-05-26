@@ -7,7 +7,7 @@ public class PlayerPlatformerController : PhysicsObject
     public float jumpTakeOffSpeed = 6;
 
     private SpriteRenderer spriteRenderer;
-    //private Animator animator;
+    private Animator animator;
 
     private Vector2 moveStartPos;
     private Touch touchZero, touchOne;
@@ -16,13 +16,11 @@ public class PlayerPlatformerController : PhysicsObject
     private bool isLeft;
     //private int lastInput;
 
-    private Animator anim;
-
     // Use this for initialization
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        //animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
 
         screenHalfX = Screen.width / 2;
         touchZero.phase = TouchPhase.Canceled;
@@ -113,6 +111,7 @@ public class PlayerPlatformerController : PhysicsObject
         }
         else if (Input.touchCount == 1)
         {
+
             //Debug.Log("touchCount : 1");
 
             switch (touchZero.phase)
@@ -167,7 +166,10 @@ public class PlayerPlatformerController : PhysicsObject
             if (!spriteRenderer.flipX)
             {
                 spriteRenderer.flipX = true;
+                
             }
+            animator.SetBool("isWalking",true);
+
         }
         else if (move.x < -0.01f)
         {
@@ -175,6 +177,11 @@ public class PlayerPlatformerController : PhysicsObject
             {
                 spriteRenderer.flipX = false;
             }
+            animator.SetBool("isWalking",true);
+        }
+        else
+        {
+            animator.SetBool("isWalking",false);
         }
 
         //animator.SetBool("grounded", grounded);
