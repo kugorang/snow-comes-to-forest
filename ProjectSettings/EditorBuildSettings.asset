@@ -4,7 +4,4 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/Scene/StreetLight.unity
-    guid: 19fea2e02c0a44644bed7ab9fc0769b6
+  m_Scenes: []
