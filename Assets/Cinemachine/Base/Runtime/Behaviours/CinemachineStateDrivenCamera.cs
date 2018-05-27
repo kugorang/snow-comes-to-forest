@@ -212,7 +212,7 @@ namespace Cinemachine
                         curve, duration, mActiveBlend, deltaTime);
 
                 // Notify incoming camera of transition
-                LiveChild.OnTransitionFromCamera(previousCam);
+                LiveChild.OnTransitionFromCamera(previousCam, worldUp, deltaTime);
 
                 // Generate Camera Activation event if live
                 CinemachineCore.Instance.GenerateCameraActivationEvent(LiveChild);

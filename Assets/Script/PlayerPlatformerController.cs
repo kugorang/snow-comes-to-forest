@@ -9,12 +9,10 @@ public class PlayerPlatformerController : PhysicsObject
     private SpriteRenderer spriteRenderer;
     private Animator animator;
 
-    private Vector2 moveStartPos;
+    private Vector2 moveStartPos, move;
     private Touch touchZero, touchOne;
     private int screenHalfX, beforeTouchNum;
-    private Vector2 move;
     private bool isLeft;
-    //private int lastInput;
 
     // Use this for initialization
     private void Awake()
@@ -38,25 +36,9 @@ public class PlayerPlatformerController : PhysicsObject
             case 2:
                 touchZero = Input.GetTouch(0);
                 touchOne = Input.GetTouch(1);
-
-                if (beforeTouchNum != Input.touchCount)
-                {
-                    //Debug.Log("touchZero : " + touchZero.position);
-                    //Debug.Log("Input 2 - touchZero.phase : " + touchZero.phase);
-                    //Debug.Log("touchOne : " + touchOne.position);
-                    //Debug.Log("Input 2 - touchOne.phase : " + touchOne.phase);
-                }
-
                 break;
             case 1:
                 touchZero = Input.GetTouch(0);
-
-                if (beforeTouchNum != Input.touchCount)
-                {
-                    //Debug.Log("touchZero : " + touchZero.position);
-                    //Debug.Log("Input 1 - touchZero.phase : " + touchZero.phase);
-                }
-
                 break;
         }
 
@@ -72,23 +54,18 @@ public class PlayerPlatformerController : PhysicsObject
             else if (touchZero.phase == TouchPhase.Moved
                 || touchZero.phase == TouchPhase.Stationary)
             {
-                //Debug.Log("touchZero Phase - " + touchZero.phase);
-
                 if (touchOne.phase == TouchPhase.Began && grounded)
                 {
                     DragJump();
-                    //Debug.Log("DragJump");
                 }
 
                 if (!isLeft)
                 {
                     move.x += maxSpeed;
-                    //Debug.Log("move Right");
                 }
                 else
                 {
                     move.x -= maxSpeed;
-                    //Debug.Log("move Left");
                 }
             }
             else if (touchOne.phase == TouchPhase.Moved
@@ -111,9 +88,6 @@ public class PlayerPlatformerController : PhysicsObject
         }
         else if (Input.touchCount == 1)
         {
-
-            //Debug.Log("touchCount : 1");
-
             switch (touchZero.phase)
             {
                 case TouchPhase.Began:
@@ -129,13 +103,11 @@ public class PlayerPlatformerController : PhysicsObject
                     if (moveStartPos.x >= screenHalfX)
                     {
                         move.x += maxSpeed;
-                        //Debug.Log("asdf");
                         isLeft = false;
                     }
                     else
                     {
                         move.x -= maxSpeed;
-                        //Debug.Log("fdsa");
                         isLeft = true;
                     }
 
@@ -166,10 +138,9 @@ public class PlayerPlatformerController : PhysicsObject
             if (!spriteRenderer.flipX)
             {
                 spriteRenderer.flipX = true;
-                
             }
-            animator.SetBool("isWalking",true);
-
+            
+            animator.SetBool("isWalking", true);
         }
         else if (move.x < -0.01f)
         {
@@ -177,17 +148,13 @@ public class PlayerPlatformerController : PhysicsObject
             {
                 spriteRenderer.flipX = false;
             }
-            animator.SetBool("isWalking",true);
+            
+            animator.SetBool("isWalking", true);
         }
         else
         {
-            animator.SetBool("isWalking",false);
+            animator.SetBool("isWalking", false);
         }
-
-        //animator.SetBool("grounded", grounded);
-        //animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
-
-        //Debug.Log("MoveX Final : " + move.x);
 
         targetVelocity = move * maxSpeed;
     }

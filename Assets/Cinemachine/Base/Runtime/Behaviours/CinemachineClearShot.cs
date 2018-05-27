@@ -49,8 +49,8 @@ namespace Cinemachine
         [Tooltip("Wait this many seconds before activating a new child camera")]
         public float m_ActivateAfter;
 
-        /// <summary>An active camera must be active for at least this many seconds, unless a higher-priority camera wants to activate</summary>
-        [Tooltip("An active camera must be active for at least this many seconds, unless a higher-priority camera wants to activate")]
+        /// <summary>An active camera must be active for at least this many seconds</summary>
+        [Tooltip("An active camera must be active for at least this many seconds")]
         public float m_MinDuration;
 
         /// <summary>If checked, camera choice will be randomized if multiple cameras are equally desirable.  Otherwise, child list order will be used</summary>
@@ -153,7 +153,7 @@ namespace Cinemachine
                         curve, duration, mActiveBlend, deltaTime);
 
                 // Notify incoming camera of transition
-                LiveChild.OnTransitionFromCamera(previousCam);
+                LiveChild.OnTransitionFromCamera(previousCam, worldUp, deltaTime);
 
                 // Generate Camera Activation event if live
                 CinemachineCore.Instance.GenerateCameraActivationEvent(LiveChild);
@@ -293,7 +293,8 @@ namespace Cinemachine
                 if (vcam != null && vcam.VirtualCameraGameObject.activeInHierarchy)
                 {
                     // Choose the first in the list that is better than the current
-                    if (best == null || vcam.State.ShotQuality > best.State.ShotQuality
+                    if (best == null 
+                        || vcam.State.ShotQuality > best.State.ShotQuality
                         || (vcam.State.ShotQuality == best.State.ShotQuality && vcam.Priority > best.Priority)
                         || (m_RandomizeChoice && mRandomizeNow && (ICinemachineCamera)vcam != LiveChild 
                             && vcam.State.ShotQuality == best.State.ShotQuality 
@@ -325,8 +326,7 @@ namespace Cinemachine
                         // Has it been pending long enough, and are we allowed to switch away
                         // from the active action?
                         if ((now - mPendingActivationTime) > m_ActivateAfter
-                            && ((now - mActivationTime) > m_MinDuration
-                                || best.Priority > LiveChild.Priority))
+                            && (now - mActivationTime) > m_MinDuration)
                         {
                             // Yes, activate it now
                             m_RandomizedChilden = null; // reshuffle the children
@@ -347,8 +347,7 @@ namespace Cinemachine
             if (deltaTime >= 0 && mActivationTime > 0)
             {
                 if (m_ActivateAfter > 0
-                    || ((now - mActivationTime) < m_MinDuration
-                        && best.Priority <= LiveChild.Priority))
+                    || (now - mActivationTime) < m_MinDuration)
                 {
                     // Too early - make it pending
                     mPendingCamera = best;
@@ -416,13 +415,17 @@ namespace Cinemachine
         /// <summary>Notification that this virtual camera is going live.
         /// This implementation resets the child randomization.</summary>
         /// <param name="fromCam">The camera being deactivated.  May be null.</param>
-        public override void OnTransitionFromCamera(ICinemachineCamera fromCam) 
+        /// <param name="worldUp">Default world Up, set by the CinemachineBrain</param>
+        /// <param name="deltaTime">Delta time for time-based effects (ignore if less than or equal to 0)</param>
+        public override void OnTransitionFromCamera(
+            ICinemachineCamera fromCam, Vector3 worldUp, float deltaTime) 
         {
-            base.OnTransitionFromCamera(fromCam);
+            base.OnTransitionFromCamera(fromCam, worldUp, deltaTime);
             if (m_RandomizeChoice && mActiveBlend == null)
             {
                 m_RandomizedChilden = null;
                 LiveChild = null;
+                UpdateCameraState(worldUp, deltaTime);
             }
         }
     }
