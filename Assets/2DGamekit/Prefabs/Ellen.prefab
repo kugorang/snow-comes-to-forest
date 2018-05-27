@@ -1582,7 +1582,7 @@ MonoBehaviour:
   pushingSpeedProportion: 0.5
   airborneAccelProportion: 1
   airborneDecelProportion: 0.5
-  gravity: 38
+  gravity: 60
   jumpSpeed: 16.5
   jumpAbortSpeedReduction: 100
   hurtJumpAngle: 45
