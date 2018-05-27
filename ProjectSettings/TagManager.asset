@@ -4,14 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - interactObj
-  - Apple
-  - Girlfriend
-  - speechBubble
-  - monster
-  - card
+  - Through
+  - lightOn
+  - lightOff
   - carrot
-  - teddy
   layers:
   - Default
   - TransparentFX
@@ -21,6 +17,8 @@ TagManager:
   - UI
   - 
   - 
+  - Player
+  - Obstacle
   - 
   - 
   - 
@@ -43,18 +41,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - Platform
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Carrot
-    uniqueID: 278940473
-    locked: 0
-  - name: Spike
-    uniqueID: 4005578469
-    locked: 0
-  - name: Foreground
-    uniqueID: 2702231425
     locked: 0

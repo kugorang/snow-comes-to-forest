@@ -13,11 +13,13 @@ public class Stage1 : MonoBehaviour {
     public GameObject controlPanel1;
     public GameObject controlPanel2;
     public GameObject player;
+    public GameObject exclamation;
 
     public float girlSpeed;
     public float busSpeed;
 
     private bool panel2On = false;
+    private bool isSurprised = true;
     
     public float animTime = 2f;
 
@@ -42,7 +44,7 @@ public class Stage1 : MonoBehaviour {
 
     private void FixedUpdate () {
        
-        if(player.transform.position.x < 5)
+        if(player.transform.position.x < 6)
         {
             controlPanel1.SetActive(false);
         }
@@ -52,24 +54,18 @@ public class Stage1 : MonoBehaviour {
             if (!panel2On)
             {
                 player.GetComponent<PlayerPlatformerController>().enabled = false;
-                if (girlfriend.transform.position.x<0)
+                player.GetComponent<Animator>().enabled = false;
+                if (isSurprised)
                 {
-                    girlfriend.transform.Translate(Vector2.right * girlSpeed * Time.deltaTime, Space.World);
-                    if (isLeft())
-                    {
-                        player.GetComponent<SpriteRenderer>().flipX = false;
-                    }
-                    else player.GetComponent<SpriteRenderer>().flipX = true;
-                    
+                    exclamation.SetActive(true);
                 }
-                else
-                {
-                    panel2On = true;
-                }
+                StartCoroutine("MeetGirl");
+
             }
             else
             {
                 player.GetComponent<PlayerPlatformerController>().enabled = true;
+                player.GetComponent<Animator>().enabled = true;
                 girlfriend.SetActive(false);
                 girlfriend_1.SetActive(true);
                 controlPanel2.SetActive(true);
@@ -80,7 +76,7 @@ public class Stage1 : MonoBehaviour {
         {
             StartCoroutine("BusFirstMove");
 
-            if (player.transform.position.x > -1)
+            if (player.transform.position.x > -2)
             {
                 controlPanel2.SetActive(false);
             }
@@ -154,6 +150,29 @@ public class Stage1 : MonoBehaviour {
         isPlaying = false;
         player.GetComponent<PlayerPlatformerController>().enabled = true;
         controlPanel1.SetActive(true);
+    }
+
+    IEnumerator MeetGirl()
+    {
+
+        yield return new WaitForSeconds(1);
+        exclamation.SetActive(false);
+        isSurprised = false;
+
+        if (girlfriend.transform.position.x<0)
+        {
+            girlfriend.transform.Translate(Vector2.right * girlSpeed * Time.deltaTime, Space.World);
+            if (isLeft())
+            {
+                player.GetComponent<SpriteRenderer>().flipX = false;
+            }
+            else player.GetComponent<SpriteRenderer>().flipX = true;
+                    
+        }
+        else
+        {
+            panel2On = true;
+        }
     }
     
 }

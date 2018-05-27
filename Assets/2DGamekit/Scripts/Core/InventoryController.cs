@@ -73,9 +73,15 @@ namespace Gamekit2D
         {
             if (!m_InventoryItems.Contains(key))
             {
+                Debug.Log("AddItem - key : " + key);
+                
                 m_InventoryItems.Add(key);
                 var ev = GetInventoryEvent(key);
                 if (ev != null) ev.OnAdd.Invoke();
+            }
+            else
+            {
+                Debug.Log("Already have key : " + key);
             }
         }
 
@@ -83,9 +89,15 @@ namespace Gamekit2D
         {
             if (m_InventoryItems.Contains(key))
             {
+                Debug.Log("RemoveItem - key : " + key);
+                
                 var ev = GetInventoryEvent(key);
                 if (ev != null) ev.OnRemove.Invoke();
                 m_InventoryItems.Remove(key);
+            }
+            else
+            {
+                Debug.Log("Does not have key : " + key);
             }
         }
 

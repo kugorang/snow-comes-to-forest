@@ -2,12 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Teddy : MonoBehaviour {
+public class Teddy : MonoBehaviour
+{
 
-    public GameObject speechBubble;
+    private Rigidbody2D rb2d;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void Start()
     {
-        speechBubble.SetActive(true);
+        rb2d = GetComponent<Rigidbody2D>();
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag=="Player")
+        {
+            
+            Debug.Log(other.contacts[0].normal.y);
+
+        }
+        
+
     }
 }

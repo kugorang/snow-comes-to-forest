@@ -55,6 +55,7 @@ public class Stage1EndCondition : MonoBehaviour
 		{
 			textCanvas.SetActive(true);
 			this.GetComponent<PlayerPlatformerController>().enabled = false;
+			this.GetComponent<Animator>().enabled = false;
 			sceneManager.SetActive(false);
 		}		
 	}
@@ -73,7 +74,7 @@ public class Stage1EndCondition : MonoBehaviour
 
 	public void NextBtnPress()
 	{
-		StartCoroutine(EndStage());
+		StartFadeOutAnim();
 	}
 	
 	public void StartFadeOutAnim()
@@ -104,6 +105,7 @@ public class Stage1EndCondition : MonoBehaviour
 		}
 
 		isPlaying = false;
+		SceneManager.LoadScene(nextStage);
 		/*if(sceneload)
 		{
 			SceneManager.LoadScene(nextStage);
