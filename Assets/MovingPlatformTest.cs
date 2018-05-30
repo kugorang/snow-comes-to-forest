@@ -2,8 +2,8 @@
 using System.Collections;
 
 public class MovingPlatformTest : MonoBehaviour {
-    [SerializeField] float movingSpeedx;
-    [SerializeField] float movingSpeedy;
+    public float movingSpeedx;
+    public float movingSpeedy;
     public GameObject platform; // The actual sprite
     public GameObject start, end;
     private bool orientation; // Where the platform is facing.

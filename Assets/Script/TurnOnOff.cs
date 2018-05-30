@@ -6,13 +6,11 @@ public class TurnOnOff : MonoBehaviour
 {
 	private GameObject[] _streetLightOn;
 	private GameObject[] _streetLightOff;
-	private bool isTurnOn = false;
 
 	private void Awake()
 	{
 		_streetLightOn = GameObject.FindGameObjectsWithTag("lightOn");
 		_streetLightOff = GameObject.FindGameObjectsWithTag("lightOff");
-		isTurnOn = false;
 	}
 
 	// Use this for initialization
@@ -35,8 +33,6 @@ public class TurnOnOff : MonoBehaviour
 		{
 			off.SetActive(false);
 		}
-
-		isTurnOn = true;
 	}
 
 	public void Off()
@@ -50,7 +46,5 @@ public class TurnOnOff : MonoBehaviour
 		{
 			off.SetActive(true);
 		}
-
-		isTurnOn = false;
 	}
 }

@@ -14,7 +14,6 @@ namespace Gamekit2D
             public UnityEvent OnAdd, OnRemove;
         }
 
-
         [System.Serializable]
         public class InventoryChecker
         {
@@ -40,7 +39,6 @@ namespace Gamekit2D
             }
         }
 
-
         public InventoryEvent[] inventoryEvents;
         public event System.Action OnInventoryLoaded;
 
@@ -59,12 +57,12 @@ namespace Gamekit2D
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             PersistentDataManager.RegisterPersister(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             PersistentDataManager.UnregisterPersister(this);
         }
@@ -73,32 +71,32 @@ namespace Gamekit2D
         {
             if (!m_InventoryItems.Contains(key))
             {
-                Debug.Log("AddItem - key : " + key);
+                //Debug.Log("AddItem - key : " + key);
                 
                 m_InventoryItems.Add(key);
                 var ev = GetInventoryEvent(key);
                 if (ev != null) ev.OnAdd.Invoke();
             }
-            else
+            /*else
             {
                 Debug.Log("Already have key : " + key);
-            }
+            }*/
         }
 
         public void RemoveItem(string key)
         {
             if (m_InventoryItems.Contains(key))
             {
-                Debug.Log("RemoveItem - key : " + key);
+                /*Debug.Log("RemoveItem - key : " + key);*/
                 
                 var ev = GetInventoryEvent(key);
                 if (ev != null) ev.OnRemove.Invoke();
                 m_InventoryItems.Remove(key);
             }
-            else
+            /*else
             {
                 Debug.Log("Does not have key : " + key);
-            }
+            }*/
         }
 
         public bool HasItem(string key)
@@ -138,10 +136,13 @@ namespace Gamekit2D
 
         public void LoadData(Data data)
         {
-            Data<HashSet<string>> inventoryData = (Data<HashSet<string>>)data;
+            var inventoryData = (Data<HashSet<string>>)data;
+            
             foreach (var i in inventoryData.value)
                 AddItem(i);
-            if (OnInventoryLoaded != null) OnInventoryLoaded();
+            
+            if (OnInventoryLoaded != null)
+                OnInventoryLoaded();
         }
     }
 }
