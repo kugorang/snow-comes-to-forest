@@ -16,6 +16,10 @@ public class Stage1 : MonoBehaviour {
 	public GameObject manChat;
 	public GameObject womanChat;
 
+	public GameObject spawner_up;
+	public GameObject spawner_down;
+	public GameObject leaf;
+
 	public string nextStage;
 
 	public GameObject playerCamera;
@@ -33,6 +37,7 @@ public class Stage1 : MonoBehaviour {
     public float busSpeed;
 
     private bool panel2On = false;
+	private bool panel2Off = false;
     private bool isSurprised = true;
 	private bool bgmOn = false;
     
@@ -89,7 +94,10 @@ public class Stage1 : MonoBehaviour {
                 player.GetComponent<Animator>().enabled = true;
                 girlfriend.SetActive(false);
                 girlfriend_1.SetActive(true);
-                controlPanel2.SetActive(true);
+	            if (!panel2Off)
+	            {
+		            controlPanel2.SetActive(true);
+	            }
             }
         }
 
@@ -100,6 +108,7 @@ public class Stage1 : MonoBehaviour {
             if (player.transform.position.x > -2)
             {
                 controlPanel2.SetActive(false);
+	            panel2Off = true;
             }
         }
 
@@ -117,8 +126,11 @@ public class Stage1 : MonoBehaviour {
 			player.GetComponent<SpriteRenderer>().sprite = manStand;
 			player.GetComponent<PlayerPlatformerController>().enabled = false;
 			player.GetComponent<Animator>().enabled = false;
+			//spawner_up.GetComponent<LeafSpawner>().enabled = true;
+			//spawner_down.GetComponent<LeafSpawner>().enabled = true;
 			StartCoroutine("Chat");
-			StartFadeOutAnim();
+			StartCoroutine("SuccessStage1");
+
 		}
     }
 
@@ -152,6 +164,8 @@ public class Stage1 : MonoBehaviour {
 	    player.GetComponent<SpriteRenderer>().sprite = manStand;
 	    player.GetComponent<PlayerPlatformerController>().enabled = false;
 	    player.GetComponent<Animator>().enabled = false;
+	    leaf.SetActive(false);
+	    
 	    if (isLeft(player,bus))
 	    {
 		    player.GetComponent<SpriteRenderer>().flipX = false;
@@ -346,6 +360,12 @@ public class Stage1 : MonoBehaviour {
 			return true;
 		}
 		else return false;
+	}
+
+	private IEnumerator SuccessStage1()
+	{
+		yield return new WaitForSeconds(5);
+		StartFadeOutAnim();
 	}
 
 }
