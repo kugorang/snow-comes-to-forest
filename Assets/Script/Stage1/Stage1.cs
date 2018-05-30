@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Cinemachine;
 
 public class Stage1 : MonoBehaviour {
 
@@ -12,14 +13,30 @@ public class Stage1 : MonoBehaviour {
     public GameObject controlPanel2;
     public GameObject player;
     public GameObject exclamation;
+	public GameObject manChat;
+	public GameObject womanChat;
+
+	public string nextStage;
+
+	public GameObject playerCamera;
+
+	public GameObject bgm;
+	private AudioSource bgmSource;
+	public GameObject busSound;
+	private AudioSource busSoundSource;
+	public GameObject sigh;
+	private AudioSource sighSource;
+
+	public Sprite manStand;
 
     public float girlSpeed;
     public float busSpeed;
 
     private bool panel2On = false;
     private bool isSurprised = true;
+	private bool bgmOn = false;
     
-    public float animTime = 2f;
+    public float animTime = 3f;
 
     public GameObject fade;
     private Image fadeImage;
@@ -29,10 +46,15 @@ public class Stage1 : MonoBehaviour {
     private float time = 0f;
     
     private bool isPlaying = false;
+	private bool isEnd = false;
+	private bool isFail = false;
 
     private void Awake()
     {
         fadeImage = fade.GetComponent<Image>();
+		bgmSource = bgm.GetComponent<AudioSource>();
+		busSoundSource = busSound.GetComponent<AudioSource>();
+	    sighSource = sigh.GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -51,14 +73,14 @@ public class Stage1 : MonoBehaviour {
         {
             if (!panel2On)
             {
+	            player.GetComponent<SpriteRenderer>().sprite = manStand;
                 player.GetComponent<PlayerPlatformerController>().enabled = false;
                 player.GetComponent<Animator>().enabled = false;
                 if (isSurprised)
                 {
                     exclamation.SetActive(true);
                 }
-                StartCoroutine("MeetGirl");
-
+                StartCoroutine(MeetGirl());
             }
             else
             {
@@ -72,7 +94,7 @@ public class Stage1 : MonoBehaviour {
 
         if (panel2On)
         {
-            StartCoroutine("BusFirstMove");
+	        StartCoroutine("BusFirstMove");
 
             if (player.transform.position.x > -2)
             {
@@ -80,38 +102,76 @@ public class Stage1 : MonoBehaviour {
             }
         }
 
+		if(bgmOn)
+		{
+			if(bgmSource.isPlaying==false)
+			{
+				bgmSource.Play();
+			}
+		}
+
+		if(isEnd&&player.transform.position.x>=2)
+		{
+			StopCoroutine("BusFirstMove");
+			player.GetComponent<SpriteRenderer>().sprite = manStand;
+			player.GetComponent<PlayerPlatformerController>().enabled = false;
+			player.GetComponent<Animator>().enabled = false;
+			StartCoroutine("Chat");
+			StartFadeOutAnim();
+		}
     }
 
      private IEnumerator BusFirstMove()
     {
-        yield return new WaitForSeconds(10);
-        bus.SetActive(true);
-        if (bus.transform.position.x <= 4.5)
-        {
-            bus.transform.Translate(Vector2.right * busSpeed * Time.deltaTime, Space.World);
-        }
-        else StartCoroutine("BusSecondMove");
+	    yield return new WaitForSeconds(10);
+	    bus.SetActive(true);
+	    bgmOn = false;
+	    StartCoroutine(BGMFadeOut(bgmSource, 10));
+		    
+	    if(busSoundSource.isPlaying==false)
+	    {   
+		    busSoundSource.Play();
+	    }
+
+	    if (bus.transform.position.x >= 3)
+	    {
+		    bus.transform.Translate(Vector2.left * busSpeed * Time.deltaTime, Space.World);
+	    }
+	    else StartCoroutine("BusSecondMove");
 
     }
 
     private IEnumerator BusSecondMove()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(5);
+		girlfriend_1.SetActive(false);
+	    isFail = true;
+		yield return new WaitForSeconds(5);
+	    player.GetComponent<SpriteRenderer>().sprite = manStand;
+	    player.GetComponent<PlayerPlatformerController>().enabled = false;
+	    player.GetComponent<Animator>().enabled = false;
+	    if (isLeft(player,bus))
+	    {
+		    player.GetComponent<SpriteRenderer>().flipX = false;
+	    }
+	    else
+	    {
+		    player.GetComponent<SpriteRenderer>().flipX = true;
+	    } 
+		bus.transform.Translate(Vector2.left * busSpeed * Time.deltaTime, Space.World);
 
-        bus.transform.Translate(Vector2.right * busSpeed * Time.deltaTime, Space.World);
-        girlfriend_1.SetActive(false);
-        if(bus.transform.position.x>=13)
+        if(bus.transform.position.x<=-11)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-			girlfriend.transform.position = new Vector3(-9.5f, -2.83f, 0);
-			girlfriend.SetActive(true);
+	        BGMFadeOut(busSoundSource, 5);
+	        sighSource.Play();
+
+	        StartFadeOutAnim();
         }
     }
 
-
-    private bool isLeft()
+    private bool isLeft(GameObject baseobj, GameObject otherobj)
     {
-        if (player.transform.position.x - girlfriend.transform.position.x >= 0)
+        if (baseobj.transform.position.x - otherobj.transform.position.x >= 0)
             return true;
         else return false;
     }
@@ -149,28 +209,126 @@ public class Stage1 : MonoBehaviour {
         player.GetComponent<PlayerPlatformerController>().enabled = true;
         controlPanel1.SetActive(true);
     }
+	
+	public void StartFadeOutAnim()
+	{
+		Debug.Log("fade out");
+			
+		if (isPlaying == true)
+			return;
+
+		StartCoroutine("PlayFadeOut");
+		
+	}
+
+	IEnumerator PlayFadeOut()
+	{
+		isPlaying = true;
+
+		Color color = fadeImage.color;
+		time = 0f;
+		color.a = Mathf.Lerp(end, start, time);
+
+		while (color.a < 1f)
+		{
+			time += Time.deltaTime / animTime;
+
+			color.a = Mathf.Lerp(end, start, time);
+
+			fadeImage.color = color;
+
+			yield return null;
+		}
+
+		isPlaying = false;
+		
+		if (isEnd)
+		{
+			if (isFail)
+			{
+				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+			}
+			else
+			{
+				SceneManager.LoadScene(nextStage);
+			}
+
+		}
+
+	}
 
     IEnumerator MeetGirl()
     {
-
         yield return new WaitForSeconds(1);
         exclamation.SetActive(false);
         isSurprised = false;
+		bgmOn = true;
 
-        if (girlfriend.transform.position.x<0)
+        if (girlfriend.transform.position.x<=3)
         {
-            girlfriend.transform.Translate(Vector2.right * girlSpeed * Time.deltaTime, Space.World);
-            if (isLeft())
+
+			girlfriend.transform.Translate(Vector2.right * girlSpeed * Time.deltaTime, Space.World);
+            if (isLeft(player,girlfriend))
             {
                 player.GetComponent<SpriteRenderer>().flipX = false;
-            }
-            else player.GetComponent<SpriteRenderer>().flipX = true;
-                    
+			}
+            else
+            {
+	            player.GetComponent<SpriteRenderer>().flipX = true;
+	            playerCamera.GetComponent<CinemachineVirtualCamera>().Follow = girlfriend.transform;
+	            
+            }                    
         }
         else
         {
-            panel2On = true;
+			playerCamera.GetComponent<CinemachineVirtualCamera>().Follow = player.transform;
+			panel2On = true;
+			isEnd = true;
         }
     }
-    
+
+	public static IEnumerator BGMFadeOut (AudioSource audioSource, float FadeTime)
+	{
+		float startVolume = audioSource.volume;
+
+		while(audioSource.volume>0)
+		{
+			audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+			yield return null;
+		}
+
+		audioSource.Stop();
+		audioSource.volume = startVolume;
+	}
+
+	private IEnumerator Chat()
+	{
+		yield return new WaitForSeconds(0.5f);
+		StartCoroutine("ManChat");
+		yield return new WaitForSeconds(0.5f);
+		StartCoroutine("WomanChat");
+
+		StopCoroutine("Chat");
+	}
+
+	private IEnumerator ManChat()
+	{
+		manChat.SetActive(true);
+		yield return new WaitForSeconds(0.5f);
+		manChat.SetActive(false);
+		yield return new WaitForSeconds(0.5f);
+
+		StopCoroutine("ManChat");
+	}
+	private IEnumerator WomanChat()
+	{
+		womanChat.SetActive(true);
+		yield return new WaitForSeconds(0.5f);
+		womanChat.SetActive(false);
+		yield return new WaitForSeconds(0.5f);
+
+		StopCoroutine("WomanChat");
+	}
+
 }
