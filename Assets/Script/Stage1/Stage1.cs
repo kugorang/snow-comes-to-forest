@@ -46,6 +46,7 @@ public class Stage1 : MonoBehaviour {
     private float time = 0f;
     
     private bool isPlaying = false;
+	private bool playOneTime = true;
 	private bool isEnd = false;
 	private bool isFail = false;
 
@@ -146,6 +147,7 @@ public class Stage1 : MonoBehaviour {
         yield return new WaitForSeconds(5);
 		girlfriend_1.SetActive(false);
 	    isFail = true;
+	    isEnd = false;
 		yield return new WaitForSeconds(5);
 	    player.GetComponent<SpriteRenderer>().sprite = manStand;
 	    player.GetComponent<PlayerPlatformerController>().enabled = false;
@@ -162,10 +164,7 @@ public class Stage1 : MonoBehaviour {
 
         if(bus.transform.position.x<=-11)
         {
-	        BGMFadeOut(busSoundSource, 5);
-	        sighSource.Play();
-
-	        StartFadeOutAnim();
+	        StartCoroutine("FailGame");
         }
     }
 
@@ -219,6 +218,8 @@ public class Stage1 : MonoBehaviour {
 
 		StartCoroutine("PlayFadeOut");
 		
+		playOneTime = false;
+		
 	}
 
 	IEnumerator PlayFadeOut()
@@ -244,16 +245,11 @@ public class Stage1 : MonoBehaviour {
 		
 		if (isEnd)
 		{
-			if (isFail)
-			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-			}
-			else
-			{
-				SceneManager.LoadScene(nextStage);
-			}
-
+			SceneManager.LoadScene(nextStage);
+		}
+		else if (isFail)
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 
 	}
@@ -329,6 +325,27 @@ public class Stage1 : MonoBehaviour {
 		yield return new WaitForSeconds(0.5f);
 
 		StopCoroutine("WomanChat");
+	}
+
+	private IEnumerator FailGame()
+	{		
+		BGMFadeOut(busSoundSource, 5);
+		yield return new WaitUntil(BusSoundPlay);
+		sighSource.Play();
+
+		if (playOneTime)
+		{
+			StartFadeOutAnim();
+		}
+	}
+
+	private bool BusSoundPlay()
+	{
+		if (busSoundSource.isPlaying)
+		{
+			return true;
+		}
+		else return false;
 	}
 
 }
