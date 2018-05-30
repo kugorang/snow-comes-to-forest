@@ -25,21 +25,21 @@ public class CameraMove : MonoBehaviour
         Player.enabled = false;
 
         var posOrigin = MainCamera.transform.position;
-        var moveGap = 0.001f;
+        var moveGap = 0.003f;
         
         while (MainCamera.transform.position.x < EndPos.transform.position.x)
         {
             var cameraPos = MainCamera.transform.position;
             
             cameraPos.x += moveGap;
-            moveGap += 0.01f;
+            moveGap += 0.003f;
 
             MainCamera.transform.position = cameraPos;
             
             yield return new WaitForSeconds(0.01f);
         }
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(3.0f);
         
         MainCamera.transform.position = posOrigin;
         
@@ -52,12 +52,16 @@ public class CameraMove : MonoBehaviour
 
     private IEnumerator LightsOn()
     {
-        foreach (var li in Lights)
+        for (var index = 0; index < 10; index++)
         {
-            li.SetActive(true);
+            Lights[index].SetActive(true);
             
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.35f);
         }
+        
+        yield return new WaitForSeconds(0.29f);
+        
+        Lights[10].SetActive(true);
 
         yield return null;
     }

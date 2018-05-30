@@ -2,6 +2,7 @@
 using BTAI;
 using Gamekit2D;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
@@ -97,6 +98,11 @@ public class StageManager : MonoBehaviour
 	private IEnumerator FadeCorutine(bool isFadeIn)
 	{
 		var fadeImgColor = FadeImg.color;
+
+		if (!isFadeIn)
+		{
+			yield return new WaitForSeconds(2.0f);
+		}
 		
 		while (true)
 		{
@@ -116,6 +122,9 @@ public class StageManager : MonoBehaviour
 
 			yield return new WaitForSeconds(0.01f);
 		}
+		
+		if (!isFadeIn)
+			SceneManager.LoadScene("Main_modified");
 
 		yield return null;
 	}
