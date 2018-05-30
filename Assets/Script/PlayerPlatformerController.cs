@@ -14,6 +14,9 @@ public class PlayerPlatformerController : PhysicsObject
     private int screenHalfX, beforeTouchNum;
     private bool isLeft;
 
+    public GameObject stepSound;
+    private AudioSource stepSoundSource;
+
     // Use this for initialization
     private void Awake()
     {
@@ -25,6 +28,8 @@ public class PlayerPlatformerController : PhysicsObject
         touchOne.phase = TouchPhase.Canceled;
         beforeTouchNum = 0;
         isLeft = true;
+
+        stepSoundSource = stepSound.GetComponent<AudioSource>();
     }
 
     protected override void ComputeVelocity()
@@ -141,6 +146,10 @@ public class PlayerPlatformerController : PhysicsObject
             }
             
             animator.SetBool("isWalking", true);
+            if (!stepSoundSource.isPlaying)
+            {
+                stepSoundSource.Play();
+            }
         }
         else if (move.x < -0.01f)
         {
@@ -150,6 +159,10 @@ public class PlayerPlatformerController : PhysicsObject
             }
             
             animator.SetBool("isWalking", true);
+            if (!stepSoundSource.isPlaying)
+            {
+                stepSoundSource.Play();
+            }
         }
         else
         {
