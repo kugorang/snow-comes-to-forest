@@ -6,8 +6,7 @@ using UnityEngine.UI;
 
 public class Stage1EndCondition : MonoBehaviour
 {
-
-	public string tag;
+	/*public string tag;*/
 	public bool isEnd = false;
 	public bool isNextStage;
 	
@@ -30,7 +29,7 @@ public class Stage1EndCondition : MonoBehaviour
 	private float time = 0f;
 	
 	private bool isPlaying = false;
-	private bool sceneload = false;
+	/*private bool sceneload = false;*/
 
 	public GameObject endingMessage;
 	public GameObject endingMessageImage;

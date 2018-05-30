@@ -648,9 +648,10 @@
           <e p="Util.cs" t="Include" />
         </e>
       </e>
-      <e p="Assets\LightInit.cs" t="Include" />
       <e p="Assets\MovingPlatformTest.cs" t="Include" />
+      <e p="Assets\PlayerImage.cs" t="Include" />
       <e p="Assets\Script" t="Include">
+        <e p="CameraMove.cs" t="Include" />
         <e p="CollisionItem.cs" t="Include" />
         <e p="CreateApple.cs" t="Include" />
         <e p="Gimmick" t="Include">
@@ -748,6 +749,7 @@
       <e p="Assets\Shader" t="Include">
         <e p="Gray Colored.shader" t="Include" />
       </e>
+      <e p="Assets\StageManager.cs" t="Include" />
       <e p="Library" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />

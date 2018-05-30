@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Teddy : MonoBehaviour
 {
-
     private Rigidbody2D rb2d;
 
     private void Start()
@@ -14,13 +13,9 @@ public class Teddy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag=="Player")
+        if (other.gameObject.CompareTag("Player"))
         {
-            
             Debug.Log(other.contacts[0].normal.y);
-
         }
-        
-
     }
 }
