@@ -54,6 +54,7 @@ public class StageManager : MonoBehaviour
 		if (!_active)
 		{
 			Jail.SetActive(false);
+			GetComponent<AudioSource>().Play();
 			return;
 		}
 			
@@ -87,7 +88,7 @@ public class StageManager : MonoBehaviour
 
 	private IEnumerator SetActiveFalse()
 	{
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(1.0f);
 
 		foreach (var lightTile in LightArr)
 		{
