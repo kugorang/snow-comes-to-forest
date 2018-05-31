@@ -129,6 +129,7 @@ public class Stage1 : MonoBehaviour {
 			//spawner_up.GetComponent<LeafSpawner>().enabled = true;
 			//spawner_down.GetComponent<LeafSpawner>().enabled = true;
 			StartCoroutine("Chat");
+			
 			StartCoroutine("SuccessStage1");
 
 		}
@@ -364,8 +365,11 @@ public class Stage1 : MonoBehaviour {
 
 	private IEnumerator SuccessStage1()
 	{
-		yield return new WaitForSeconds(5);
-		StartFadeOutAnim();
+		yield return new WaitForSeconds(3);
+		if (playOneTime)
+		{
+			StartFadeOutAnim();
+		}
 	}
 
 }

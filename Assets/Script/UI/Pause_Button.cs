@@ -7,15 +7,27 @@ public class Pause_Button : MonoBehaviour {
 
     public GameObject setting;
     public GameObject pausebutton;
-    public GameObject busSound;
-    private AudioSource busSoundSource;
+    public GameObject busSound = null;
+    private AudioSource busSoundSource = null;
+
+    private void Awake()
+    {
+        if (busSound != null)
+        {
+            busSoundSource = busSound.GetComponent<AudioSource>();
+        }
+    }
 
     public void PauseBtnPress()
     {
+        
         Time.timeScale = 0;
         pausebutton.SetActive(false);
         setting.SetActive(true);
-        busSoundSource.Stop();
+        if (busSound != null)
+        {
+            busSoundSource.Pause();
+        }
     }
 
     public void MainBtnPress()
@@ -36,6 +48,10 @@ public class Pause_Button : MonoBehaviour {
         Time.timeScale = 1;
         pausebutton.SetActive(true);
         setting.SetActive(false);
+        if (busSound != null)
+        {
+            busSoundSource.UnPause();
+        }
     }
 
 }
