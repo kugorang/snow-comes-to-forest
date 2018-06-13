@@ -8,6 +8,8 @@ public class CameraMove : MonoBehaviour
     public GameObject Cinemachine;
     public GameObject EndPos;
     public GameObject[] Lights;
+    public SpriteRenderer[] SpriteRenderers;
+    public Sprite StreeLightOn;
     public PlayerPlatformerController Player;
     public Sprite StandImg;
 
@@ -25,14 +27,14 @@ public class CameraMove : MonoBehaviour
         Player.enabled = false;
 
         var posOrigin = MainCamera.transform.position;
-        var moveGap = 0.003f;
+        var moveGap = 0.0037f;
         
         while (MainCamera.transform.position.x < EndPos.transform.position.x)
         {
             var cameraPos = MainCamera.transform.position;
             
             cameraPos.x += moveGap;
-            moveGap += 0.003f;
+            moveGap += 0.0037f;
 
             MainCamera.transform.position = cameraPos;
             
@@ -55,6 +57,7 @@ public class CameraMove : MonoBehaviour
         for (var index = 0; index < 10; index++)
         {
             Lights[index].SetActive(true);
+            SpriteRenderers[index].sprite = StreeLightOn;
             
             yield return new WaitForSeconds(0.35f);
         }

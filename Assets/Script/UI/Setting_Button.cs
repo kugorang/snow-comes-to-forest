@@ -21,6 +21,8 @@ public class Setting_Button : MonoBehaviour {
     public GameObject creditButton;
     public GameObject creditPanel;
 
+    public AudioManager AudioManager;
+
     public void ControlBtnPress()
     {
         if (easyControl)
@@ -40,10 +42,12 @@ public class Setting_Button : MonoBehaviour {
         if (bgmOn)
         {
             bgmImage.sprite = soundSprite[0];
+            AudioManager.BgmOn();
         }
         else
         {
             bgmImage.sprite = soundSprite[1];
+            AudioManager.BgmOff();
         }
 
         bgmOn = !bgmOn;

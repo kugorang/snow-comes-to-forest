@@ -321,7 +321,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 99868148}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0db60800d6091b749942924cd406be83, type: 3}
   m_Name: 
@@ -8599,7 +8599,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -9280,7 +9280,7 @@ MonoBehaviour:
   busSound: {fileID: 1825067157}
   sigh: {fileID: 462068796}
   manStand: {fileID: 21300000, guid: 7390e66571d545447b1d661e850ee7d2, type: 3}
-  girlSpeed: 1.2
+  girlSpeed: 1.93
   busSpeed: 2
   animTime: 3
   fade: {fileID: 1045451644}
@@ -16603,7 +16603,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2140719720}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.360802, y: -1.5394101, z: -10}
+  m_LocalPosition: {x: 10, y: -3.08, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

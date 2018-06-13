@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using BTAI;
 using Gamekit2D;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class StageManager : MonoBehaviour
 	public BoxCollider2D PressurePad;
 	public PlayerPlatformerController Player;
 	private bool _stageClear;
+	private bool _jailAlreadyOpen;
 
 	public void Start()
 	{
@@ -40,29 +42,20 @@ public class StageManager : MonoBehaviour
 		StartCoroutine("FadeCorutine", false);
 	}
 
-	public void LightOff()
+	public void FloorLightOff()
 	{
-		foreach (var lightTile in LightArr)
-		{
-			if (lightTile.activeSelf)
-				continue;
-			
-			_active = true;
-			break;
-		}
-
-		if (!_active)
-		{
-			Jail.SetActive(false);
-			GetComponent<AudioSource>().Play();
+		if (LightArr.All(lightTile => lightTile.activeSelf))
 			return;
-		}
-			
-		_active = true;
-			
+		
 		StartCoroutine("SetActiveFalse");
-			
-		_active = false;
+	}
+
+	public void CheckAllTurnOn()
+	{
+		if (_jailAlreadyOpen || LightArr.Any(lightTile => !lightTile.activeSelf)) 
+			return;
+
+		StartCoroutine("OpenJail");
 	}
 
 	public void PressurePadOn()
@@ -92,8 +85,11 @@ public class StageManager : MonoBehaviour
 
 		foreach (var lightTile in LightArr)
 		{
+			lightTile.GetComponentInParent<CollisionSoundTile>().IsTurnOn = false;
 			lightTile.SetActive(false);
 		}
+		
+		/*Debug.Log("asdf");*/
 	}
 
 	private IEnumerator FadeCorutine(bool isFadeIn)
@@ -147,5 +143,19 @@ public class StageManager : MonoBehaviour
 		Player.GetComponent<Animator>().enabled = true;
 		
 		yield return null;
+	}
+
+	private IEnumerator OpenJail()
+	{
+		yield return new WaitForSeconds(0.5f);
+
+		if (_jailAlreadyOpen) 
+			yield break;
+		
+		_jailAlreadyOpen = true;
+		Jail.SetActive(false);
+		GetComponent<AudioSource>().Play();
+
+		/*Debug.Log("OpenJail");*/
 	}
 }

@@ -70,7 +70,7 @@ public class Stage1 : MonoBehaviour {
 
     private void FixedUpdate () {
        
-        if(player.transform.position.x < 6)
+        if (player.transform.position.x < 6)
         {
             controlPanel1.SetActive(false);
         }
@@ -112,37 +112,36 @@ public class Stage1 : MonoBehaviour {
             }
         }
 
-		if(bgmOn)
+		if (bgmOn)
 		{
-			if(bgmSource.isPlaying==false)
+			if (!bgmSource.isPlaying /*&& AudioManager.GetInstance().GetBgmAlive() == 1*/)
 			{
 				bgmSource.Play();
 			}
 		}
 
-		if(isEnd&&player.transform.position.x>=2)
-		{
-			StopCoroutine("BusFirstMove");
-			player.GetComponent<SpriteRenderer>().sprite = manStand;
-			player.GetComponent<PlayerPlatformerController>().enabled = false;
-			player.GetComponent<Animator>().enabled = false;
-			//spawner_up.GetComponent<LeafSpawner>().enabled = true;
-			//spawner_down.GetComponent<LeafSpawner>().enabled = true;
-			StartCoroutine("Chat");
+	    if (!isEnd || !(player.transform.position.x >= 2)) 
+		    return;
+	    
+	    StopCoroutine("BusFirstMove");
+	    player.GetComponent<SpriteRenderer>().sprite = manStand;
+	    player.GetComponent<PlayerPlatformerController>().enabled = false;
+	    player.GetComponent<Animator>().enabled = false;
+	    //spawner_up.GetComponent<LeafSpawner>().enabled = true;
+	    //spawner_down.GetComponent<LeafSpawner>().enabled = true;
+	    StartCoroutine("Chat");
 			
-			StartCoroutine("SuccessStage1");
-
-		}
+	    StartCoroutine("SuccessStage1");
     }
 
      private IEnumerator BusFirstMove()
     {
-	    yield return new WaitForSeconds(10);
+	    yield return new WaitForSeconds(14.2f);
 	    bus.SetActive(true);
 	    bgmOn = false;
-	    StartCoroutine(BGMFadeOut(bgmSource, 10));
+	    StartCoroutine(BgmFadeOut(bgmSource, 10));
 		    
-	    if(busSoundSource.isPlaying==false)
+	    if(!busSoundSource.isPlaying /*&& AudioManager.GetInstance().GetEffAlive() == 1*/)
 	    {   
 		    busSoundSource.Play();
 	    }
@@ -167,17 +166,10 @@ public class Stage1 : MonoBehaviour {
 	    player.GetComponent<Animator>().enabled = false;
 	    leaf.SetActive(false);
 	    
-	    if (isLeft(player,bus))
-	    {
-		    player.GetComponent<SpriteRenderer>().flipX = false;
-	    }
-	    else
-	    {
-		    player.GetComponent<SpriteRenderer>().flipX = true;
-	    } 
+	    player.GetComponent<SpriteRenderer>().flipX = !isLeft(player,bus);
 		bus.transform.Translate(Vector2.left * busSpeed * Time.deltaTime, Space.World);
 
-        if(bus.transform.position.x<=-11)
+        if (bus.transform.position.x <= -11)
         {
 	        StartCoroutine("FailGame");
         }
@@ -299,13 +291,13 @@ public class Stage1 : MonoBehaviour {
         }
     }
 
-	public static IEnumerator BGMFadeOut (AudioSource audioSource, float FadeTime)
+	private static IEnumerator BgmFadeOut (AudioSource audioSource, float fadeTime)
 	{
-		float startVolume = audioSource.volume;
+		var startVolume = audioSource.volume;
 
 		while(audioSource.volume>0)
 		{
-			audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+			audioSource.volume -= startVolume * Time.deltaTime / fadeTime;
 			yield return null;
 		}
 
@@ -344,9 +336,11 @@ public class Stage1 : MonoBehaviour {
 
 	private IEnumerator FailGame()
 	{		
-		BGMFadeOut(busSoundSource, 5);
+		BgmFadeOut(busSoundSource, 5);
 		yield return new WaitUntil(BusSoundPlay);
-		sighSource.Play();
+		
+		/*if (AudioManager.GetInstance().GetEffAlive() == 1)*/
+			sighSource.Play();
 
 		if (playOneTime)
 		{
@@ -356,16 +350,13 @@ public class Stage1 : MonoBehaviour {
 
 	private bool BusSoundPlay()
 	{
-		if (busSoundSource.isPlaying)
-		{
-			return true;
-		}
-		else return false;
+		return busSoundSource.isPlaying;
 	}
 
 	private IEnumerator SuccessStage1()
 	{
 		yield return new WaitForSeconds(3);
+		
 		if (playOneTime)
 		{
 			StartFadeOutAnim();
