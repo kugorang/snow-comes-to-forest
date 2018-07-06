@@ -8,8 +8,10 @@ public class CameraMove : MonoBehaviour
     public GameObject Cinemachine;
     public GameObject EndPos;
     public GameObject[] Lights;
+    public GameObject LastLight;
+    public AudioSource LastLightSound;
     public SpriteRenderer[] SpriteRenderers;
-    public Sprite StreeLightOn;
+    public Sprite StreetLightOn;
     public PlayerPlatformerController Player;
     public Sprite StandImg;
 
@@ -57,14 +59,20 @@ public class CameraMove : MonoBehaviour
         for (var index = 0; index < 10; index++)
         {
             Lights[index].SetActive(true);
-            SpriteRenderers[index].sprite = StreeLightOn;
+            SpriteRenderers[index].sprite = StreetLightOn;
             
             yield return new WaitForSeconds(0.35f);
         }
         
         yield return new WaitForSeconds(0.29f);
         
-        Lights[10].SetActive(true);
+        LastLightSound.Play();
+        
+        yield return new WaitForSeconds(1.0f);
+        
+        LastLight.SetActive(true);
+        
+        SpriteRenderers[10].sprite = StreetLightOn;
 
         yield return null;
     }
