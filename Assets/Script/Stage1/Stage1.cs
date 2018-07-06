@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Cinemachine;
+using UnityEngine.Tilemaps;
 
 public class Stage1 : MonoBehaviour {
 
@@ -54,6 +55,16 @@ public class Stage1 : MonoBehaviour {
 	private bool playOneTime = true;
 	private bool isEnd = false;
 	private bool isFail = false;
+
+	public Material original;
+	public GameObject busStop;
+	public GameObject station;
+	public GameObject backGround;
+	public GameObject ground;
+	public Sprite busstop_color;
+	public Sprite station_color;
+	
+	
 
     private void Awake()
     {
@@ -127,8 +138,8 @@ public class Stage1 : MonoBehaviour {
 	    player.GetComponent<SpriteRenderer>().sprite = manStand;
 	    player.GetComponent<PlayerPlatformerController>().enabled = false;
 	    player.GetComponent<Animator>().enabled = false;
-	    //spawner_up.GetComponent<LeafSpawner>().enabled = true;
-	    //spawner_down.GetComponent<LeafSpawner>().enabled = true;
+	    spawner_up.GetComponent<LeafSpawner>().enabled = true;
+	    spawner_down.GetComponent<LeafSpawner>().enabled = true;
 	    StartCoroutine("Chat");
 			
 	    StartCoroutine("SuccessStage1");
@@ -280,7 +291,11 @@ public class Stage1 : MonoBehaviour {
             {
 	            player.GetComponent<SpriteRenderer>().flipX = true;
 	            playerCamera.GetComponent<CinemachineVirtualCamera>().Follow = girlfriend.transform;
-	            
+
+	            busStop.GetComponent<SpriteRenderer>().sprite = busstop_color;
+	            station.GetComponent<SpriteRenderer>().sprite = station_color;
+	            backGround.GetComponent<SpriteRenderer>().material = original;
+	            ground.GetComponent<TilemapRenderer>().material = original;
             }                    
         }
         else
