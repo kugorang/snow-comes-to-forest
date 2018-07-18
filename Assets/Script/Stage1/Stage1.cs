@@ -96,6 +96,7 @@ public class Stage1 : MonoBehaviour {
                 if (isSurprised)
                 {
                     exclamation.SetActive(true);
+	                player.transform.position = new Vector3(-6f, -3.2f, 0);
                 }
                 StartCoroutine(MeetGirl());
             }
