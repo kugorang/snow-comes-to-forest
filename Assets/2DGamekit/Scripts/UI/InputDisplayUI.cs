@@ -1,8 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using System.Text;
 using TMPro;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -10,14 +12,14 @@ namespace Gamekit2D
     {
         private void OnEnable()
         {
-            TextMeshProUGUI textUI = GetComponent<TextMeshProUGUI>();
+            var textUI = GetComponent<TextMeshProUGUI>();
             if (PlayerInput.Instance == null)
             {
                 textUI.SetText("## ERROR ## No PlayerInput detected");
                 return;
             }
 
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             builder.AppendFormat("{0} - Move Left\n", PlayerInput.Instance.Horizontal.negative.ToString());
             builder.AppendFormat("{0} - Move Right\n", PlayerInput.Instance.Horizontal.positive.ToString());

@@ -1,4 +1,8 @@
+#region
+
 using System.Collections.Generic;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -6,7 +10,7 @@ namespace UnityEngine.Rendering.PostProcessing
     {
         BeforeTransparent = 0,
         BeforeStack = 1,
-        AfterStack = 2,
+        AfterStack = 2
     }
 
     // Box free comparer for our `PostProcessEvent` enum, else the runtime will box the type when
@@ -20,7 +24,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
         public int GetHashCode(PostProcessEvent obj)
         {
-            return (int)obj;
+            return (int) obj;
         }
     }
 }

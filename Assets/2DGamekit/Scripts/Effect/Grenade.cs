@@ -1,24 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
+using System.Collections;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class Grenade : MonoBehaviour
     {
-        public Vector2 initialForce;
-        public float timer = 1;
         public GameObject explosion;
         public float explosionTimer = 3;
+        public Vector2 initialForce;
 
-        Rigidbody2D Rigidbody;
+        private Rigidbody2D Rigidbody;
+        public float timer = 1;
 
-        void OnEnable()
+        private void OnEnable()
         {
             Rigidbody = GetComponent<Rigidbody2D>();
         }
 
-        IEnumerator Start()
+        private IEnumerator Start()
         {
             Rigidbody.AddForce(initialForce);
             yield return new WaitForSeconds(timer);

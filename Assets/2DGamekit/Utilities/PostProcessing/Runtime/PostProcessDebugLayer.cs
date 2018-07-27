@@ -1,5 +1,9 @@
+#region
+
 using System;
 using System.Collections.Generic;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -28,43 +32,29 @@ namespace UnityEngine.Rendering.PostProcessing
     [Serializable]
     public sealed class PostProcessDebugLayer
     {
-        // Monitors
-        public LightMeterMonitor lightMeter;
-        public HistogramMonitor histogram;
-        public WaveformMonitor waveform;
-        public VectorscopeMonitor vectorscope;
-
-        Dictionary<MonitorType, Monitor> m_Monitors;
+        private int frameHeight;
 
         // Current frame size
-        int frameWidth;
-        int frameHeight;
+        private int frameWidth;
+
+        public HistogramMonitor histogram;
+
+        // Monitors
+        public LightMeterMonitor lightMeter;
+
+        private Dictionary<MonitorType, Monitor> m_Monitors;
+
+        public OverlaySettings overlaySettings;
+        public VectorscopeMonitor vectorscope;
+        public WaveformMonitor waveform;
 
         public RenderTexture debugOverlayTarget { get; private set; }
 
         // Set to true if the frame that was just drawn as a debug overlay enabled and rendered
         public bool debugOverlayActive { get; private set; }
-        
+
         // This is reset to None after rendering of post-processing has finished
         public DebugOverlay debugOverlay { get; private set; }
-
-        // Overlay settings in a separate class to keep things separated
-        [Serializable]
-        public class OverlaySettings
-        {
-            [Range(0f, 16f)]
-            public float motionColorIntensity = 4f;
-
-            [Range(4, 128)]
-            public int motionGridSize = 64;
-
-            public ColorBlindnessType colorBlindnessType = ColorBlindnessType.Deuteranopia;
-
-            [Range(0f, 1f)]
-            public float colorBlindnessStrength = 1f;
-        }
-
-        public OverlaySettings overlaySettings;
 
         internal void OnEnable()
         {
@@ -76,10 +66,10 @@ namespace UnityEngine.Rendering.PostProcessing
 
             m_Monitors = new Dictionary<MonitorType, Monitor>
             {
-                { MonitorType.LightMeter, lightMeter },
-                { MonitorType.Histogram, histogram },
-                { MonitorType.Waveform, waveform },
-                { MonitorType.Vectorscope, vectorscope }
+                {MonitorType.LightMeter, lightMeter},
+                {MonitorType.Histogram, histogram},
+                {MonitorType.Waveform, waveform},
+                {MonitorType.Vectorscope, vectorscope}
             };
 
             foreach (var kvp in m_Monitors)
@@ -94,7 +84,7 @@ namespace UnityEngine.Rendering.PostProcessing
             DestroyDebugOverlayTarget();
         }
 
-        void DestroyDebugOverlayTarget()
+        private void DestroyDebugOverlayTarget()
         {
             RuntimeUtilities.Destroy(debugOverlayTarget);
             debugOverlayTarget = null;
@@ -123,7 +113,8 @@ namespace UnityEngine.Rendering.PostProcessing
         // Blits to the debug target and mark this frame as using a debug overlay
         public void PushDebugOverlay(CommandBuffer cmd, RenderTargetIdentifier source, PropertySheet sheet, int pass)
         {
-            if (debugOverlayTarget == null || !debugOverlayTarget.IsCreated() || debugOverlayTarget.width != frameWidth || debugOverlayTarget.height != frameHeight)
+            if (debugOverlayTarget == null || !debugOverlayTarget.IsCreated() ||
+                debugOverlayTarget.width != frameWidth || debugOverlayTarget.height != frameHeight)
             {
                 RuntimeUtilities.Destroy(debugOverlayTarget);
 
@@ -159,12 +150,12 @@ namespace UnityEngine.Rendering.PostProcessing
         internal void RenderMonitors(PostProcessRenderContext context)
         {
             // Monitors
-            bool anyActive = false;
-            bool needsHalfRes = false;
+            var anyActive = false;
+            var needsHalfRes = false;
 
             foreach (var kvp in m_Monitors)
             {
-                bool active = kvp.Value.IsRequestedAndSupported();
+                var active = kvp.Value.IsRequestedAndSupported();
                 anyActive |= active;
                 needsHalfRes |= active && kvp.Value.NeedsHalfRes();
             }
@@ -177,7 +168,8 @@ namespace UnityEngine.Rendering.PostProcessing
 
             if (needsHalfRes)
             {
-                cmd.GetTemporaryRT(ShaderIDs.HalfResFinalCopy, context.width / 2, context.height / 2, 0, FilterMode.Bilinear, context.sourceFormat);
+                cmd.GetTemporaryRT(ShaderIDs.HalfResFinalCopy, context.width / 2, context.height / 2, 0,
+                    FilterMode.Bilinear, context.sourceFormat);
                 cmd.Blit(context.destination, ShaderIDs.HalfResFinalCopy);
             }
 
@@ -215,7 +207,8 @@ namespace UnityEngine.Rendering.PostProcessing
             else if (debugOverlay == DebugOverlay.MotionVectors)
             {
                 var sheet = context.propertySheets.Get(context.resources.shaders.debugOverlays);
-                sheet.properties.SetVector(ShaderIDs.Params, new Vector4(overlaySettings.motionColorIntensity, overlaySettings.motionGridSize, 0f, 0f));
+                sheet.properties.SetVector(ShaderIDs.Params,
+                    new Vector4(overlaySettings.motionColorIntensity, overlaySettings.motionGridSize, 0f, 0f));
                 PushDebugOverlay(context.command, context.source, sheet, 2);
             }
             else if (debugOverlay == DebugOverlay.NANTracker)
@@ -226,8 +219,9 @@ namespace UnityEngine.Rendering.PostProcessing
             else if (debugOverlay == DebugOverlay.ColorBlindnessSimulation)
             {
                 var sheet = context.propertySheets.Get(context.resources.shaders.debugOverlays);
-                sheet.properties.SetVector(ShaderIDs.Params, new Vector4(overlaySettings.colorBlindnessStrength, 0f, 0f, 0f));
-                PushDebugOverlay(context.command, context.source, sheet, 4 + (int)overlaySettings.colorBlindnessType);
+                sheet.properties.SetVector(ShaderIDs.Params,
+                    new Vector4(overlaySettings.colorBlindnessStrength, 0f, 0f, 0f));
+                PushDebugOverlay(context.command, context.source, sheet, 4 + (int) overlaySettings.colorBlindnessType);
             }
         }
 
@@ -240,6 +234,19 @@ namespace UnityEngine.Rendering.PostProcessing
                 DestroyDebugOverlayTarget();
 
             debugOverlay = DebugOverlay.None;
+        }
+
+        // Overlay settings in a separate class to keep things separated
+        [Serializable]
+        public class OverlaySettings
+        {
+            [Range(0f, 1f)] public float colorBlindnessStrength = 1f;
+
+            public ColorBlindnessType colorBlindnessType = ColorBlindnessType.Deuteranopia;
+
+            [Range(0f, 16f)] public float motionColorIntensity = 4f;
+
+            [Range(4, 128)] public int motionGridSize = 64;
         }
     }
 }

@@ -1,33 +1,34 @@
-﻿using UnityEngine;
+﻿#region
+
+using UnityEngine;
 using UnityEngine.Events;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class InteractOnButton2D : InteractOnTrigger2D
     {
+        private bool m_CanExecuteButtons;
         public UnityEvent OnButtonPress;
-
-        bool m_CanExecuteButtons;
 
         protected override void ExecuteOnEnter(Collider2D other)
         {
             m_CanExecuteButtons = true;
-            OnEnter.Invoke ();
+            OnEnter.Invoke();
         }
 
         protected override void ExecuteOnExit(Collider2D other)
         {
             m_CanExecuteButtons = false;
-            OnExit.Invoke ();
+            OnExit.Invoke();
         }
 
-        void Update()
+        private void Update()
         {
             if (m_CanExecuteButtons)
-            {
                 if (OnButtonPress.GetPersistentEventCount() > 0 && PlayerInput.Instance.Interact.Down)
                     OnButtonPress.Invoke();
-            }
         }
     }
 }

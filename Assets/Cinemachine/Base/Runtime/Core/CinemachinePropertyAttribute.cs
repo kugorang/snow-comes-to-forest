@@ -1,34 +1,39 @@
+#region
+
+using System;
 using UnityEngine;
+
+#endregion
 
 namespace Cinemachine
 {
     /// <summary>
-    /// Property applied to LensSettings.  Used for custom drawing in the inspector.
+    ///     Property applied to LensSettings.  Used for custom drawing in the inspector.
     /// </summary>
     public sealed class LensSettingsPropertyAttribute : PropertyAttribute
     {
     }
-    
+
     /// <summary>
-    /// Property applied to CinemachineBlendDefinition.  Used for custom drawing in the inspector.
+    ///     Property applied to CinemachineBlendDefinition.  Used for custom drawing in the inspector.
     /// </summary>
     public sealed class CinemachineBlendDefinitionPropertyAttribute : PropertyAttribute
     {
     }
 
     /// <summary>
-    /// Invoke play-mode-save for a class.  This class's fields will be scanned
-    /// upon exiting play mode, and its property values will be applied to the scene object.
-    /// This is a stopgap measure that will become obsolete once Unity implements
-    /// play-mode-save in a more general way.
+    ///     Invoke play-mode-save for a class.  This class's fields will be scanned
+    ///     upon exiting play mode, and its property values will be applied to the scene object.
+    ///     This is a stopgap measure that will become obsolete once Unity implements
+    ///     play-mode-save in a more general way.
     /// </summary>
-    public sealed class SaveDuringPlayAttribute : System.Attribute
+    public sealed class SaveDuringPlayAttribute : Attribute
     {
     }
 
     /// <summary>
-    /// Suppresses play-mode-save for a field.  Use it if the calsee has [SaveDuringPlay] 
-    /// attribute but there are fields in the class that shouldn't be saved.
+    ///     Suppresses play-mode-save for a field.  Use it if the calsee has [SaveDuringPlay]
+    ///     attribute but there are fields in the class that shouldn't be saved.
     /// </summary>
     public sealed class NoSaveDuringPlayAttribute : PropertyAttribute
     {
@@ -40,25 +45,23 @@ namespace Cinemachine
     }
 
     /// <summary>
-    /// Atrtribute to control the automatic generation of documentation.
+    ///     Atrtribute to control the automatic generation of documentation.
     /// </summary>
-    [DocumentationSorting(0f, DocumentationSortingAttribute.Level.Undoc)]
-    public sealed class DocumentationSortingAttribute : System.Attribute
+    [DocumentationSorting(0f, Level.Undoc)]
+    public sealed class DocumentationSortingAttribute : Attribute
     {
         /// <summary>Refinement level of the documentation</summary>
-        public enum Level 
-        { 
+        public enum Level
+        {
             /// <summary>Type is excluded from documentation</summary>
-            Undoc, 
+            Undoc,
+
             /// <summary>Type is documented in the API reference</summary>
-            API, 
+            API,
+
             /// <summary>Type is documented in the highly-refined User Manual</summary>
-            UserRef 
-        };
-        /// <summary>Where this type appears in the manual.  Smaller number sort earlier.</summary>
-        public float SortOrder { get; private set; }
-        /// <summary>Refinement level of the documentation.  The more refined, the more is excluded.</summary>
-        public Level Category { get; private set; }
+            UserRef
+        }
 
         /// <summary>Contructor with specific values</summary>
         public DocumentationSortingAttribute(float sortOrder, Level category)
@@ -66,5 +69,11 @@ namespace Cinemachine
             SortOrder = sortOrder;
             Category = category;
         }
+
+        /// <summary>Where this type appears in the manual.  Smaller number sort earlier.</summary>
+        public float SortOrder { get; private set; }
+
+        /// <summary>Refinement level of the documentation.  The more refined, the more is excluded.</summary>
+        public Level Category { get; private set; }
     }
 }

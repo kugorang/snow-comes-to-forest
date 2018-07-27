@@ -1,6 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -20,11 +22,9 @@ namespace Gamekit2D
             m_MonoBehaviour.CheckTargetStillVisible();
             m_MonoBehaviour.CheckMeleeAttack();
 
-            float amount = m_MonoBehaviour.speed * 2.0f;
+            var amount = m_MonoBehaviour.speed * 2.0f;
             if (m_MonoBehaviour.CheckForObstacle(amount))
-            {
                 m_MonoBehaviour.ForgetTarget();
-            }
             else
                 m_MonoBehaviour.SetHorizontalSpeed(amount);
         }

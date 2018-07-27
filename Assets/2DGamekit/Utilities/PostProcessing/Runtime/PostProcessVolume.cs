@@ -1,4 +1,9 @@
+#region
+
 using System.Collections.Generic;
+using UnityEditor;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -55,21 +60,30 @@ namespace UnityEngine.Rendering.PostProcessing
     [AddComponentMenu("Rendering/Post-process Volume", 1001)]
     public sealed class PostProcessVolume : MonoBehaviour
     {
+        [Min(0f)]
+        [Tooltip(
+            "Outer distance to start blending from. A value of 0 means no blending and the volume overrides will be applied immediatly upon entry.")]
+        public float blendDistance;
+
+        [Tooltip("A global volume is applied to the whole scene.")]
+        public bool isGlobal;
+
+        private PostProcessProfile m_InternalProfile;
+
+        private int m_PreviousLayer;
+        private float m_PreviousPriority;
+        private List<Collider> m_TempColliders;
+
+        [Tooltip("Volume priority in the stack. Higher number means higher priority. Negative values are supported.")]
+        public float priority;
+
         // Modifying sharedProfile will change the behavior of all volumes using this profile, and
         // change profile settings that are stored in the project too
         public PostProcessProfile sharedProfile;
 
-        [Tooltip("A global volume is applied to the whole scene.")]
-        public bool isGlobal = false;
-        
-        [Min(0f), Tooltip("Outer distance to start blending from. A value of 0 means no blending and the volume overrides will be applied immediatly upon entry.")]
-        public float blendDistance = 0f;
-
-        [Range(0f, 1f), Tooltip("Total weight of this volume in the scene. 0 means it won't do anything, 1 means full effect.")]
+        [Range(0f, 1f)]
+        [Tooltip("Total weight of this volume in the scene. 0 means it won't do anything, 1 means full effect.")]
         public float weight = 1f;
-        
-        [Tooltip("Volume priority in the stack. Higher number means higher priority. Negative values are supported.")]
-        public float priority = 0f;
 
         // This property automatically instantiates the profile and make it unique to this volume
         // so you can safely edit it via scripting at runtime without changing the original asset
@@ -85,21 +99,16 @@ namespace UnityEngine.Rendering.PostProcessing
                     m_InternalProfile = ScriptableObject.CreateInstance<PostProcessProfile>();
 
                     if (sharedProfile != null)
-                    {
                         foreach (var item in sharedProfile.settings)
                         {
                             var itemCopy = Instantiate(item);
                             m_InternalProfile.settings.Add(itemCopy);
                         }
-                    }
                 }
 
                 return m_InternalProfile;
             }
-            set
-            {
-                m_InternalProfile = value;
-            }
+            set { m_InternalProfile = value; }
         }
 
         internal PostProcessProfile profileRef
@@ -112,30 +121,25 @@ namespace UnityEngine.Rendering.PostProcessing
             }
         }
 
-        int m_PreviousLayer;
-        float m_PreviousPriority;
-        List<Collider> m_TempColliders;
-        PostProcessProfile m_InternalProfile;
-
-        void OnEnable()
+        private void OnEnable()
         {
             PostProcessManager.instance.Register(this);
             m_PreviousLayer = gameObject.layer;
             m_TempColliders = new List<Collider>();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             PostProcessManager.instance.Unregister(this);
         }
 
-        void Update()
+        private void Update()
         {
             // Unfortunately we need to track the current layer to update the volume manager in
             // real-time as the user could change it at any time in the editor or at runtime.
             // Because no event is raised when the layer changes, we have to track it on every
             // frame :/
-            int layer = gameObject.layer;
+            var layer = gameObject.layer;
             if (layer != m_PreviousLayer)
             {
                 PostProcessManager.instance.UpdateVolumeLayer(this, m_PreviousLayer, layer);
@@ -153,21 +157,21 @@ namespace UnityEngine.Rendering.PostProcessing
         }
 
         // TODO: Look into a better volume previsualization system
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             var colliders = m_TempColliders;
             GetComponents(colliders);
 
             if (isGlobal || colliders == null)
                 return;
-            
+
 #if UNITY_EDITOR
             // Can't access the UnityEditor.Rendering.PostProcessing namespace from here, so
             // we'll get the preferred color manually
             unchecked
             {
-                int value = UnityEditor.EditorPrefs.GetInt("PostProcessing.Volume.GizmoColor", (int)0x8033cc1a);
-                Gizmos.color = ColorUtilities.ToRGBA((uint)value);
+                var value = EditorPrefs.GetInt("PostProcessing.Volume.GizmoColor", (int) 0x8033cc1a);
+                Gizmos.color = ColorUtilities.ToRGBA((uint) value);
             }
 #endif
 
@@ -192,19 +196,19 @@ namespace UnityEngine.Rendering.PostProcessing
 
                 if (type == typeof(BoxCollider))
                 {
-                    var c = (BoxCollider)collider;
+                    var c = (BoxCollider) collider;
                     Gizmos.DrawCube(c.center, c.size);
                     Gizmos.DrawWireCube(c.center, c.size + invScale * blendDistance * 4f);
                 }
                 else if (type == typeof(SphereCollider))
                 {
-                    var c = (SphereCollider)collider;
+                    var c = (SphereCollider) collider;
                     Gizmos.DrawSphere(c.center, c.radius);
                     Gizmos.DrawWireSphere(c.center, c.radius + invScale.x * blendDistance * 2f);
                 }
                 else if (type == typeof(MeshCollider))
                 {
-                    var c = (MeshCollider)collider;
+                    var c = (MeshCollider) collider;
 
                     // Only convex mesh colliders are allowed
                     if (!c.convex)
@@ -212,7 +216,8 @@ namespace UnityEngine.Rendering.PostProcessing
 
                     // Mesh pivot should be centered or this won't work
                     Gizmos.DrawMesh(c.sharedMesh);
-                    Gizmos.DrawWireMesh(c.sharedMesh, Vector3.zero, Quaternion.identity, Vector3.one + invScale * blendDistance * 4f);
+                    Gizmos.DrawWireMesh(c.sharedMesh, Vector3.zero, Quaternion.identity,
+                        Vector3.one + invScale * blendDistance * 4f);
                 }
 
                 // Nothing for capsule (DrawCapsule isn't exposed in Gizmo), terrain, wheel and

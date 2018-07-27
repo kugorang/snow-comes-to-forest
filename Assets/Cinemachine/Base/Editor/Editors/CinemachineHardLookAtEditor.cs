@@ -1,5 +1,9 @@
+#region
+
 using UnityEditor;
 using UnityEngine;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
@@ -11,7 +15,7 @@ namespace Cinemachine.Editor
             BeginInspector();
             if (Target.LookAtTarget == null)
                 EditorGUILayout.HelpBox(
-                    "Hard Look At requires a LookAt target.  Change Aim to Do Nothing if you don't want a LookAt target.", 
+                    "Hard Look At requires a LookAt target.  Change Aim to Do Nothing if you don't want a LookAt target.",
                     MessageType.Warning);
             EditorGUI.BeginChangeCheck();
             GUI.enabled = false;

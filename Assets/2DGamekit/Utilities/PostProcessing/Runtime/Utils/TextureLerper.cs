@@ -1,11 +1,29 @@
+#region
+
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 
+#endregion
+
 namespace UnityEngine.Rendering.PostProcessing
 {
-    class TextureLerper
+    internal class TextureLerper
     {
-        static TextureLerper m_Instance;
+        private static TextureLerper m_Instance;
+        private readonly List<RenderTexture> m_Actives;
+
+        private readonly List<RenderTexture> m_Recycled;
+
+        private CommandBuffer m_Command;
+        private PropertySheetFactory m_PropertySheets;
+        private PostProcessResources m_Resources;
+
+        private TextureLerper()
+        {
+            m_Recycled = new List<RenderTexture>();
+            m_Actives = new List<RenderTexture>();
+        }
+
         internal static TextureLerper instance
         {
             get
@@ -15,19 +33,6 @@ namespace UnityEngine.Rendering.PostProcessing
 
                 return m_Instance;
             }
-        }
-
-        CommandBuffer m_Command;
-        PropertySheetFactory m_PropertySheets;
-        PostProcessResources m_Resources;
-
-        List<RenderTexture> m_Recycled;
-        List<RenderTexture> m_Actives;
-
-        TextureLerper()
-        {
-            m_Recycled = new List<RenderTexture>();
-            m_Actives = new List<RenderTexture>();
         }
 
         internal void BeginFrame(PostProcessRenderContext context)
@@ -59,7 +64,7 @@ namespace UnityEngine.Rendering.PostProcessing
             }
         }
 
-        RenderTexture Get(RenderTextureFormat format, int w, int h, int d = 1, bool enableRandomWrite = false)
+        private RenderTexture Get(RenderTextureFormat format, int w, int h, int d = 1, bool enableRandomWrite = false)
         {
             RenderTexture rt = null;
             int i, len = m_Recycled.Count;
@@ -67,7 +72,8 @@ namespace UnityEngine.Rendering.PostProcessing
             for (i = 0; i < len; i++)
             {
                 var r = m_Recycled[i];
-                if (r.width == w && r.height == h && r.volumeDepth == d && r.format == format && r.enableRandomWrite == enableRandomWrite)
+                if (r.width == w && r.height == h && r.volumeDepth == d && r.format == format &&
+                    r.enableRandomWrite == enableRandomWrite)
                 {
                     rt = r;
                     break;
@@ -91,7 +97,10 @@ namespace UnityEngine.Rendering.PostProcessing
                 };
                 rt.Create();
             }
-            else m_Recycled.RemoveAt(i);
+            else
+            {
+                m_Recycled.RemoveAt(i);
+            }
 
             m_Actives.Add(rt);
             return rt;
@@ -102,25 +111,25 @@ namespace UnityEngine.Rendering.PostProcessing
             Assert.IsNotNull(from);
             Assert.IsNotNull(to);
 
-            bool is3d = to is Texture3D
-                    || (to is RenderTexture && ((RenderTexture)to).volumeDepth > 1);
+            var is3d = to is Texture3D
+                       || to is RenderTexture && ((RenderTexture) to).volumeDepth > 1;
 
             RenderTexture rt = null;
 
             if (is3d)
             {
-                int size = to.width;
+                var size = to.width;
                 rt = Get(RenderTextureFormat.ARGBHalf, size, size, size, true);
 
                 var compute = m_Resources.computeShaders.texture3dLerp;
-                int kernel = compute.FindKernel("KTexture3DLerp");
+                var kernel = compute.FindKernel("KTexture3DLerp");
                 m_Command.SetComputeVectorParam(compute, "_Params", new Vector4(t, size, 0f, 0f));
                 m_Command.SetComputeTextureParam(compute, kernel, "_Output", rt);
                 m_Command.SetComputeTextureParam(compute, kernel, "_From", from);
                 m_Command.SetComputeTextureParam(compute, kernel, "_To", to);
 
-                int groupSizeXY = Mathf.CeilToInt(size / 8f);
-                int groupSizeZ = Mathf.CeilToInt(size / (RuntimeUtilities.isAndroidOpenGL ? 2f : 8f));
+                var groupSizeXY = Mathf.CeilToInt(size / 8f);
+                var groupSizeZ = Mathf.CeilToInt(size / (RuntimeUtilities.isAndroidOpenGL ? 2f : 8f));
                 m_Command.DispatchCompute(compute, kernel, groupSizeXY, groupSizeXY, groupSizeZ);
             }
             else

@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -10,53 +13,22 @@ namespace Gamekit2D
     {
         public enum TriggerType
         {
-            Once, Everytime,
+            Once,
+            Everytime
         }
+
+        [HideInInspector] public DataSettings dataSettings;
+
+        public PlayableDirector director;
+
+        protected bool m_AlreadyTriggered;
+        public UnityEvent OnDirectorFinish;
+        public UnityEvent OnDirectorPlay;
 
         [Tooltip("This is the gameobject which will trigger the director to play.  For example, the player.")]
         public GameObject triggeringGameObject;
-        public PlayableDirector director;
+
         public TriggerType triggerType;
-        public UnityEvent OnDirectorPlay;
-        public UnityEvent OnDirectorFinish;
-        [HideInInspector]
-        public DataSettings dataSettings;
-
-        protected bool m_AlreadyTriggered;
-
-        void OnEnable()
-        {
-            PersistentDataManager.RegisterPersister(this);
-        }
-
-        void OnDisable()
-        {
-            PersistentDataManager.UnregisterPersister(this);
-        }
-
-        void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.gameObject != triggeringGameObject)
-                return;
-
-            if (triggerType == TriggerType.Once && m_AlreadyTriggered)
-                return;
-
-            director.Play();
-            m_AlreadyTriggered = true;
-            OnDirectorPlay.Invoke();
-            Invoke("FinishInvoke", (float)director.duration);
-        }
-
-        void FinishInvoke()
-        {
-            OnDirectorFinish.Invoke();
-        }
-
-        public void OverrideAlreadyTriggered(bool alreadyTriggered)
-        {
-            m_AlreadyTriggered = alreadyTriggered;
-        }
 
         public DataSettings GetDataSettings()
         {
@@ -76,8 +48,42 @@ namespace Gamekit2D
 
         public void LoadData(Data data)
         {
-            Data<bool> directorTriggerData = (Data<bool>)data;
+            var directorTriggerData = (Data<bool>) data;
             m_AlreadyTriggered = directorTriggerData.value;
+        }
+
+        private void OnEnable()
+        {
+            PersistentDataManager.RegisterPersister(this);
+        }
+
+        private void OnDisable()
+        {
+            PersistentDataManager.UnregisterPersister(this);
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.gameObject != triggeringGameObject)
+                return;
+
+            if (triggerType == TriggerType.Once && m_AlreadyTriggered)
+                return;
+
+            director.Play();
+            m_AlreadyTriggered = true;
+            OnDirectorPlay.Invoke();
+            Invoke("FinishInvoke", (float) director.duration);
+        }
+
+        private void FinishInvoke()
+        {
+            OnDirectorFinish.Invoke();
+        }
+
+        public void OverrideAlreadyTriggered(bool alreadyTriggered)
+        {
+            m_AlreadyTriggered = alreadyTriggered;
         }
     }
 }

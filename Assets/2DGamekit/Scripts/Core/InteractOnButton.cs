@@ -1,17 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.Events;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class InteractOnButton : InteractOnTrigger
     {
-
         public string buttonName = "X";
-        public UnityEvent OnButtonPress;
 
-        bool m_CanExecuteButtons = false;
+        private bool m_CanExecuteButtons;
+        public UnityEvent OnButtonPress;
 
         protected override void ExecuteOnEnter(Collider other)
         {
@@ -23,13 +24,9 @@ namespace Gamekit2D
             m_CanExecuteButtons = false;
         }
 
-        void Update()
+        private void Update()
         {
-            if (m_CanExecuteButtons && Input.GetButtonDown(buttonName))
-            {
-                OnButtonPress.Invoke();
-            }
+            if (m_CanExecuteButtons && Input.GetButtonDown(buttonName)) OnButtonPress.Invoke();
         }
-
     }
 }

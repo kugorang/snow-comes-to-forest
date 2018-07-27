@@ -1,36 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class TriggerVFX : StateMachineBehaviour
     {
-        public string vfxName;
+        public bool attachToParent;
+        private int m_VfxId;
         public Vector3 offset = Vector3.zero;
-        public bool attachToParent = false;
-        public float startDelay = 0;
         public bool OnEnter = true;
-        public bool OnExit = false;
-        int m_VfxId;
+        public bool OnExit;
+        public float startDelay;
+        public string vfxName;
 
-        override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            if (OnEnter)
-            {
-                Trigger(animator.transform);
-            }
+            if (OnEnter) Trigger(animator.transform);
         }
 
-        override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            if (OnExit)
-            {
-                Trigger(animator.transform);
-            }
+            if (OnExit) Trigger(animator.transform);
         }
 
-        void Trigger(Transform transform)
+        private void Trigger(Transform transform)
         {
             var flip = false;
             var spriteRender = transform.GetComponent<SpriteRenderer>();
@@ -38,6 +34,5 @@ namespace Gamekit2D
                 flip = spriteRender.flipX;
             VFXController.Instance.Trigger(vfxName, offset, startDelay, flip, attachToParent ? transform : null);
         }
-
     }
 }

@@ -1,59 +1,62 @@
+#region
+
 using System;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
     [Serializable]
     public sealed class TemporalAntialiasing
     {
-        [Tooltip("The diameter (in texels) inside which jitter samples are spread. Smaller values result in crisper but more aliased output, while larger values result in more stable but blurrier output.")]
-        [Range(0.1f, 1f)]
-        public float jitterSpread = 0.75f;
+        private const int k_SampleCount = 8;
 
-        [Tooltip("Controls the amount of sharpening applied to the color buffer. High values may introduce dark-border artifacts.")]
-        [Range(0f, 3f)]
-        public float sharpness = 0.25f;
+        // Ping-pong between two history textures as we can't read & write the same target in the
+        // same pass
+        private const int k_NumEyes = 2;
+        private const int k_NumHistoryTextures = 2;
 
-        [Tooltip("The blend coefficient for a stationary fragment. Controls the percentage of history sample blended into the final color.")]
-        [Range(0f, 0.99f)]
-        public float stationaryBlending = 0.95f;
+        private readonly int[] m_HistoryPingPong = new int [k_NumEyes];
+        private readonly RenderTexture[][] m_HistoryTextures = new RenderTexture[k_NumEyes][];
 
-        [Tooltip("The blend coefficient for a fragment with significant motion. Controls the percentage of history sample blended into the final color.")]
-        [Range(0f, 0.99f)]
-        public float motionBlending = 0.85f;
+        private readonly RenderTargetIdentifier[] m_Mrt = new RenderTargetIdentifier[2];
 
         // For custom jittered matrices - use at your own risks
         public Func<Camera, Vector2, Matrix4x4> jitteredMatrixFunc;
 
+        [Tooltip(
+            "The diameter (in texels) inside which jitter samples are spread. Smaller values result in crisper but more aliased output, while larger values result in more stable but blurrier output.")]
+        [Range(0.1f, 1f)]
+        public float jitterSpread = 0.75f;
+
+        private bool m_ResetHistory = true;
+        private int m_SampleIndex;
+
+        [Tooltip(
+            "The blend coefficient for a fragment with significant motion. Controls the percentage of history sample blended into the final color.")]
+        [Range(0f, 0.99f)]
+        public float motionBlending = 0.85f;
+
+        [Tooltip(
+            "Controls the amount of sharpening applied to the color buffer. High values may introduce dark-border artifacts.")]
+        [Range(0f, 3f)]
+        public float sharpness = 0.25f;
+
+        [Tooltip(
+            "The blend coefficient for a stationary fragment. Controls the percentage of history sample blended into the final color.")]
+        [Range(0f, 0.99f)]
+        public float stationaryBlending = 0.95f;
+
         public Vector2 jitter { get; private set; }
-
-        enum Pass
-        {
-            SolverDilate,
-            SolverNoDilate
-        }
-
-        readonly RenderTargetIdentifier[] m_Mrt = new RenderTargetIdentifier[2];
-        bool m_ResetHistory = true;
-
-        const int k_SampleCount = 8;
-        int m_SampleIndex;
-
-        // Ping-pong between two history textures as we can't read & write the same target in the
-        // same pass
-        const int k_NumEyes = 2;
-        const int k_NumHistoryTextures = 2;
-        readonly RenderTexture[][] m_HistoryTextures = new RenderTexture[k_NumEyes][];
-
-        int[] m_HistoryPingPong = new int [k_NumEyes];
 
         public bool IsSupported()
         {
             return SystemInfo.supportedRenderTargetCount >= 2
-                && SystemInfo.supportsMotionVectors
+                   && SystemInfo.supportsMotionVectors
 #if !UNITY_2017_3_OR_NEWER
                 && !RuntimeUtilities.isVREnabled
 #endif
-                && SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES2;
+                   && SystemInfo.graphicsDeviceType != GraphicsDeviceType.OpenGLES2;
         }
 
         internal DepthTextureMode GetCameraFlags()
@@ -66,14 +69,14 @@ namespace UnityEngine.Rendering.PostProcessing
             m_ResetHistory = true;
         }
 
-        Vector2 GenerateRandomOffset()
+        private Vector2 GenerateRandomOffset()
         {
             // The variance between 0 and the actual halton sequence values reveals noticeable instability
             // in Unity's shadow maps, so we avoid index 0.
             var offset = new Vector2(
-                    HaltonSeq.Get((m_SampleIndex & 1023) + 1, 2) - 0.5f,
-                    HaltonSeq.Get((m_SampleIndex & 1023) + 1, 3) - 0.5f
-                );
+                HaltonSeq.Get((m_SampleIndex & 1023) + 1, 2) - 0.5f,
+                HaltonSeq.Get((m_SampleIndex & 1023) + 1, 3) - 0.5f
+            );
 
             if (++m_SampleIndex >= k_SampleCount)
                 m_SampleIndex = 0;
@@ -88,15 +91,11 @@ namespace UnityEngine.Rendering.PostProcessing
             jitter *= jitterSpread;
 
             if (jitteredMatrixFunc != null)
-            {
                 cameraProj = jitteredMatrixFunc(camera, jitter);
-            }
             else
-            {
                 cameraProj = camera.orthographic
                     ? RuntimeUtilities.GetJitteredOrthographicProjectionMatrix(camera, jitter)
                     : RuntimeUtilities.GetJitteredPerspectiveProjectionMatrix(camera, jitter);
-            }
 
             jitter = new Vector2(jitter.x / camera.pixelWidth, jitter.y / camera.pixelHeight);
             return cameraProj;
@@ -113,7 +112,7 @@ namespace UnityEngine.Rendering.PostProcessing
         // TODO: We'll probably need to isolate most of this for SRPs
         public void ConfigureStereoJitteredProjectionMatrices(PostProcessRenderContext context)
         {
-#if  UNITY_2017_3_OR_NEWER
+#if UNITY_2017_3_OR_NEWER
             var camera = context.camera;
             jitter = GenerateRandomOffset();
             jitter *= jitterSpread;
@@ -126,7 +125,8 @@ namespace UnityEngine.Rendering.PostProcessing
 
                 // Currently no support for custom jitter func, as VR devices would need to provide
                 // original projection matrix as input along with jitter 
-                var jitteredMatrix = RuntimeUtilities.GenerateJitteredProjectionMatrixFromOriginal(context, originalProj, jitter);
+                var jitteredMatrix =
+                    RuntimeUtilities.GenerateJitteredProjectionMatrixFromOriginal(context, originalProj, jitter);
                 context.camera.SetStereoProjectionMatrix(eye, jitteredMatrix);
             }
 
@@ -137,7 +137,7 @@ namespace UnityEngine.Rendering.PostProcessing
 #endif
         }
 
-        void GenerateHistoryName(RenderTexture rt, int id, PostProcessRenderContext context)
+        private void GenerateHistoryName(RenderTexture rt, int id, PostProcessRenderContext context)
         {
             rt.name = "Temporal Anti-aliasing History id #" + id;
 
@@ -145,9 +145,9 @@ namespace UnityEngine.Rendering.PostProcessing
                 rt.name += " for eye " + context.xrActiveEye;
         }
 
-        RenderTexture CheckHistory(int id, PostProcessRenderContext context)
+        private RenderTexture CheckHistory(int id, PostProcessRenderContext context)
         {
-            int activeEye = context.xrActiveEye;
+            var activeEye = context.xrActiveEye;
 
             if (m_HistoryTextures[activeEye] == null)
                 m_HistoryTextures[activeEye] = new RenderTexture[k_NumHistoryTextures];
@@ -190,7 +190,7 @@ namespace UnityEngine.Rendering.PostProcessing
             var cmd = context.command;
             cmd.BeginSample("TemporalAntialiasing");
 
-            int pp = m_HistoryPingPong[context.xrActiveEye];
+            var pp = m_HistoryPingPong[context.xrActiveEye];
             var historyRead = CheckHistory(++pp % 2, context);
             var historyWrite = CheckHistory(++pp % 2, context);
             m_HistoryPingPong[context.xrActiveEye] = ++pp % 2;
@@ -198,12 +198,13 @@ namespace UnityEngine.Rendering.PostProcessing
             const float kMotionAmplification = 100f * 60f;
             sheet.properties.SetVector(ShaderIDs.Jitter, jitter);
             sheet.properties.SetFloat(ShaderIDs.Sharpness, sharpness);
-            sheet.properties.SetVector(ShaderIDs.FinalBlendParameters, new Vector4(stationaryBlending, motionBlending, kMotionAmplification, 0f));
+            sheet.properties.SetVector(ShaderIDs.FinalBlendParameters,
+                new Vector4(stationaryBlending, motionBlending, kMotionAmplification, 0f));
             sheet.properties.SetTexture(ShaderIDs.HistoryTex, historyRead);
 
             // TODO: Account for different possible RenderViewportScale value from previous frame...
 
-            int pass = context.camera.orthographic ? (int)Pass.SolverNoDilate : (int)Pass.SolverDilate;
+            var pass = context.camera.orthographic ? (int) Pass.SolverNoDilate : (int) Pass.SolverDilate;
             m_Mrt[0] = context.destination;
             m_Mrt[1] = historyWrite;
 
@@ -216,13 +217,12 @@ namespace UnityEngine.Rendering.PostProcessing
         internal void Release()
         {
             if (m_HistoryTextures != null)
-            {
-                for (int i = 0; i < m_HistoryTextures.Length; i++)
+                for (var i = 0; i < m_HistoryTextures.Length; i++)
                 {
                     if (m_HistoryTextures[i] == null)
                         continue;
-                    
-                    for (int j = 0; j < m_HistoryTextures[i].Length; j++)
+
+                    for (var j = 0; j < m_HistoryTextures[i].Length; j++)
                     {
                         RenderTexture.ReleaseTemporary(m_HistoryTextures[i][j]);
                         m_HistoryTextures[i][j] = null;
@@ -230,13 +230,18 @@ namespace UnityEngine.Rendering.PostProcessing
 
                     m_HistoryTextures[i] = null;
                 }
-            }
 
             m_SampleIndex = 0;
             m_HistoryPingPong[0] = 0;
             m_HistoryPingPong[1] = 0;
-            
+
             ResetHistory();
+        }
+
+        private enum Pass
+        {
+            SolverDilate,
+            SolverNoDilate
         }
     }
 }

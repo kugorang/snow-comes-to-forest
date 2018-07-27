@@ -1,25 +1,29 @@
-﻿using System;
+﻿#region
+
+using System;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     [CustomPropertyDrawer(typeof(CharacterStateSetter.ParameterSetter))]
     public class ParameterSetterDrawer : PropertyDrawer
     {
-        SerializedProperty m_AnimatorProp;
-        SerializedProperty m_ParameterNameProp;
-        SerializedProperty m_ParameterTypeProp;
-        SerializedProperty m_BoolValueProp;
-        SerializedProperty m_FloatValueProp;
-        SerializedProperty m_IntValueProp;
-        bool m_SetupCalled;
-        string[] m_ParameterNames;
-        CharacterStateSetter.ParameterSetter.ParameterType[] m_ParameterTypes;
-        int m_ParameterNameIndex;
+        private SerializedProperty m_AnimatorProp;
+        private SerializedProperty m_BoolValueProp;
+        private SerializedProperty m_FloatValueProp;
+        private SerializedProperty m_IntValueProp;
+        private int m_ParameterNameIndex;
+        private SerializedProperty m_ParameterNameProp;
+        private string[] m_ParameterNames;
+        private SerializedProperty m_ParameterTypeProp;
+        private CharacterStateSetter.ParameterSetter.ParameterType[] m_ParameterTypes;
+        private bool m_SetupCalled;
 
-        public override float GetPropertyHeight (SerializedProperty property, GUIContent label)
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             if (m_AnimatorProp == null)
                 return 0f;
@@ -30,27 +34,27 @@ namespace Gamekit2D
             return EditorGUIUtility.singleLineHeight * 3f;
         }
 
-        public override void OnGUI (Rect position, SerializedProperty property, GUIContent label)
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            if(!m_SetupCalled || m_ParameterNames == null)
-                ParameterSetterSetup (property);
+            if (!m_SetupCalled || m_ParameterNames == null)
+                ParameterSetterSetup(property);
 
             position.height = EditorGUIUtility.singleLineHeight;
-            EditorGUI.PropertyField (position, m_AnimatorProp);
+            EditorGUI.PropertyField(position, m_AnimatorProp);
 
-            if(m_AnimatorProp.objectReferenceValue == null)
+            if (m_AnimatorProp.objectReferenceValue == null)
                 return;
 
             position.y += position.height;
-            m_ParameterNameIndex = EditorGUI.Popup (position, m_ParameterNameIndex, m_ParameterNames);
+            m_ParameterNameIndex = EditorGUI.Popup(position, m_ParameterNameIndex, m_ParameterNames);
             m_ParameterNameProp.stringValue = m_ParameterNames[m_ParameterNameIndex];
-            m_ParameterTypeProp.enumValueIndex = (int)m_ParameterTypes[m_ParameterNameIndex];
+            m_ParameterTypeProp.enumValueIndex = (int) m_ParameterTypes[m_ParameterNameIndex];
 
             position.y += position.height;
-            switch ((CharacterStateSetter.ParameterSetter.ParameterType)m_ParameterTypeProp.enumValueIndex)
+            switch ((CharacterStateSetter.ParameterSetter.ParameterType) m_ParameterTypeProp.enumValueIndex)
             {
                 case CharacterStateSetter.ParameterSetter.ParameterType.Bool:
-                    EditorGUI.PropertyField (position, m_BoolValueProp);
+                    EditorGUI.PropertyField(position, m_BoolValueProp);
                     break;
                 case CharacterStateSetter.ParameterSetter.ParameterType.Float:
                     EditorGUI.PropertyField(position, m_FloatValueProp);
@@ -61,16 +65,16 @@ namespace Gamekit2D
             }
         }
 
-        void ParameterSetterSetup (SerializedProperty property)
+        private void ParameterSetterSetup(SerializedProperty property)
         {
             m_SetupCalled = true;
 
-            m_AnimatorProp = property.FindPropertyRelative ("animator");
-            m_ParameterNameProp = property.FindPropertyRelative ("parameterName");
-            m_ParameterTypeProp = property.FindPropertyRelative ("parameterType");
-            m_BoolValueProp = property.FindPropertyRelative ("boolValue");
-            m_FloatValueProp = property.FindPropertyRelative ("floatValue");
-            m_IntValueProp = property.FindPropertyRelative ("intValue");
+            m_AnimatorProp = property.FindPropertyRelative("animator");
+            m_ParameterNameProp = property.FindPropertyRelative("parameterName");
+            m_ParameterTypeProp = property.FindPropertyRelative("parameterType");
+            m_BoolValueProp = property.FindPropertyRelative("boolValue");
+            m_FloatValueProp = property.FindPropertyRelative("floatValue");
+            m_IntValueProp = property.FindPropertyRelative("intValue");
 
             if (m_AnimatorProp.objectReferenceValue == null)
             {
@@ -78,7 +82,7 @@ namespace Gamekit2D
                 return;
             }
 
-            Animator animator = m_AnimatorProp.objectReferenceValue as Animator;
+            var animator = m_AnimatorProp.objectReferenceValue as Animator;
 
             if (animator.runtimeAnimatorController == null)
             {
@@ -86,14 +90,14 @@ namespace Gamekit2D
                 return;
             }
 
-            AnimatorController animatorController = animator.runtimeAnimatorController as AnimatorController;
+            var animatorController = animator.runtimeAnimatorController as AnimatorController;
 
-            AnimatorControllerParameter[] parameters = animatorController.parameters;
+            var parameters = animatorController.parameters;
 
             m_ParameterNames = new string[parameters.Length];
             m_ParameterTypes = new CharacterStateSetter.ParameterSetter.ParameterType[parameters.Length];
 
-            for (int i = 0; i < m_ParameterNames.Length; i++)
+            for (var i = 0; i < m_ParameterNames.Length; i++)
             {
                 m_ParameterNames[i] = parameters[i].name;
 
@@ -112,18 +116,16 @@ namespace Gamekit2D
                         m_ParameterTypes[i] = CharacterStateSetter.ParameterSetter.ParameterType.Trigger;
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException ();
+                        throw new ArgumentOutOfRangeException();
                 }
             }
 
-            for (int i = 0; i < m_ParameterNames.Length; i++)
-            {
+            for (var i = 0; i < m_ParameterNames.Length; i++)
                 if (m_ParameterNames[i] == m_ParameterNameProp.stringValue)
                 {
                     m_ParameterNameIndex = i;
-                    m_ParameterTypeProp.enumValueIndex = (int)m_ParameterTypes[i];
+                    m_ParameterTypeProp.enumValueIndex = (int) m_ParameterTypes[i];
                 }
-            }
         }
     }
 }

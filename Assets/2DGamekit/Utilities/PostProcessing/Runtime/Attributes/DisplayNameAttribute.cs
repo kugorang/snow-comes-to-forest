@@ -1,8 +1,12 @@
+#region
+
 using System;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field)]
     public sealed class DisplayNameAttribute : Attribute
     {
         public readonly string displayName;

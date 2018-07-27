@@ -1,30 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
+using System.Collections;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
-    public class SpriteColorChange : MonoBehaviour {
+    public class SpriteColorChange : MonoBehaviour
+    {
+        private Color m_InitialColor;
+        private SpriteRenderer m_SpriteRenderer;
 
         public Color newColor = Color.white;
         public float timer = 0.2f;
 
-        Color m_InitialColor;
-        SpriteRenderer m_SpriteRenderer;
-
-        void OnEnable()
+        private void OnEnable()
         {
             m_SpriteRenderer = GetComponent<SpriteRenderer>();
             m_InitialColor = m_SpriteRenderer.color;
-            StartCoroutine ("ChangeColor");
+            StartCoroutine("ChangeColor");
         }
 
-        IEnumerator ChangeColor()
+        private IEnumerator ChangeColor()
         {
             m_SpriteRenderer.color = newColor;
             yield return new WaitForSeconds(timer);
             m_SpriteRenderer.color = m_InitialColor;
-            this.enabled = false;
+            enabled = false;
         }
     }
 }

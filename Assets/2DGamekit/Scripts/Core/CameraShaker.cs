@@ -1,17 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class CameraShaker : MonoBehaviour
     {
-        static protected CameraShaker s_Instance = null;
+        protected static CameraShaker s_Instance;
 
 
         protected Vector3 m_LastVector;
-        protected float m_SinceShakeTime = 0.0f;
         protected float m_ShakeIntensity = 0.2f;
+        protected float m_SinceShakeTime;
 
         private void OnEnable()
         {
@@ -36,9 +38,8 @@ namespace Gamekit2D
             }
         }
 
-    
 
-        static public void Shake(float amount, float time)
+        public static void Shake(float amount, float time)
         {
             if (s_Instance == null)
                 return;

@@ -1,33 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Pause_Button : MonoBehaviour {
+#endregion
+
+public class Pause_Button : MonoBehaviour
+{
+    public GameObject busSound;
+    private AudioSource busSoundSource;
+    public GameObject pausebutton;
 
     public GameObject setting;
-    public GameObject pausebutton;
-    public GameObject busSound = null;
-    private AudioSource busSoundSource = null;
 
     private void Awake()
     {
-        if (busSound != null)
-        {
-            busSoundSource = busSound.GetComponent<AudioSource>();
-        }
+        if (busSound != null) busSoundSource = busSound.GetComponent<AudioSource>();
     }
 
     public void PauseBtnPress()
     {
-        
         Time.timeScale = 0;
         pausebutton.SetActive(false);
         setting.SetActive(true);
-        if (busSound != null)
-        {
-            busSoundSource.Pause();
-        }
+        if (busSound != null) busSoundSource.Pause();
     }
 
     public void MainBtnPress()
@@ -40,7 +36,6 @@ public class Pause_Button : MonoBehaviour {
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(sceneName);
-
     }
 
     public void ResumeBtnPress()
@@ -48,10 +43,6 @@ public class Pause_Button : MonoBehaviour {
         Time.timeScale = 1;
         pausebutton.SetActive(true);
         setting.SetActive(false);
-        if (busSound != null)
-        {
-            busSoundSource.UnPause();
-        }
+        if (busSound != null) busSoundSource.UnPause();
     }
-
 }

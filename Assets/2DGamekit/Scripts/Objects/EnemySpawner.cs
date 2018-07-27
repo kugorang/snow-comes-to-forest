@@ -1,47 +1,72 @@
-﻿using System.Collections;
+﻿#region
+
+using System.Collections;
 using Gamekit2D;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class EnemySpawner : ObjectPool<EnemySpawner, Enemy, Vector2>, IDataPersister
     {
-        public int totalEnemiesToBeSpawned;
         public int concurrentEnemiesToBeSpawned;
-        public float spawnArea = 1.0f;
-        public float spawnDelay;
-        public float removalDelay;
         public DataSettings dataSettings;
-
-        protected int m_TotalSpawnedEnemyCount;
         protected int m_CurrentSpawnedEnemyCount;
         protected Coroutine m_SpawnTimerCoroutine;
         protected WaitForSeconds m_SpawnWait;
 
-        void OnEnable()
+        protected int m_TotalSpawnedEnemyCount;
+        public float removalDelay;
+        public float spawnArea = 1.0f;
+        public float spawnDelay;
+        public int totalEnemiesToBeSpawned;
+
+        public DataSettings GetDataSettings()
+        {
+            return dataSettings;
+        }
+
+        public void SetDataSettings(string dataTag, DataSettings.PersistenceType persistenceType)
+        {
+            dataSettings.dataTag = dataTag;
+            dataSettings.persistenceType = persistenceType;
+        }
+
+        public Data SaveData()
+        {
+            return new Data<int>(m_TotalSpawnedEnemyCount);
+        }
+
+        public void LoadData(Data data)
+        {
+            var enemyData = (Data<int>) data;
+            m_TotalSpawnedEnemyCount = enemyData.value;
+        }
+
+        private void OnEnable()
         {
             PersistentDataManager.RegisterPersister(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             PersistentDataManager.UnregisterPersister(this);
         }
 
-        void Start()
+        private void Start()
         {
-            for (int i = 0; i < initialPoolCount; i++)
+            for (var i = 0; i < initialPoolCount; i++)
             {
-                Enemy newEnemy = CreateNewPoolObject();
+                var newEnemy = CreateNewPoolObject();
                 pool.Add(newEnemy);
             }
 
-            int spawnCount = Mathf.Min(totalEnemiesToBeSpawned - m_TotalSpawnedEnemyCount, concurrentEnemiesToBeSpawned);
+            var spawnCount = Mathf.Min(totalEnemiesToBeSpawned - m_TotalSpawnedEnemyCount,
+                concurrentEnemiesToBeSpawned);
 
-            for (int i = 0; i < spawnCount; i++)
-            {
+            for (var i = 0; i < spawnCount; i++)
                 Pop(transform.position + transform.right * Random.Range(-spawnArea * 0.5f, spawnArea * 0.5f));
-            }
 
             m_CurrentSpawnedEnemyCount = spawnCount;
             m_TotalSpawnedEnemyCount += concurrentEnemiesToBeSpawned;
@@ -64,7 +89,8 @@ namespace Gamekit2D
 
         protected IEnumerator SpawnTimer()
         {
-            while (m_CurrentSpawnedEnemyCount < concurrentEnemiesToBeSpawned && m_TotalSpawnedEnemyCount < totalEnemiesToBeSpawned)
+            while (m_CurrentSpawnedEnemyCount < concurrentEnemiesToBeSpawned &&
+                   m_TotalSpawnedEnemyCount < totalEnemiesToBeSpawned)
             {
                 yield return m_SpawnWait;
                 Pop(transform.position);
@@ -73,28 +99,6 @@ namespace Gamekit2D
             }
 
             m_SpawnTimerCoroutine = null;
-        }
-
-        public DataSettings GetDataSettings()
-        {
-            return dataSettings;
-        }
-
-        public void SetDataSettings(string dataTag, DataSettings.PersistenceType persistenceType)
-        {
-            dataSettings.dataTag = dataTag;
-            dataSettings.persistenceType = persistenceType;
-        }
-
-        public Data SaveData()
-        {
-            return new Data<int>(m_TotalSpawnedEnemyCount);
-        }
-
-        public void LoadData(Data data)
-        {
-            Data<int> enemyData = (Data<int>)data;
-            m_TotalSpawnedEnemyCount = enemyData.value;
         }
 
         private void OnDrawGizmosSelected()

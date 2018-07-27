@@ -1,35 +1,37 @@
-﻿using System;
-using System.Collections;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Linq;
+
+#endregion
 
 namespace UnityEditor
 {
     [CustomGridBrush(true, false, false, "Line Brush")]
     public class LineBrush : GridBrush
     {
-        public bool lineStartActive = false;
-        public bool fillGaps = false;
+        public bool fillGaps;
         public Vector3Int lineStart = Vector3Int.zero;
+        public bool lineStartActive;
 
         public override void Paint(GridLayout grid, GameObject brushTarget, Vector3Int position)
         {
             if (lineStartActive)
             {
-                Vector2Int startPos = new Vector2Int(lineStart.x, lineStart.y);
-                Vector2Int endPos = new Vector2Int(position.x, position.y);
+                var startPos = new Vector2Int(lineStart.x, lineStart.y);
+                var endPos = new Vector2Int(position.x, position.y);
                 if (startPos == endPos)
-                    base.Paint(grid, brushTarget, position);    
+                    base.Paint(grid, brushTarget, position);
                 else
-                {
                     foreach (var point in GetPointsOnLine(startPos, endPos, fillGaps))
                     {
-                        Vector3Int paintPos = new Vector3Int(point.x, point.y, position.z);
+                        var paintPos = new Vector3Int(point.x, point.y, position.z);
                         base.Paint(grid, brushTarget, paintPos);
                     }
-                }
+
                 lineStartActive = false;
             }
             else
@@ -42,16 +44,17 @@ namespace UnityEditor
         [MenuItem("Assets/Create/Line Brush")]
         public static void CreateBrush()
         {
-            string path = EditorUtility.SaveFilePanelInProject("Save Line Brush", "New Line Brush", "asset", "Save Line Brush", "Assets");
+            var path = EditorUtility.SaveFilePanelInProject("Save Line Brush", "New Line Brush", "asset",
+                "Save Line Brush", "Assets");
 
             if (path == "")
                 return;
 
-            AssetDatabase.CreateAsset(ScriptableObject.CreateInstance<LineBrush>(), path);
+            AssetDatabase.CreateAsset(CreateInstance<LineBrush>(), path);
         }
 
         /// <summary>
-        /// Added option to fill gaps for continuous lines.
+        ///     Added option to fill gaps for continuous lines.
         /// </summary>
         public static IEnumerable<Vector2Int> GetPointsOnLine(Vector2Int startPos, Vector2Int endPos, bool fillGaps)
         {
@@ -78,14 +81,12 @@ namespace UnityEditor
                         // down
                         else // rise < 0
                         {
-
                             extraStart.y -= 1;
                             extraEnd.y -= 1;
                         }
                     }
                     else // Mathf.Abs(rise) < Mathf.Abs(run)
                     {
-
                         // right
                         if (run > 0)
                         {
@@ -101,10 +102,9 @@ namespace UnityEditor
                     }
 
                     var extraPoints = GetPointsOnLine(extraStart, extraEnd);
-                    extraPoints = extraPoints.Except(new[] { extraEnd });
+                    extraPoints = extraPoints.Except(new[] {extraEnd});
                     points = points.Union(extraPoints);
                 }
-
             }
 
             return points;
@@ -113,12 +113,12 @@ namespace UnityEditor
         // http://ericw.ca/notes/bresenhams-line-algorithm-in-csharp.html
         public static IEnumerable<Vector2Int> GetPointsOnLine(Vector2Int p1, Vector2Int p2)
         {
-            int x0 = p1.x;
-            int y0 = p1.y;
-            int x1 = p2.x;
-            int y1 = p2.y;
+            var x0 = p1.x;
+            var y0 = p1.y;
+            var x1 = p2.x;
+            var y1 = p2.y;
 
-            bool steep = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
+            var steep = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
             if (steep)
             {
                 int t;
@@ -129,6 +129,7 @@ namespace UnityEditor
                 x1 = y1;
                 y1 = t;
             }
+
             if (x0 > x1)
             {
                 int t;
@@ -139,14 +140,15 @@ namespace UnityEditor
                 y0 = y1;
                 y1 = t;
             }
-            int dx = x1 - x0;
-            int dy = Math.Abs(y1 - y0);
-            int error = dx / 2;
-            int ystep = (y0 < y1) ? 1 : -1;
-            int y = y0;
-            for (int x = x0; x <= x1; x++)
+
+            var dx = x1 - x0;
+            var dy = Math.Abs(y1 - y0);
+            var error = dx / 2;
+            var ystep = y0 < y1 ? 1 : -1;
+            var y = y0;
+            for (var x = x0; x <= x1; x++)
             {
-                yield return new Vector2Int((steep ? y : x), (steep ? x : y));
+                yield return new Vector2Int(steep ? y : x, steep ? x : y);
                 error = error - dy;
                 if (error < 0)
                 {
@@ -154,37 +156,38 @@ namespace UnityEditor
                     error += dx;
                 }
             }
-            yield break;
         }
     }
 
     [CustomEditor(typeof(LineBrush))]
     public class LineBrushEditor : GridBrushEditor
     {
-        private LineBrush lineBrush { get { return target as LineBrush; } }
+        private LineBrush lineBrush
+        {
+            get { return target as LineBrush; }
+        }
 
-        public override void OnPaintSceneGUI(GridLayout grid, GameObject brushTarget, BoundsInt position, GridBrushBase.Tool tool, bool executing)
+        public override void OnPaintSceneGUI(GridLayout grid, GameObject brushTarget, BoundsInt position,
+            GridBrushBase.Tool tool, bool executing)
         {
             base.OnPaintSceneGUI(grid, brushTarget, position, tool, executing);
             if (lineBrush.lineStartActive)
             {
-                Tilemap tilemap = brushTarget.GetComponent<Tilemap>();
+                var tilemap = brushTarget.GetComponent<Tilemap>();
                 if (tilemap != null)
                     tilemap.ClearAllEditorPreviewTiles();
 
                 // Draw preview tiles for tilemap
-                Vector2Int startPos = new Vector2Int(lineBrush.lineStart.x, lineBrush.lineStart.y);
-                Vector2Int endPos = new Vector2Int(position.x, position.y);
+                var startPos = new Vector2Int(lineBrush.lineStart.x, lineBrush.lineStart.y);
+                var endPos = new Vector2Int(position.x, position.y);
                 if (startPos == endPos)
                     PaintPreview(grid, brushTarget, position.min);
                 else
-                {
                     foreach (var point in LineBrush.GetPointsOnLine(startPos, endPos, lineBrush.fillGaps))
                     {
-                        Vector3Int paintPos = new Vector3Int(point.x, point.y, position.z);
+                        var paintPos = new Vector3Int(point.x, point.y, position.z);
                         PaintPreview(grid, brushTarget, paintPos);
                     }
-                }
 
                 if (Event.current.type == EventType.Repaint)
                 {

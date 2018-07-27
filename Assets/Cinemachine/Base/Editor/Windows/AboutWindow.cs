@@ -1,6 +1,11 @@
-using UnityEngine;
-using UnityEditor;
+#region
+
+using System;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
@@ -12,30 +17,30 @@ namespace Cinemachine.Editor
 
         private static readonly Vector2 kMinWindowSize = new Vector2(550f, 550f);
 
+        private GUIStyle mButtonStyle;
+        private GUIStyle mHeaderStyle;
+        private GUIStyle mLabelStyle;
+        private GUIStyle mNotesStyle;
+
+        private string mReleaseNotes;
+        private Vector2 mReleaseNoteScrollPos = Vector2.zero;
+
         private static string LastVersionLoaded
         {
             get { return EditorPrefs.GetString(kLastVersionOpened, kInvalidVersionNumber); }
             set { EditorPrefs.SetString(kLastVersionOpened, value); }
         }
 
-        private GUIStyle mButtonStyle;
-        private GUIStyle mLabelStyle;
-        private GUIStyle mHeaderStyle;
-        private GUIStyle mNotesStyle;
-        private Vector2 mReleaseNoteScrollPos = Vector2.zero;
-
-        string mReleaseNotes;
-
         private void OnEnable()
         {
-            string path = ScriptableObjectUtility.CinemachineInstallPath + "/ReleaseNotes.txt";
+            var path = ScriptableObjectUtility.CinemachineInstallPath + "/ReleaseNotes.txt";
             try
             {
-                StreamReader reader = new StreamReader(path); 
+                var reader = new StreamReader(path);
                 mReleaseNotes = reader.ReadToEnd();
                 reader.Close();
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 mReleaseNotes = path + " not found";
             }
@@ -43,10 +48,7 @@ namespace Cinemachine.Editor
 
         private void OnGUI()
         {
-            if (EditorApplication.isCompiling)
-            {
-                Close();
-            }
+            if (EditorApplication.isCompiling) Close();
 
             if (mButtonStyle == null)
             {
@@ -78,10 +80,12 @@ namespace Cinemachine.Editor
             {
                 if (CinemachineSettings.CinemachineHeader != null)
                 {
-                    float headerWidth = position.width;
-                    float aspectRatio = (float)CinemachineSettings.CinemachineHeader.height / (float)CinemachineSettings.CinemachineHeader.width;
-                    GUILayout.BeginScrollView(Vector2.zero, false, false, GUILayout.Width(headerWidth), GUILayout.Height(headerWidth * aspectRatio));
-                    Rect texRect = new Rect(0f, 0f, headerWidth, headerWidth * aspectRatio);
+                    var headerWidth = position.width;
+                    var aspectRatio = CinemachineSettings.CinemachineHeader.height /
+                                      (float) CinemachineSettings.CinemachineHeader.width;
+                    GUILayout.BeginScrollView(Vector2.zero, false, false, GUILayout.Width(headerWidth),
+                        GUILayout.Height(headerWidth * aspectRatio));
+                    var texRect = new Rect(0f, 0f, headerWidth, headerWidth * aspectRatio);
 
                     GUILayout.FlexibleSpace();
                     GUILayout.BeginArea(texRect);
@@ -94,22 +98,20 @@ namespace Cinemachine.Editor
 
                 EditorGUILayout.LabelField("Welcome to Cinemachine!", mLabelStyle);
                 EditorGUILayout.LabelField("Smart camera tools for passionate creators.", mLabelStyle);
-                EditorGUILayout.LabelField("Below are links to the forums, please reach out if you have any questions or feedback", mLabelStyle);
+                EditorGUILayout.LabelField(
+                    "Below are links to the forums, please reach out if you have any questions or feedback",
+                    mLabelStyle);
 
                 if (GUILayout.Button("<b>Forum</b>\n<i>Discuss</i>", mButtonStyle))
-                {
                     Application.OpenURL("https://forum.unity3d.com/forums/cinemachine.136/");
-                }
 
                 if (GUILayout.Button("<b>Rate it!</b>\nUnity Asset Store", mButtonStyle))
-                {
                     Application.OpenURL("https://www.assetstore.unity3d.com/en/#!/content/79898");
-                }
 
                 if (GUILayout.Button("<b>Documentation</b>\nRead it", mButtonStyle))
                 {
-                    string filename = ScriptableObjectUtility.CinemachineInstallPath 
-                        + "/CINEMACHINE_install.pdf";
+                    var filename = ScriptableObjectUtility.CinemachineInstallPath
+                                   + "/CINEMACHINE_install.pdf";
                     if (!File.Exists(filename))
                         Debug.LogError("Missing file " + filename);
                     Application.OpenURL("file://" + filename);
@@ -132,13 +134,13 @@ namespace Cinemachine.Editor
 
         private static void ShowWindowDeferred()
         {
-            string loadedVersion = LastVersionLoaded;
+            var loadedVersion = LastVersionLoaded;
             if (loadedVersion != CinemachineCore.kVersionString)
                 LastVersionLoaded = CinemachineCore.kVersionString;
 
-            AboutWindow window = EditorWindow.GetWindow<AboutWindow>();
+            var window = GetWindow<AboutWindow>();
 
-            window.titleContent = new UnityEngine.GUIContent(
+            window.titleContent = new GUIContent(
                 "About", CinemachineSettings.CinemachineLogoTexture);
             window.minSize = kMinWindowSize;
             window.Show(true);

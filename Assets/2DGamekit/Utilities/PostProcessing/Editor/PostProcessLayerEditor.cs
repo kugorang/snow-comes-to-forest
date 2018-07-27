@@ -1,40 +1,23 @@
+#region
+
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEditorInternal;
-using System.IO;
+using Object = UnityEngine.Object;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
-    using SerializedBundleRef = PostProcessLayer.SerializedBundleRef;
-    using EXRFlags = Texture2D.EXRFlags;
-
-    [CanEditMultipleObjects, CustomEditor(typeof(PostProcessLayer))]
+    [CanEditMultipleObjects]
+    [CustomEditor(typeof(PostProcessLayer))]
     public sealed class PostProcessLayerEditor : BaseEditor<PostProcessLayer>
     {
-        SerializedProperty m_StopNaNPropagation;
-        SerializedProperty m_VolumeTrigger;
-        SerializedProperty m_VolumeLayer;
-
-        SerializedProperty m_AntialiasingMode;
-        SerializedProperty m_TaaJitterSpread;
-        SerializedProperty m_TaaSharpness;
-        SerializedProperty m_TaaStationaryBlending;
-        SerializedProperty m_TaaMotionBlending;
-        SerializedProperty m_FxaaMobileOptimized;
-        SerializedProperty m_FxaaKeepAlpha;
-
-        SerializedProperty m_FogEnabled;
-        SerializedProperty m_FogExcludeSkybox;
-
-        SerializedProperty m_ShowToolkit;
-        SerializedProperty m_ShowCustomSorter;
-
-        Dictionary<PostProcessEvent, ReorderableList> m_CustomLists;
-
-        static GUIContent[] s_AntialiasingMethodNames =
+        private static readonly GUIContent[] s_AntialiasingMethodNames =
         {
             new GUIContent("No Anti-aliasing"),
             new GUIContent("Fast Approximate Anti-aliasing (FXAA)"),
@@ -42,15 +25,26 @@ namespace UnityEditor.Rendering.PostProcessing
             new GUIContent("Temporal Anti-aliasing (TAA)")
         };
 
-        enum ExportMode
-        {
-            FullFrame,
-            DisablePost,
-            BreakBeforeColorGradingLinear,
-            BreakBeforeColorGradingLog
-        }
+        private SerializedProperty m_AntialiasingMode;
 
-        void OnEnable()
+        private Dictionary<PostProcessEvent, ReorderableList> m_CustomLists;
+
+        private SerializedProperty m_FogEnabled;
+        private SerializedProperty m_FogExcludeSkybox;
+        private SerializedProperty m_FxaaKeepAlpha;
+        private SerializedProperty m_FxaaMobileOptimized;
+        private SerializedProperty m_ShowCustomSorter;
+
+        private SerializedProperty m_ShowToolkit;
+        private SerializedProperty m_StopNaNPropagation;
+        private SerializedProperty m_TaaJitterSpread;
+        private SerializedProperty m_TaaMotionBlending;
+        private SerializedProperty m_TaaSharpness;
+        private SerializedProperty m_TaaStationaryBlending;
+        private SerializedProperty m_VolumeLayer;
+        private SerializedProperty m_VolumeTrigger;
+
+        private void OnEnable()
         {
             m_StopNaNPropagation = FindProperty(x => x.stopNaNPropagation);
             m_VolumeTrigger = FindProperty(x => x.volumeTrigger);
@@ -71,7 +65,7 @@ namespace UnityEditor.Rendering.PostProcessing
             m_ShowCustomSorter = serializedObject.FindProperty("m_ShowCustomSorter");
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             m_CustomLists = null;
         }
@@ -82,7 +76,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
             var camera = m_Target.GetComponent<Camera>();
 
-            #if !UNITY_2017_2_OR_NEWER
+#if !UNITY_2017_2_OR_NEWER
             if (RuntimeUtilities.isSinglePassStereoSelected)
                 EditorGUILayout.HelpBox("Unity 2017.2+ required for full Single-pass stereo rendering support.", MessageType.Warning);
             #endif
@@ -91,7 +85,9 @@ namespace UnityEditor.Rendering.PostProcessing
             DoAntialiasing();
             DoFog(camera);
 
-            EditorGUILayout.PropertyField(m_StopNaNPropagation, EditorUtilities.GetContent("Stop NaN Propagation|Automatically replaces NaN/Inf in shaders by a black pixel to avoid breaking some effects. This will slightly affect performances and should only be used if you experience NaN issues that you can't fix. Has no effect on GLES2 platforms."));
+            EditorGUILayout.PropertyField(m_StopNaNPropagation,
+                EditorUtilities.GetContent(
+                    "Stop NaN Propagation|Automatically replaces NaN/Inf in shaders by a black pixel to avoid breaking some effects. This will slightly affect performances and should only be used if you experience NaN issues that you can't fix. Has no effect on GLES2 platforms."));
             EditorGUILayout.Space();
 
             DoToolkit();
@@ -103,7 +99,7 @@ namespace UnityEditor.Rendering.PostProcessing
             serializedObject.ApplyModifiedProperties();
         }
 
-        void DoVolumeBlending()
+        private void DoVolumeBlending()
         {
             EditorGUILayout.LabelField(EditorUtilities.GetContent("Volume blending"), EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
@@ -112,41 +108,57 @@ namespace UnityEditor.Rendering.PostProcessing
                 // custom layouted fields, do the layout manually instead
                 var indentOffset = EditorGUI.indentLevel * 15f;
                 var lineRect = GUILayoutUtility.GetRect(1, EditorGUIUtility.singleLineHeight);
-                var labelRect = new Rect(lineRect.x, lineRect.y, EditorGUIUtility.labelWidth - indentOffset, lineRect.height);
-                var fieldRect = new Rect(labelRect.xMax, lineRect.y, lineRect.width - labelRect.width - 60f, lineRect.height);
+                var labelRect = new Rect(lineRect.x, lineRect.y, EditorGUIUtility.labelWidth - indentOffset,
+                    lineRect.height);
+                var fieldRect = new Rect(labelRect.xMax, lineRect.y, lineRect.width - labelRect.width - 60f,
+                    lineRect.height);
                 var buttonRect = new Rect(fieldRect.xMax, lineRect.y, 60f, lineRect.height);
 
-                EditorGUI.PrefixLabel(labelRect, EditorUtilities.GetContent("Trigger|A transform that will act as a trigger for volume blending."));
-                m_VolumeTrigger.objectReferenceValue = (Transform)EditorGUI.ObjectField(fieldRect, m_VolumeTrigger.objectReferenceValue, typeof(Transform), true);
-                if (GUI.Button(buttonRect, EditorUtilities.GetContent("This|Assigns the current GameObject as a trigger."), EditorStyles.miniButton))
+                EditorGUI.PrefixLabel(labelRect,
+                    EditorUtilities.GetContent("Trigger|A transform that will act as a trigger for volume blending."));
+                m_VolumeTrigger.objectReferenceValue = (Transform) EditorGUI.ObjectField(fieldRect,
+                    m_VolumeTrigger.objectReferenceValue, typeof(Transform), true);
+                if (GUI.Button(buttonRect,
+                    EditorUtilities.GetContent("This|Assigns the current GameObject as a trigger."),
+                    EditorStyles.miniButton))
                     m_VolumeTrigger.objectReferenceValue = m_Target.transform;
 
                 if (m_VolumeTrigger.objectReferenceValue == null)
-                    EditorGUILayout.HelpBox("No trigger has been set, the camera will only be affected by global volumes.", MessageType.Info);
+                    EditorGUILayout.HelpBox(
+                        "No trigger has been set, the camera will only be affected by global volumes.",
+                        MessageType.Info);
 
-                EditorGUILayout.PropertyField(m_VolumeLayer, EditorUtilities.GetContent("Layer|This camera will only be affected by volumes in the selected scene-layers."));
+                EditorGUILayout.PropertyField(m_VolumeLayer,
+                    EditorUtilities.GetContent(
+                        "Layer|This camera will only be affected by volumes in the selected scene-layers."));
 
-                int mask = m_VolumeLayer.intValue;
+                var mask = m_VolumeLayer.intValue;
                 if (mask == 0)
-                    EditorGUILayout.HelpBox("No layer has been set, the trigger will never be affected by volumes.", MessageType.Warning);
-                else if (mask == -1 || ((mask & 1) != 0))
-                    EditorGUILayout.HelpBox("Do not use \"Everything\" or \"Default\" as a layer mask as it will slow down the volume blending process! Put post-processing volumes in their own dedicated layer for best performances.", MessageType.Warning);
+                    EditorGUILayout.HelpBox("No layer has been set, the trigger will never be affected by volumes.",
+                        MessageType.Warning);
+                else if (mask == -1 || (mask & 1) != 0)
+                    EditorGUILayout.HelpBox(
+                        "Do not use \"Everything\" or \"Default\" as a layer mask as it will slow down the volume blending process! Put post-processing volumes in their own dedicated layer for best performances.",
+                        MessageType.Warning);
             }
             EditorGUI.indentLevel--;
 
             EditorGUILayout.Space();
         }
 
-        void DoAntialiasing()
+        private void DoAntialiasing()
         {
             EditorGUILayout.LabelField(EditorUtilities.GetContent("Anti-aliasing"), EditorStyles.boldLabel);
             EditorGUI.indentLevel++;
             {
-                m_AntialiasingMode.intValue = EditorGUILayout.Popup(EditorUtilities.GetContent("Mode|The anti-aliasing method to use. FXAA is fast but low quality. SMAA works well for non-HDR scenes. TAA is a bit slower but higher quality and works well with HDR."), m_AntialiasingMode.intValue, s_AntialiasingMethodNames);
+                m_AntialiasingMode.intValue = EditorGUILayout.Popup(
+                    EditorUtilities.GetContent(
+                        "Mode|The anti-aliasing method to use. FXAA is fast but low quality. SMAA works well for non-HDR scenes. TAA is a bit slower but higher quality and works well with HDR."),
+                    m_AntialiasingMode.intValue, s_AntialiasingMethodNames);
 
-                if (m_AntialiasingMode.intValue == (int)PostProcessLayer.Antialiasing.TemporalAntialiasing)
+                if (m_AntialiasingMode.intValue == (int) PostProcessLayer.Antialiasing.TemporalAntialiasing)
                 {
-                    #if !UNITY_2017_3_OR_NEWER
+#if !UNITY_2017_3_OR_NEWER
                     if (RuntimeUtilities.isSinglePassStereoSelected)
                         EditorGUILayout.HelpBox("TAA requires Unity 2017.3+ for Single-pass stereo rendering support.", MessageType.Warning);
                     #endif
@@ -156,12 +168,14 @@ namespace UnityEditor.Rendering.PostProcessing
                     EditorGUILayout.PropertyField(m_TaaMotionBlending);
                     EditorGUILayout.PropertyField(m_TaaSharpness);
                 }
-                else if (m_AntialiasingMode.intValue == (int)PostProcessLayer.Antialiasing.SubpixelMorphologicalAntialiasing)
+                else if (m_AntialiasingMode.intValue ==
+                         (int) PostProcessLayer.Antialiasing.SubpixelMorphologicalAntialiasing)
                 {
                     if (RuntimeUtilities.isSinglePassStereoSelected)
-                        EditorGUILayout.HelpBox("SMAA doesn't work with Single-pass stereo rendering.", MessageType.Warning);
+                        EditorGUILayout.HelpBox("SMAA doesn't work with Single-pass stereo rendering.",
+                            MessageType.Warning);
                 }
-                else if (m_AntialiasingMode.intValue == (int)PostProcessLayer.Antialiasing.FastApproximateAntialiasing)
+                else if (m_AntialiasingMode.intValue == (int) PostProcessLayer.Antialiasing.FastApproximateAntialiasing)
                 {
                     EditorGUILayout.PropertyField(m_FxaaMobileOptimized);
                     EditorGUILayout.PropertyField(m_FxaaKeepAlpha);
@@ -172,7 +186,7 @@ namespace UnityEditor.Rendering.PostProcessing
             EditorGUILayout.Space();
         }
 
-        void DoFog(Camera camera)
+        private void DoFog(Camera camera)
         {
             if (camera == null || camera.actualRenderingPath != RenderingPath.DeferredShading)
                 return;
@@ -185,7 +199,9 @@ namespace UnityEditor.Rendering.PostProcessing
                 if (m_FogEnabled.boolValue)
                 {
                     EditorGUILayout.PropertyField(m_FogExcludeSkybox);
-                    EditorGUILayout.HelpBox("This adds fog compatibility to the deferred rendering path; actual fog settings should be set in the Lighting panel.", MessageType.Info);
+                    EditorGUILayout.HelpBox(
+                        "This adds fog compatibility to the deferred rendering path; actual fog settings should be set in the Lighting panel.",
+                        MessageType.Info);
                 }
             }
             EditorGUI.indentLevel--;
@@ -193,7 +209,7 @@ namespace UnityEditor.Rendering.PostProcessing
             EditorGUILayout.Space();
         }
 
-        void DoToolkit()
+        private void DoToolkit()
         {
             EditorUtilities.DrawSplitter();
             m_ShowToolkit.boolValue = EditorUtilities.DrawHeader("Toolkit", m_ShowToolkit.boolValue);
@@ -205,51 +221,60 @@ namespace UnityEditor.Rendering.PostProcessing
                 if (GUILayout.Button(EditorUtilities.GetContent("Export frame to EXR..."), EditorStyles.miniButton))
                 {
                     var menu = new GenericMenu();
-                    menu.AddItem(EditorUtilities.GetContent("Full Frame (as displayed)"), false, () => ExportFrameToExr(ExportMode.FullFrame));
-                    menu.AddItem(EditorUtilities.GetContent("Disable post-processing"), false, () => ExportFrameToExr(ExportMode.DisablePost));
-                    menu.AddItem(EditorUtilities.GetContent("Break before Color Grading (Linear)"), false, () => ExportFrameToExr(ExportMode.BreakBeforeColorGradingLinear));
-                    menu.AddItem(EditorUtilities.GetContent("Break before Color Grading (Log)"), false, () => ExportFrameToExr(ExportMode.BreakBeforeColorGradingLog));
+                    menu.AddItem(EditorUtilities.GetContent("Full Frame (as displayed)"), false,
+                        () => ExportFrameToExr(ExportMode.FullFrame));
+                    menu.AddItem(EditorUtilities.GetContent("Disable post-processing"), false,
+                        () => ExportFrameToExr(ExportMode.DisablePost));
+                    menu.AddItem(EditorUtilities.GetContent("Break before Color Grading (Linear)"), false,
+                        () => ExportFrameToExr(ExportMode.BreakBeforeColorGradingLinear));
+                    menu.AddItem(EditorUtilities.GetContent("Break before Color Grading (Log)"), false,
+                        () => ExportFrameToExr(ExportMode.BreakBeforeColorGradingLog));
                     menu.ShowAsContext();
                 }
 
-                if (GUILayout.Button(EditorUtilities.GetContent("Select all layer volumes|Selects all the volumes that will influence this layer."), EditorStyles.miniButton))
+                if (GUILayout.Button(
+                    EditorUtilities.GetContent(
+                        "Select all layer volumes|Selects all the volumes that will influence this layer."),
+                    EditorStyles.miniButton))
                 {
                     var volumes = RuntimeUtilities.GetAllSceneObjects<PostProcessVolume>()
                         .Where(x => (m_VolumeLayer.intValue & (1 << x.gameObject.layer)) != 0)
                         .Select(x => x.gameObject)
-                        .Cast<UnityEngine.Object>()
+                        .Cast<Object>()
                         .ToArray();
 
                     if (volumes.Length > 0)
                         Selection.objects = volumes;
                 }
 
-                if (GUILayout.Button(EditorUtilities.GetContent("Select all active volumes|Selects all volumes currently affecting the layer."), EditorStyles.miniButton))
+                if (GUILayout.Button(
+                    EditorUtilities.GetContent(
+                        "Select all active volumes|Selects all volumes currently affecting the layer."),
+                    EditorStyles.miniButton))
                 {
                     var volumes = new List<PostProcessVolume>();
                     PostProcessManager.instance.GetActiveVolumes(m_Target, volumes);
 
                     if (volumes.Count > 0)
-                    {
                         Selection.objects = volumes
                             .Select(x => x.gameObject)
-                            .Cast<UnityEngine.Object>()
+                            .Cast<Object>()
                             .ToArray();
-                    }
                 }
 
                 GUILayout.Space(3);
             }
         }
 
-        void DoCustomEffectSorter()
+        private void DoCustomEffectSorter()
         {
             EditorUtilities.DrawSplitter();
-            m_ShowCustomSorter.boolValue = EditorUtilities.DrawHeader("Custom Effect Sorting", m_ShowCustomSorter.boolValue);
+            m_ShowCustomSorter.boolValue =
+                EditorUtilities.DrawHeader("Custom Effect Sorting", m_ShowCustomSorter.boolValue);
 
             if (m_ShowCustomSorter.boolValue)
             {
-                bool isInPrefab = false;
+                var isInPrefab = false;
 
                 // Init lists if needed
                 if (m_CustomLists == null)
@@ -262,11 +287,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     {
                         isInPrefab = string.IsNullOrEmpty(m_Target.gameObject.scene.name);
 
-                        if (!isInPrefab)
-                        {
-                            // sortedBundles will be initialized and ready to use on the next frame
-                            Repaint();
-                        }
+                        if (!isInPrefab) Repaint();
                     }
                     else
                     {
@@ -277,23 +298,18 @@ namespace UnityEditor.Rendering.PostProcessing
                             var bundles = m_Target.sortedBundles[evt];
                             var listName = ObjectNames.NicifyVariableName(evt.ToString());
 
-                            var list = new ReorderableList(bundles, typeof(SerializedBundleRef), true, true, false, false);
+                            var list = new ReorderableList(bundles, typeof(PostProcessLayer.SerializedBundleRef), true,
+                                true, false, false);
 
-                            list.drawHeaderCallback = (rect) =>
-                            {
-                                EditorGUI.LabelField(rect, listName);
-                            };
+                            list.drawHeaderCallback = rect => { EditorGUI.LabelField(rect, listName); };
 
                             list.drawElementCallback = (rect, index, isActive, isFocused) =>
                             {
-                                var sbr = (SerializedBundleRef)list.list[index];
+                                var sbr = (PostProcessLayer.SerializedBundleRef) list.list[index];
                                 EditorGUI.LabelField(rect, sbr.bundle.attribute.menuItem);
                             };
 
-                            list.onReorderCallback = (l) =>
-                            {
-                                EditorUtility.SetDirty(m_Target);
-                            };
+                            list.onReorderCallback = l => { EditorUtility.SetDirty(m_Target); };
 
                             m_CustomLists.Add(evt, list);
                         }
@@ -309,9 +325,8 @@ namespace UnityEditor.Rendering.PostProcessing
                     return;
                 }
 
-                bool anyList = false;
+                var anyList = false;
                 if (m_CustomLists != null)
-                {
                     foreach (var kvp in m_CustomLists)
                     {
                         var list = kvp.Value;
@@ -323,7 +338,6 @@ namespace UnityEditor.Rendering.PostProcessing
                         list.DoLayoutList();
                         anyList = true;
                     }
-                }
 
                 if (!anyList)
                 {
@@ -333,9 +347,9 @@ namespace UnityEditor.Rendering.PostProcessing
             }
         }
 
-        void ExportFrameToExr(ExportMode mode)
+        private void ExportFrameToExr(ExportMode mode)
         {
-            string path = EditorUtility.SaveFilePanel("Export EXR...", "", "Frame", "exr");
+            var path = EditorUtility.SaveFilePanel("Export EXR...", "", "Frame", "exr");
 
             if (string.IsNullOrEmpty(path))
                 return;
@@ -347,7 +361,8 @@ namespace UnityEditor.Rendering.PostProcessing
             var h = camera.pixelHeight;
 
             var texOut = new Texture2D(w, h, TextureFormat.RGBAFloat, false, true);
-            var target = RenderTexture.GetTemporary(w, h, 24, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
+            var target =
+                RenderTexture.GetTemporary(w, h, 24, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
 
             var lastActive = RenderTexture.active;
             var lastTargetSet = camera.targetTexture;
@@ -372,7 +387,8 @@ namespace UnityEditor.Rendering.PostProcessing
             {
                 // Convert to log
                 var material = new Material(Shader.Find("Hidden/PostProcessing/Editor/ConvertToLog"));
-                var newTarget = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGBFloat, RenderTextureReadWrite.Linear);
+                var newTarget = RenderTexture.GetTemporary(w, h, 0, RenderTextureFormat.ARGBFloat,
+                    RenderTextureReadWrite.Linear);
                 Graphics.Blit(target, newTarget, material, 0);
                 RenderTexture.ReleaseTemporary(target);
                 DestroyImmediate(material);
@@ -386,7 +402,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
             EditorUtility.DisplayProgressBar("Export EXR", "Encoding...", 0.5f);
 
-            var bytes = texOut.EncodeToEXR(EXRFlags.OutputAsFloat | EXRFlags.CompressZIP);
+            var bytes = texOut.EncodeToEXR(Texture2D.EXRFlags.OutputAsFloat | Texture2D.EXRFlags.CompressZIP);
 
             EditorUtility.DisplayProgressBar("Export EXR", "Saving...", 0.75f);
 
@@ -397,6 +413,14 @@ namespace UnityEditor.Rendering.PostProcessing
 
             RenderTexture.ReleaseTemporary(target);
             DestroyImmediate(texOut);
+        }
+
+        private enum ExportMode
+        {
+            FullFrame,
+            DisablePost,
+            BreakBeforeColorGradingLinear,
+            BreakBeforeColorGradingLog
         }
     }
 }

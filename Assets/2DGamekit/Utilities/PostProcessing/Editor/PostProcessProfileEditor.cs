@@ -1,19 +1,23 @@
+#region
+
 using UnityEngine.Rendering.PostProcessing;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
     [CustomEditor(typeof(PostProcessProfile))]
-    sealed class PostProcessProfileEditor : Editor
+    internal sealed class PostProcessProfileEditor : Editor
     {
-        EffectListEditor m_EffectList;
+        private EffectListEditor m_EffectList;
 
-        void OnEnable()
+        private void OnEnable()
         {
             m_EffectList = new EffectListEditor(this);
             m_EffectList.Init(target as PostProcessProfile, serializedObject);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (m_EffectList != null)
                 m_EffectList.Clear();

@@ -1,12 +1,16 @@
+#region
+
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
     public static class VolumeFactory
     {
         [MenuItem("GameObject/3D Object/Post-process Volume")]
-        static void CreateVolume()
+        private static void CreateVolume()
         {
             var gameObject = new GameObject("Post-process Volume");
             var collider = gameObject.AddComponent<BoxCollider>();
@@ -14,7 +18,7 @@ namespace UnityEditor.Rendering.PostProcessing
             collider.isTrigger = true;
             gameObject.AddComponent<PostProcessVolume>();
 
-            Selection.objects = new [] { gameObject };
+            Selection.objects = new[] {gameObject};
             EditorApplication.ExecuteMenuItem("GameObject/Move To View");
         }
     }

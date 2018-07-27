@@ -1,52 +1,35 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+#endregion
+
 namespace Gamekit2D
 {
     public class PlatformCatcher : MonoBehaviour
     {
-        [Serializable]
-        public class CaughtObject
-        {
-            public Rigidbody2D rigidbody;
-            public Collider2D collider;
-            public CharacterController2D character;
-            public bool inContact;
-            public bool checkedThisFrame;
+        public ContactFilter2D contactFilter;
 
-            public void Move (Vector2 movement)
-            {
-                if(!inContact)
-                    return;
+        protected List<CaughtObject> m_CaughtObjects = new List<CaughtObject>(128);
+        protected Collider2D m_Collider;
+        protected ContactPoint2D[] m_ContactPoints = new ContactPoint2D[20];
 
-                if (character != null)
-                    character.Move(movement);
-                else
-                    rigidbody.MovePosition(rigidbody.position + movement);
-            }
-        }
+        protected Action<Vector2> m_MoveDelegate;
+        protected PlatformCatcher m_ParentCatcher;
 
 
         public Rigidbody2D platformRigidbody;
-        public ContactFilter2D contactFilter;
-
-        protected List<CaughtObject> m_CaughtObjects = new List<CaughtObject> (128);
-        protected ContactPoint2D[] m_ContactPoints = new ContactPoint2D[20];
-        protected Collider2D m_Collider;
-        protected PlatformCatcher m_ParentCatcher;
-
-        protected Action<Vector2> m_MoveDelegate = null;
 
         public int CaughtObjectCount
         {
             get
             {
-                int count = 0;
-                for (int i = 0; i < m_CaughtObjects.Count; i++)
-                {
+                var count = 0;
+                for (var i = 0; i < m_CaughtObjects.Count; i++)
                     if (m_CaughtObjects[i].inContact)
                         count++;
-                }
                 return count;
             }
         }
@@ -55,17 +38,15 @@ namespace Gamekit2D
         {
             get
             {
-                float mass = 0f;
-                for (int i = 0; i < m_CaughtObjects.Count; i++)
-                {
+                var mass = 0f;
+                for (var i = 0; i < m_CaughtObjects.Count; i++)
                     if (m_CaughtObjects[i].inContact)
                         mass += m_CaughtObjects[i].rigidbody.mass;
-                }
                 return mass;
             }
         }
 
-        void Awake ()
+        private void Awake()
         {
             if (platformRigidbody == null)
                 platformRigidbody = GetComponent<Rigidbody2D>();
@@ -75,10 +56,10 @@ namespace Gamekit2D
 
 
             m_ParentCatcher = null;
-            Transform currentParent = transform.parent;
-            while(currentParent != null)
+            var currentParent = transform.parent;
+            while (currentParent != null)
             {
-                PlatformCatcher catcher = currentParent.GetComponent<PlatformCatcher>();
+                var catcher = currentParent.GetComponent<PlatformCatcher>();
                 if (catcher != null)
                     m_ParentCatcher = catcher;
                 currentParent = currentParent.parent;
@@ -90,43 +71,43 @@ namespace Gamekit2D
                 m_ParentCatcher.m_MoveDelegate += MoveCaughtObjects;
         }
 
-        void FixedUpdate ()
+        private void FixedUpdate()
         {
             for (int i = 0, count = m_CaughtObjects.Count; i < count; i++)
             {
-                CaughtObject caughtObject = m_CaughtObjects[i];
+                var caughtObject = m_CaughtObjects[i];
                 caughtObject.inContact = false;
                 caughtObject.checkedThisFrame = false;
             }
-        
-            CheckRigidbodyContacts (platformRigidbody);
+
+            CheckRigidbodyContacts(platformRigidbody);
 
             bool checkAgain;
             do
             {
                 for (int i = 0, count = m_CaughtObjects.Count; i < count; i++)
                 {
-                    CaughtObject caughtObject = m_CaughtObjects[i];
+                    var caughtObject = m_CaughtObjects[i];
 
                     if (caughtObject.inContact)
-                    {
                         if (!caughtObject.checkedThisFrame)
                         {
                             CheckRigidbodyContacts(caughtObject.rigidbody);
                             caughtObject.checkedThisFrame = true;
                         }
-                    }                
+
                     //Some cases will remove all contacts (collider resize etc.) leading to loosing contact with the platform
                     //so we check the distance of the object to the top of the platform.
-                    if(!caughtObject.inContact)
+                    if (!caughtObject.inContact)
                     {
-                        Collider2D caughtObjectCollider = m_CaughtObjects[i].collider;
+                        var caughtObjectCollider = m_CaughtObjects[i].collider;
 
                         //check if we are aligned with the moving paltform, otherwise the yDiff test under would be true even if far from the platform as long as we are on the same y level...
-                        bool verticalAlignement = (caughtObjectCollider.bounds.max.x > m_Collider.bounds.min.x) && (caughtObjectCollider.bounds.min.x < m_Collider.bounds.max.x);
+                        var verticalAlignement = caughtObjectCollider.bounds.max.x > m_Collider.bounds.min.x &&
+                                                 caughtObjectCollider.bounds.min.x < m_Collider.bounds.max.x;
                         if (verticalAlignement)
                         {
-                            float yDiff = m_CaughtObjects[i].collider.bounds.min.y - m_Collider.bounds.max.y;
+                            var yDiff = m_CaughtObjects[i].collider.bounds.min.y - m_Collider.bounds.max.y;
 
                             if (yDiff > 0 && yDiff < 0.05f)
                             {
@@ -141,46 +122,45 @@ namespace Gamekit2D
 
                 for (int i = 0, count = m_CaughtObjects.Count; i < count; i++)
                 {
-                    CaughtObject caughtObject = m_CaughtObjects[i];
+                    var caughtObject = m_CaughtObjects[i];
                     if (caughtObject.inContact && !caughtObject.checkedThisFrame)
                     {
                         checkAgain = true;
                         break;
                     }
                 }
-            }
-            while (checkAgain);
+            } while (checkAgain);
         }
 
-        void CheckRigidbodyContacts (Rigidbody2D rb)
+        private void CheckRigidbodyContacts(Rigidbody2D rb)
         {
-            int contactCount = rb.GetContacts(contactFilter, m_ContactPoints);
+            var contactCount = rb.GetContacts(contactFilter, m_ContactPoints);
 
-            for (int j = 0; j < contactCount; j++)
+            for (var j = 0; j < contactCount; j++)
             {
-                ContactPoint2D contactPoint2D = m_ContactPoints[j];
-                Rigidbody2D contactRigidbody = contactPoint2D.rigidbody == rb ? contactPoint2D.otherRigidbody : contactPoint2D.rigidbody;
-                int listIndex = -1;
+                var contactPoint2D = m_ContactPoints[j];
+                var contactRigidbody = contactPoint2D.rigidbody == rb
+                    ? contactPoint2D.otherRigidbody
+                    : contactPoint2D.rigidbody;
+                var listIndex = -1;
 
-                for (int k = 0; k < m_CaughtObjects.Count; k++)
-                {
+                for (var k = 0; k < m_CaughtObjects.Count; k++)
                     if (contactRigidbody == m_CaughtObjects[k].rigidbody)
                     {
                         listIndex = k;
                         break;
                     }
-                }
 
                 if (listIndex == -1)
                 {
                     if (contactRigidbody != null)
-                    {
-                        if (contactRigidbody.bodyType != RigidbodyType2D.Static && contactRigidbody != platformRigidbody)
+                        if (contactRigidbody.bodyType != RigidbodyType2D.Static &&
+                            contactRigidbody != platformRigidbody)
                         {
-                            float dot = Vector2.Dot(contactPoint2D.normal, Vector2.down);
+                            var dot = Vector2.Dot(contactPoint2D.normal, Vector2.down);
                             if (dot > 0.8f)
                             {
-                                CaughtObject newCaughtObject = new CaughtObject
+                                var newCaughtObject = new CaughtObject
                                 {
                                     rigidbody = contactRigidbody,
                                     character = contactRigidbody.GetComponent<CharacterController2D>(),
@@ -192,7 +172,6 @@ namespace Gamekit2D
                                 m_CaughtObjects.Add(newCaughtObject);
                             }
                         }
-                    }
                 }
                 else
                 {
@@ -201,34 +180,50 @@ namespace Gamekit2D
             }
         }
 
-        public void MoveCaughtObjects (Vector2 velocity)
+        public void MoveCaughtObjects(Vector2 velocity)
         {
-            if (m_MoveDelegate != null)
-            {
-                m_MoveDelegate.Invoke(velocity);
-            }
+            if (m_MoveDelegate != null) m_MoveDelegate.Invoke(velocity);
 
             for (int i = 0, count = m_CaughtObjects.Count; i < count; i++)
             {
-                CaughtObject caughtObject = m_CaughtObjects[i];
-                if (m_ParentCatcher != null && m_ParentCatcher.m_CaughtObjects.Find((CaughtObject A) => { return A.rigidbody == caughtObject.rigidbody; }) != null)
+                var caughtObject = m_CaughtObjects[i];
+                if (m_ParentCatcher != null && m_ParentCatcher.m_CaughtObjects.Find(A =>
                 {
-                    continue;
-                }
+                    return A.rigidbody == caughtObject.rigidbody;
+                }) != null) continue;
 
                 m_CaughtObjects[i].Move(velocity);
             }
         }
 
-        public bool HasCaughtObject (GameObject gameObject)
+        public bool HasCaughtObject(GameObject gameObject)
         {
-            for (int i = 0; i < m_CaughtObjects.Count; i++)
-            {
+            for (var i = 0; i < m_CaughtObjects.Count; i++)
                 if (m_CaughtObjects[i].collider.gameObject == gameObject && m_CaughtObjects[i].inContact)
                     return true;
-            }
 
             return false;
+        }
+
+        [Serializable]
+        public class CaughtObject
+        {
+            public CharacterController2D character;
+            public bool checkedThisFrame;
+            public Collider2D collider;
+            public bool inContact;
+            public Rigidbody2D rigidbody;
+
+            public void Move(Vector2 movement)
+            {
+                if (!inContact)
+                    return;
+
+                if (character != null)
+                    character.Move(movement);
+                else
+                    rigidbody.MovePosition(rigidbody.position + movement);
+            }
         }
     }
 }

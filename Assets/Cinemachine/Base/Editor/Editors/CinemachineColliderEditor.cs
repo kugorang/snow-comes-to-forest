@@ -1,6 +1,10 @@
-using UnityEngine;
-using UnityEditor;
+#region
+
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
@@ -9,7 +13,7 @@ namespace Cinemachine.Editor
     {
         protected override List<string> GetExcludedPropertiesInInspector()
         {
-            List<string> excluded = base.GetExcludedPropertiesInInspector();
+            var excluded = base.GetExcludedPropertiesInInspector();
             if (!Target.m_AvoidObstacles)
             {
                 excluded.Add(FieldPath(x => x.m_DistanceLimit));
@@ -22,6 +26,7 @@ namespace Cinemachine.Editor
             {
                 excluded.Add(FieldPath(x => x.m_MaximumEffort));
             }
+
             return excluded;
         }
 
@@ -31,7 +36,7 @@ namespace Cinemachine.Editor
 
             if (Target.m_AvoidObstacles && !Target.VirtualCamera.State.HasLookAt)
                 EditorGUILayout.HelpBox(
-                    "Preserve Line Of Sight requires a LookAt target.", 
+                    "Preserve Line Of Sight requires a LookAt target.",
                     MessageType.Warning);
 
             DrawRemainingPropertiesInInspector();
@@ -40,35 +45,37 @@ namespace Cinemachine.Editor
         [DrawGizmo(GizmoType.Active | GizmoType.Selected, typeof(CinemachineCollider))]
         private static void DrawColliderGizmos(CinemachineCollider collider, GizmoType type)
         {
-            CinemachineVirtualCameraBase vcam = (collider != null) ? collider.VirtualCamera : null;
+            var vcam = collider != null ? collider.VirtualCamera : null;
             if (vcam != null && collider.enabled)
             {
-                Color oldColor = Gizmos.color;
-                Vector3 pos = vcam.State.FinalPosition;
+                var oldColor = Gizmos.color;
+                var pos = vcam.State.FinalPosition;
                 if (collider.m_AvoidObstacles && vcam.State.HasLookAt)
                 {
                     Gizmos.color = CinemachineColliderPrefs.FeelerColor;
                     if (collider.m_CameraRadius > 0)
                         Gizmos.DrawWireSphere(pos, collider.m_CameraRadius);
 
-                    Vector3 forwardFeelerVector = (vcam.State.ReferenceLookAt - pos).normalized;
-                    float distance = collider.m_DistanceLimit;
+                    var forwardFeelerVector = (vcam.State.ReferenceLookAt - pos).normalized;
+                    var distance = collider.m_DistanceLimit;
                     Gizmos.DrawLine(pos, pos + forwardFeelerVector * distance);
 
                     // Show the avoidance path, for debugging
-                    List<List<Vector3>> debugPaths = collider.DebugPaths;
+                    var debugPaths = collider.DebugPaths;
                     foreach (var path in debugPaths)
                     {
                         Gizmos.color = CinemachineColliderPrefs.FeelerHitColor;
-                        Vector3 p0 = vcam.State.ReferenceLookAt;
+                        var p0 = vcam.State.ReferenceLookAt;
                         foreach (var p in path)
                         {
                             Gizmos.DrawLine(p0, p);
                             p0 = p;
                         }
+
                         Gizmos.DrawLine(p0, pos);
                     }
                 }
+
                 Gizmos.color = oldColor;
             }
         }

@@ -1,9 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 
-public class Exit_Button : MonoBehaviour {
+#endregion
 
+public class Exit_Button : MonoBehaviour
+{
     public GameObject exitButton;
 
     /*// Update is called once per frame
@@ -23,7 +25,5 @@ public class Exit_Button : MonoBehaviour {
     {
         Application.Quit();
         Debug.LogError("Button Pressed");
-        return;
     }
-
 }

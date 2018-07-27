@@ -1,7 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.Events;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -11,20 +13,17 @@ namespace Gamekit2D
         public LayerMask layers;
         public UnityEvent OnCollision;
 
-        void Reset()
+        private void Reset()
         {
             layers = LayerMask.NameToLayer("Everything");
         }
 
-        void OnCollisionEnter(Collision c)
+        private void OnCollisionEnter(Collision c)
         {
-            if (0 != (layers.value & 1 << c.transform.gameObject.layer))
-            {
-                OnCollision.Invoke();
-            }
+            if (0 != (layers.value & (1 << c.transform.gameObject.layer))) OnCollision.Invoke();
         }
 
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             Gizmos.DrawIcon(transform.position, "InteractionTrigger", false);
         }

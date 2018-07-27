@@ -1,19 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.Playables;
+
+#endregion
 
 namespace Gamekit2D
 {
     [RequireComponent(typeof(PlayableDirector))]
     public class PrewarmDirector : MonoBehaviour
     {
-
-        void OnEnable()
+        private void OnEnable()
         {
             GetComponent<PlayableDirector>().RebuildGraph();
-
         }
-
     }
 }

@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿#region
+
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -8,9 +11,23 @@ namespace Gamekit2D
     {
         public enum FadeType
         {
-            Black, Loading, GameOver,
+            Black,
+            Loading,
+            GameOver
         }
-        
+
+        private const int k_MaxSortingLayer = 32767;
+
+        protected static ScreenFader s_Instance;
+        public float fadeDuration = 1f;
+
+
+        public CanvasGroup faderCanvasGroup;
+        public CanvasGroup gameOverCanvasGroup;
+        public CanvasGroup loadingCanvasGroup;
+
+        protected bool m_IsFading;
+
         public static ScreenFader Instance
         {
             get
@@ -18,12 +35,12 @@ namespace Gamekit2D
                 if (s_Instance != null)
                     return s_Instance;
 
-                s_Instance = FindObjectOfType<ScreenFader> ();
+                s_Instance = FindObjectOfType<ScreenFader>();
 
                 if (s_Instance != null)
                     return s_Instance;
 
-                Create ();
+                Create();
 
                 return s_Instance;
             }
@@ -34,57 +51,46 @@ namespace Gamekit2D
             get { return Instance.m_IsFading; }
         }
 
-        protected static ScreenFader s_Instance;
-
-        public static void Create ()
+        public static void Create()
         {
-            ScreenFader controllerPrefab = Resources.Load<ScreenFader> ("ScreenFader");
-            s_Instance = Instantiate (controllerPrefab);
+            var controllerPrefab = Resources.Load<ScreenFader>("ScreenFader");
+            s_Instance = Instantiate(controllerPrefab);
         }
 
-
-        public CanvasGroup faderCanvasGroup;
-        public CanvasGroup loadingCanvasGroup;
-        public CanvasGroup gameOverCanvasGroup;
-        public float fadeDuration = 1f;
-
-        protected bool m_IsFading;
-    
-        const int k_MaxSortingLayer = 32767;
-
-        void Awake ()
+        private void Awake()
         {
             if (Instance != this)
             {
-                Destroy (gameObject);
+                Destroy(gameObject);
                 return;
             }
-        
-            DontDestroyOnLoad (gameObject);
+
+            DontDestroyOnLoad(gameObject);
         }
 
         protected IEnumerator Fade(float finalAlpha, CanvasGroup canvasGroup)
         {
             m_IsFading = true;
             canvasGroup.blocksRaycasts = true;
-            float fadeSpeed = Mathf.Abs(canvasGroup.alpha - finalAlpha) / fadeDuration;
+            var fadeSpeed = Mathf.Abs(canvasGroup.alpha - finalAlpha) / fadeDuration;
             while (!Mathf.Approximately(canvasGroup.alpha, finalAlpha))
             {
                 canvasGroup.alpha = Mathf.MoveTowards(canvasGroup.alpha, finalAlpha,
                     fadeSpeed * Time.deltaTime);
                 yield return null;
             }
+
             canvasGroup.alpha = finalAlpha;
             m_IsFading = false;
             canvasGroup.blocksRaycasts = false;
         }
 
-        public static void SetAlpha (float alpha)
+        public static void SetAlpha(float alpha)
         {
             Instance.faderCanvasGroup.alpha = alpha;
         }
 
-        public static IEnumerator FadeSceneIn ()
+        public static IEnumerator FadeSceneIn()
         {
             CanvasGroup canvasGroup;
             if (Instance.faderCanvasGroup.alpha > 0.1f)
@@ -93,13 +99,13 @@ namespace Gamekit2D
                 canvasGroup = Instance.gameOverCanvasGroup;
             else
                 canvasGroup = Instance.loadingCanvasGroup;
-            
+
             yield return Instance.StartCoroutine(Instance.Fade(0f, canvasGroup));
 
-            canvasGroup.gameObject.SetActive (false);
+            canvasGroup.gameObject.SetActive(false);
         }
 
-        public static IEnumerator FadeSceneOut (FadeType fadeType = FadeType.Black)
+        public static IEnumerator FadeSceneOut(FadeType fadeType = FadeType.Black)
         {
             CanvasGroup canvasGroup;
             switch (fadeType)
@@ -114,9 +120,9 @@ namespace Gamekit2D
                     canvasGroup = Instance.loadingCanvasGroup;
                     break;
             }
-            
-            canvasGroup.gameObject.SetActive (true);
-            
+
+            canvasGroup.gameObject.SetActive(true);
+
             yield return Instance.StartCoroutine(Instance.Fade(1f, canvasGroup));
         }
     }

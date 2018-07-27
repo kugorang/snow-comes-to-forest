@@ -1,21 +1,31 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using UnityEditor;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
-    using SceneManagement;
-    using UnityObject = UnityEngine.Object;
+    #region
+
+    using UnityObject = Object;
+
+    #endregion
 
     public static class RuntimeUtilities
     {
         #region Textures
 
-        static Texture2D m_WhiteTexture;
+        private static Texture2D m_WhiteTexture;
+
         public static Texture2D whiteTexture
         {
             get
@@ -31,7 +41,8 @@ namespace UnityEngine.Rendering.PostProcessing
             }
         }
 
-        static Texture2D m_BlackTexture;
+        private static Texture2D m_BlackTexture;
+
         public static Texture2D blackTexture
         {
             get
@@ -47,7 +58,8 @@ namespace UnityEngine.Rendering.PostProcessing
             }
         }
 
-        static Texture2D m_TransparentTexture;
+        private static Texture2D m_TransparentTexture;
+
         public static Texture2D transparentTexture
         {
             get
@@ -67,7 +79,8 @@ namespace UnityEngine.Rendering.PostProcessing
 
         #region Rendering
 
-        static Mesh s_FullscreenTriangle;
+        private static Mesh s_FullscreenTriangle;
+
         public static Mesh fullscreenTriangle
         {
             get
@@ -75,24 +88,25 @@ namespace UnityEngine.Rendering.PostProcessing
                 if (s_FullscreenTriangle != null)
                     return s_FullscreenTriangle;
 
-                s_FullscreenTriangle = new Mesh { name = "Fullscreen Triangle" };
+                s_FullscreenTriangle = new Mesh {name = "Fullscreen Triangle"};
 
                 // Because we have to support older platforms (GLES2/3, DX9 etc) we can't do all of
                 // this directly in the vertex shader using vertex ids :(
                 s_FullscreenTriangle.SetVertices(new List<Vector3>
                 {
                     new Vector3(-1f, -1f, 0f),
-                    new Vector3(-1f,  3f, 0f),
-                    new Vector3( 3f, -1f, 0f)
+                    new Vector3(-1f, 3f, 0f),
+                    new Vector3(3f, -1f, 0f)
                 });
-                s_FullscreenTriangle.SetIndices(new [] { 0, 1, 2 }, MeshTopology.Triangles, 0, false);
+                s_FullscreenTriangle.SetIndices(new[] {0, 1, 2}, MeshTopology.Triangles, 0, false);
                 s_FullscreenTriangle.UploadMeshData(false);
 
                 return s_FullscreenTriangle;
             }
         }
 
-        static Material s_CopyStdMaterial;
+        private static Material s_CopyStdMaterial;
+
         public static Material copyStdMaterial
         {
             get
@@ -111,7 +125,8 @@ namespace UnityEngine.Rendering.PostProcessing
             }
         }
 
-        static Material s_CopyMaterial;
+        private static Material s_CopyMaterial;
+
         public static Material copyMaterial
         {
             get
@@ -130,7 +145,8 @@ namespace UnityEngine.Rendering.PostProcessing
             }
         }
 
-        static PropertySheet s_CopySheet;
+        private static PropertySheet s_CopySheet;
+
         public static PropertySheet copySheet
         {
             get
@@ -144,7 +160,8 @@ namespace UnityEngine.Rendering.PostProcessing
 
         // Use a custom blit method to draw a fullscreen triangle instead of a fullscreen quad
         // https://michaldrobot.com/2014/04/01/gcn-execution-patterns-in-full-screen-passes/
-        public static void BlitFullscreenTriangle(this CommandBuffer cmd, RenderTargetIdentifier source, RenderTargetIdentifier destination, bool clear = false)
+        public static void BlitFullscreenTriangle(this CommandBuffer cmd, RenderTargetIdentifier source,
+            RenderTargetIdentifier destination, bool clear = false)
         {
             cmd.SetGlobalTexture(ShaderIDs.MainTex, source);
             cmd.SetRenderTarget(destination);
@@ -155,7 +172,8 @@ namespace UnityEngine.Rendering.PostProcessing
             cmd.DrawMesh(fullscreenTriangle, Matrix4x4.identity, copyMaterial, 0, 0);
         }
 
-        public static void BlitFullscreenTriangle(this CommandBuffer cmd, RenderTargetIdentifier source, RenderTargetIdentifier destination, PropertySheet propertySheet, int pass, bool clear = false)
+        public static void BlitFullscreenTriangle(this CommandBuffer cmd, RenderTargetIdentifier source,
+            RenderTargetIdentifier destination, PropertySheet propertySheet, int pass, bool clear = false)
         {
             cmd.SetGlobalTexture(ShaderIDs.MainTex, source);
             cmd.SetRenderTarget(destination);
@@ -163,10 +181,13 @@ namespace UnityEngine.Rendering.PostProcessing
             if (clear)
                 cmd.ClearRenderTarget(true, true, Color.clear);
 
-            cmd.DrawMesh(fullscreenTriangle, Matrix4x4.identity, propertySheet.material, 0, pass, propertySheet.properties);
+            cmd.DrawMesh(fullscreenTriangle, Matrix4x4.identity, propertySheet.material, 0, pass,
+                propertySheet.properties);
         }
 
-        public static void BlitFullscreenTriangle(this CommandBuffer cmd, RenderTargetIdentifier source, RenderTargetIdentifier destination, RenderTargetIdentifier depth, PropertySheet propertySheet, int pass, bool clear = false)
+        public static void BlitFullscreenTriangle(this CommandBuffer cmd, RenderTargetIdentifier source,
+            RenderTargetIdentifier destination, RenderTargetIdentifier depth, PropertySheet propertySheet, int pass,
+            bool clear = false)
         {
             cmd.SetGlobalTexture(ShaderIDs.MainTex, source);
             cmd.SetRenderTarget(destination, depth);
@@ -174,10 +195,13 @@ namespace UnityEngine.Rendering.PostProcessing
             if (clear)
                 cmd.ClearRenderTarget(true, true, Color.clear);
 
-            cmd.DrawMesh(fullscreenTriangle, Matrix4x4.identity, propertySheet.material, 0, pass, propertySheet.properties);
+            cmd.DrawMesh(fullscreenTriangle, Matrix4x4.identity, propertySheet.material, 0, pass,
+                propertySheet.properties);
         }
 
-        public static void BlitFullscreenTriangle(this CommandBuffer cmd, RenderTargetIdentifier source, RenderTargetIdentifier[] destinations, RenderTargetIdentifier depth, PropertySheet propertySheet, int pass, bool clear = false)
+        public static void BlitFullscreenTriangle(this CommandBuffer cmd, RenderTargetIdentifier source,
+            RenderTargetIdentifier[] destinations, RenderTargetIdentifier depth, PropertySheet propertySheet, int pass,
+            bool clear = false)
         {
             cmd.SetGlobalTexture(ShaderIDs.MainTex, source);
             cmd.SetRenderTarget(destinations, depth);
@@ -185,10 +209,12 @@ namespace UnityEngine.Rendering.PostProcessing
             if (clear)
                 cmd.ClearRenderTarget(true, true, Color.clear);
 
-            cmd.DrawMesh(fullscreenTriangle, Matrix4x4.identity, propertySheet.material, 0, pass, propertySheet.properties);
+            cmd.DrawMesh(fullscreenTriangle, Matrix4x4.identity, propertySheet.material, 0, pass,
+                propertySheet.properties);
         }
 
-        public static void BlitFullscreenTriangle(Texture source, RenderTexture destination, Material material, int pass)
+        public static void BlitFullscreenTriangle(Texture source, RenderTexture destination, Material material,
+            int pass)
         {
             var oldRt = RenderTexture.active;
 
@@ -203,7 +229,8 @@ namespace UnityEngine.Rendering.PostProcessing
 
         // Fast basic copy texture if available, falls back to blit copy if not
         // Assumes that both textures have the exact same type and format
-        public static void CopyTexture(CommandBuffer cmd, RenderTargetIdentifier source, RenderTargetIdentifier destination)
+        public static void CopyTexture(CommandBuffer cmd, RenderTargetIdentifier source,
+            RenderTargetIdentifier destination)
         {
             if (SystemInfo.copyTextureSupport > CopyTextureSupport.None)
             {
@@ -231,8 +258,8 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             get
             {
-                return UnityEditor.PlayerSettings.virtualRealitySupported
-                    && UnityEditor.PlayerSettings.stereoRenderingPath == UnityEditor.StereoRenderingPath.SinglePass;
+                return PlayerSettings.virtualRealitySupported
+                       && PlayerSettings.stereoRenderingPath == StereoRenderingPath.SinglePass;
             }
         }
 #endif
@@ -257,7 +284,7 @@ namespace UnityEngine.Rendering.PostProcessing
             get
             {
 #if UNITY_EDITOR
-                return UnityEditor.PlayerSettings.virtualRealitySupported;
+                return PlayerSettings.virtualRealitySupported;
 #elif UNITY_XBOXONE
                 return false;
 #elif UNITY_2017_2_OR_NEWER
@@ -270,7 +297,11 @@ namespace UnityEngine.Rendering.PostProcessing
 
         public static bool isAndroidOpenGL
         {
-            get { return Application.platform == RuntimePlatform.Android && SystemInfo.graphicsDeviceType != GraphicsDeviceType.Vulkan; }
+            get
+            {
+                return Application.platform == RuntimePlatform.Android &&
+                       SystemInfo.graphicsDeviceType != GraphicsDeviceType.Vulkan;
+            }
         }
 
         public static void Destroy(UnityObject obj)
@@ -299,16 +330,15 @@ namespace UnityEngine.Rendering.PostProcessing
             // TODO: Is there more proper way to determine this? What about SRPs?
             var gtype = SystemInfo.graphicsDeviceType;
             return camera.actualRenderingPath == RenderingPath.DeferredShading &&
-                (gtype == GraphicsDeviceType.Direct3D11 || gtype == GraphicsDeviceType.Direct3D12 || gtype == GraphicsDeviceType.XboxOne);
+                   (gtype == GraphicsDeviceType.Direct3D11 || gtype == GraphicsDeviceType.Direct3D12 ||
+                    gtype == GraphicsDeviceType.XboxOne);
         }
 
         public static void DestroyProfile(PostProcessProfile profile, bool destroyEffects)
         {
             if (destroyEffects)
-            {
                 foreach (var effect in profile.settings)
                     Destroy(effect);
-            }
 
             Destroy(profile);
         }
@@ -339,7 +369,6 @@ namespace UnityEngine.Rendering.PostProcessing
             }
 
             while (queue.Count > 0)
-            {
                 foreach (Transform child in queue.Dequeue())
                 {
                     queue.Enqueue(child);
@@ -348,7 +377,6 @@ namespace UnityEngine.Rendering.PostProcessing
                     if (comp != null)
                         yield return comp;
                 }
-            }
         }
 
         public static void CreateIfNull<T>(ref T obj)
@@ -371,28 +399,28 @@ namespace UnityEngine.Rendering.PostProcessing
         // https://github.com/playdeadgames/temporal/blob/master/Assets/Scripts/Extensions.cs
         public static Matrix4x4 GetJitteredPerspectiveProjectionMatrix(Camera camera, Vector2 offset)
         {
-            float vertical = Mathf.Tan(0.5f * Mathf.Deg2Rad * camera.fieldOfView);
-            float horizontal = vertical * camera.aspect;
-            float near = camera.nearClipPlane;
-            float far = camera.farClipPlane;
+            var vertical = Mathf.Tan(0.5f * Mathf.Deg2Rad * camera.fieldOfView);
+            var horizontal = vertical * camera.aspect;
+            var near = camera.nearClipPlane;
+            var far = camera.farClipPlane;
 
             offset.x *= horizontal / (0.5f * camera.pixelWidth);
             offset.y *= vertical / (0.5f * camera.pixelHeight);
 
-            float left = (offset.x - horizontal) * near;
-            float right = (offset.x + horizontal) * near;
-            float top = (offset.y + vertical) * near;
-            float bottom = (offset.y - vertical) * near;
+            var left = (offset.x - horizontal) * near;
+            var right = (offset.x + horizontal) * near;
+            var top = (offset.y + vertical) * near;
+            var bottom = (offset.y - vertical) * near;
 
             var matrix = new Matrix4x4();
 
-            matrix[0, 0] = (2f * near) / (right - left);
+            matrix[0, 0] = 2f * near / (right - left);
             matrix[0, 1] = 0f;
             matrix[0, 2] = (right + left) / (right - left);
             matrix[0, 3] = 0f;
 
             matrix[1, 0] = 0f;
-            matrix[1, 1] = (2f * near) / (top - bottom);
+            matrix[1, 1] = 2f * near / (top - bottom);
             matrix[1, 2] = (top + bottom) / (top - bottom);
             matrix[1, 3] = 0f;
 
@@ -411,30 +439,31 @@ namespace UnityEngine.Rendering.PostProcessing
 
         public static Matrix4x4 GetJitteredOrthographicProjectionMatrix(Camera camera, Vector2 offset)
         {
-            float vertical = camera.orthographicSize;
-            float horizontal = vertical * camera.aspect;
+            var vertical = camera.orthographicSize;
+            var horizontal = vertical * camera.aspect;
 
             offset.x *= horizontal / (0.5f * camera.pixelWidth);
             offset.y *= vertical / (0.5f * camera.pixelHeight);
 
-            float left = offset.x - horizontal;
-            float right = offset.x + horizontal;
-            float top = offset.y + vertical;
-            float bottom = offset.y - vertical;
+            var left = offset.x - horizontal;
+            var right = offset.x + horizontal;
+            var top = offset.y + vertical;
+            var bottom = offset.y - vertical;
 
             return Matrix4x4.Ortho(left, right, bottom, top, camera.nearClipPlane, camera.farClipPlane);
         }
 
-        public static Matrix4x4 GenerateJitteredProjectionMatrixFromOriginal(PostProcessRenderContext context, Matrix4x4 origProj, Vector2 jitter)
+        public static Matrix4x4 GenerateJitteredProjectionMatrixFromOriginal(PostProcessRenderContext context,
+            Matrix4x4 origProj, Vector2 jitter)
         {
 #if UNITY_2017_2_OR_NEWER
             var planes = origProj.decomposeProjection;
 
-            float vertFov = Math.Abs(planes.top) + Math.Abs(planes.bottom);
-            float horizFov = Math.Abs(planes.left) + Math.Abs(planes.right);
+            var vertFov = Math.Abs(planes.top) + Math.Abs(planes.bottom);
+            var horizFov = Math.Abs(planes.left) + Math.Abs(planes.right);
 
             var planeJitter = new Vector2(jitter.x * horizFov / context.screenWidth,
-                                          jitter.y * vertFov / context.screenHeight);
+                jitter.y * vertFov / context.screenHeight);
 
             planes.left += planeJitter.x;
             planes.right += planeJitter.x;
@@ -503,7 +532,10 @@ namespace UnityEngine.Rendering.PostProcessing
                     {
                         innerTypes = t.GetTypes();
                     }
-                    catch {}
+                    catch
+                    {
+                    }
+
                     return innerTypes;
                 });
         }
@@ -512,7 +544,7 @@ namespace UnityEngine.Rendering.PostProcessing
         public static T GetAttribute<T>(this Type type) where T : Attribute
         {
             Assert.IsTrue(type.IsDefined(typeof(T), false), "Attribute not found");
-            return (T)type.GetCustomAttributes(typeof(T), false)[0];
+            return (T) type.GetCustomAttributes(typeof(T), false)[0];
         }
 
         // Returns all attributes set on a specific member
@@ -522,12 +554,12 @@ namespace UnityEngine.Rendering.PostProcessing
             Expression body = expr;
 
             if (body is LambdaExpression)
-                body = ((LambdaExpression)body).Body;
+                body = ((LambdaExpression) body).Body;
 
             switch (body.NodeType)
             {
                 case ExpressionType.MemberAccess:
-                    var fi = (FieldInfo)((MemberExpression)body).Member;
+                    var fi = (FieldInfo) ((MemberExpression) body).Member;
                     return fi.GetCustomAttributes(false).Cast<Attribute>().ToArray();
                 default:
                     throw new InvalidOperationException();
@@ -556,7 +588,7 @@ namespace UnityEngine.Rendering.PostProcessing
             }
 
             var sb = new StringBuilder();
-            for (int i = members.Count - 1; i >= 0; i--)
+            for (var i = members.Count - 1; i >= 0; i--)
             {
                 sb.Append(members[i]);
                 if (i > 0) sb.Append('.');
@@ -572,12 +604,13 @@ namespace UnityEngine.Rendering.PostProcessing
             if (fields.Length == 1)
                 return obj;
 
-            var info = obj.GetType().GetField(fields[0], BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            var info = obj.GetType().GetField(fields[0],
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             obj = info.GetValue(obj);
 
             return GetParentObject(string.Join(".", fields, 1, fields.Length - 1), obj);
         }
 
-#endregion
+        #endregion
     }
 }

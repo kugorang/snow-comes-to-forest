@@ -1,11 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEditor;
-using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     [CustomEditor(typeof(DirectorTrigger))]
     public class DirectorTriggerEditor : DataPersisterEditor
-    {}
+    {
+    }
 }

@@ -1,6 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -8,9 +10,9 @@ namespace Gamekit2D
     {
         public GameObject resettingGameObject;
 
-        public void ResetPosition ()
+        public void ResetPosition()
         {
-            GameObjectTeleporter.Teleport (resettingGameObject, transform);
+            GameObjectTeleporter.Teleport(resettingGameObject, transform);
         }
     }
 }

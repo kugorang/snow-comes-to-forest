@@ -1,5 +1,9 @@
+#region
+
 using System;
 using UnityEngine.Serialization;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -7,10 +11,12 @@ namespace UnityEngine.Rendering.PostProcessing
     public sealed class FastApproximateAntialiasing
     {
         [FormerlySerializedAs("mobileOptimized")]
-        [Tooltip("Boost performances by lowering the effect quality. This settings is meant to be used on mobile and other low-end platforms but can also provide a nice performance boost on desktops and consoles.")]
-        public bool fastMode = false;
+        [Tooltip(
+            "Boost performances by lowering the effect quality. This settings is meant to be used on mobile and other low-end platforms but can also provide a nice performance boost on desktops and consoles.")]
+        public bool fastMode;
 
-        [Tooltip("Keep alpha channel. This will slightly lower the effect quality but allows rendering against a transparent background.")]
-        public bool keepAlpha = false;
+        [Tooltip(
+            "Keep alpha channel. This will slightly lower the effect quality but allows rendering against a transparent background.")]
+        public bool keepAlpha;
     }
 }

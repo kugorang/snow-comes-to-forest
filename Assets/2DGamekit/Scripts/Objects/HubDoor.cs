@@ -1,52 +1,23 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.Events;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class HubDoor : MonoBehaviour, IDataPersister
     {
-        public string[] requiredInventoryItemKeys;
-        public Sprite[] unlockStateSprites;
-
-        public DirectorTrigger keyDirectorTrigger;
         public InventoryController characterInventory;
-        public UnityEvent onUnlocked;
         public DataSettings dataSettings;
 
-        SpriteRenderer m_SpriteRenderer;
+        public DirectorTrigger keyDirectorTrigger;
 
-        [ContextMenu("Update State")]
-        void CheckInventory()
-        {
-            var stateIndex = -1;
-            foreach (var i in requiredInventoryItemKeys)
-            {
-                if (characterInventory.HasItem(i))
-                {
-                    stateIndex++;
-                }
-            }
-            if (stateIndex >= 0)
-            {
-                keyDirectorTrigger.OverrideAlreadyTriggered (true);
-                m_SpriteRenderer.sprite = unlockStateSprites[stateIndex];
-                if (stateIndex == requiredInventoryItemKeys.Length - 1) onUnlocked.Invoke();
-            }
-        }
-
-        void OnEnable()
-        {
-            m_SpriteRenderer = GetComponent<SpriteRenderer>();
-            characterInventory.OnInventoryLoaded += CheckInventory;
-        }
-
-        void Update ()
-        {
-            CheckInventory ();
-        }
+        private SpriteRenderer m_SpriteRenderer;
+        public UnityEvent onUnlocked;
+        public string[] requiredInventoryItemKeys;
+        public Sprite[] unlockStateSprites;
 
         public DataSettings GetDataSettings()
         {
@@ -70,6 +41,30 @@ namespace Gamekit2D
             dataSettings.persistenceType = persistenceType;
         }
 
+        [ContextMenu("Update State")]
+        private void CheckInventory()
+        {
+            var stateIndex = -1;
+            foreach (var i in requiredInventoryItemKeys)
+                if (characterInventory.HasItem(i))
+                    stateIndex++;
+            if (stateIndex >= 0)
+            {
+                keyDirectorTrigger.OverrideAlreadyTriggered(true);
+                m_SpriteRenderer.sprite = unlockStateSprites[stateIndex];
+                if (stateIndex == requiredInventoryItemKeys.Length - 1) onUnlocked.Invoke();
+            }
+        }
 
+        private void OnEnable()
+        {
+            m_SpriteRenderer = GetComponent<SpriteRenderer>();
+            characterInventory.OnInventoryLoaded += CheckInventory;
+        }
+
+        private void Update()
+        {
+            CheckInventory();
+        }
     }
 }

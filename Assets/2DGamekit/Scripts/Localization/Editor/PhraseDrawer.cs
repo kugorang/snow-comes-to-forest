@@ -1,22 +1,26 @@
-﻿using UnityEditor;
+﻿#region
+
+using UnityEditor;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     [CustomPropertyDrawer(typeof(Phrase))]
     public class PhraseDrawer : PropertyDrawer
     {
-        public override float GetPropertyHeight (SerializedProperty property, GUIContent label)
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             return EditorGUIUtility.singleLineHeight;
         }
 
-        public override void OnGUI (Rect position, SerializedProperty property, GUIContent label)
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            SerializedProperty keyProp = property.FindPropertyRelative ("key");
-            SerializedProperty valueProp = property.FindPropertyRelative ("value");
+            var keyProp = property.FindPropertyRelative("key");
+            var valueProp = property.FindPropertyRelative("value");
 
-            Rect propertyRect = position;
+            var propertyRect = position;
             propertyRect.width *= 0.25f;
             EditorGUI.PropertyField(propertyRect, keyProp, GUIContent.none);
 

@@ -1,7 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.Tilemaps;
+
+#endregion
 
 namespace Gamekit2D
 {

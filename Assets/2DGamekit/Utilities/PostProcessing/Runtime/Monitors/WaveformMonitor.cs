@@ -1,4 +1,8 @@
+#region
+
 using System;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -8,11 +12,11 @@ namespace UnityEngine.Rendering.PostProcessing
         public float exposure = 0.12f;
         public int height = 256;
 
-        ComputeBuffer m_Data;
+        private ComputeBuffer m_Data;
 
-        int m_ThreadGroupSize;
-        int m_ThreadGroupSizeX;
-        int m_ThreadGroupSizeY;
+        private int m_ThreadGroupSize;
+        private int m_ThreadGroupSizeX;
+        private int m_ThreadGroupSizeY;
 
         internal override void OnEnable()
         {
@@ -48,13 +52,13 @@ namespace UnityEngine.Rendering.PostProcessing
         internal override void Render(PostProcessRenderContext context)
         {
             // Waveform show localized data, so width depends on the aspect ratio
-            float ratio = (context.width / 2f) / (context.height / 2f);
-            int width = Mathf.FloorToInt(height * ratio);
+            var ratio = context.width / 2f / (context.height / 2f);
+            var width = Mathf.FloorToInt(height * ratio);
 
             CheckOutput(width, height);
             exposure = Mathf.Max(0f, exposure);
 
-            int count = width * height;
+            var count = width * height;
             if (m_Data == null)
             {
                 m_Data = new ComputeBuffer(count, sizeof(uint) << 2);
@@ -77,10 +81,11 @@ namespace UnityEngine.Rendering.PostProcessing
             );
 
             // Clear the buffer on every frame
-            int kernel = compute.FindKernel("KWaveformClear");
+            var kernel = compute.FindKernel("KWaveformClear");
             cmd.SetComputeBufferParam(compute, kernel, "_WaveformBuffer", m_Data);
             cmd.SetComputeVectorParam(compute, "_Params", parameters);
-            cmd.DispatchCompute(compute, kernel, Mathf.CeilToInt(width / (float)m_ThreadGroupSizeX), Mathf.CeilToInt(height / (float)m_ThreadGroupSizeY), 1);
+            cmd.DispatchCompute(compute, kernel, Mathf.CeilToInt(width / (float) m_ThreadGroupSizeX),
+                Mathf.CeilToInt(height / (float) m_ThreadGroupSizeY), 1);
 
             // For performance reasons, especially on consoles, we'll just downscale the source
             // again to reduce VMEM stalls. Eventually the whole algorithm needs to be rewritten as
@@ -93,7 +98,7 @@ namespace UnityEngine.Rendering.PostProcessing
             cmd.SetComputeBufferParam(compute, kernel, "_WaveformBuffer", m_Data);
             cmd.SetComputeTextureParam(compute, kernel, "_Source", ShaderIDs.WaveformSource);
             cmd.SetComputeVectorParam(compute, "_Params", parameters);
-            cmd.DispatchCompute(compute, kernel, width, Mathf.CeilToInt(height / (float)m_ThreadGroupSize), 1);
+            cmd.DispatchCompute(compute, kernel, width, Mathf.CeilToInt(height / (float) m_ThreadGroupSize), 1);
             cmd.ReleaseTemporaryRT(ShaderIDs.WaveformSource);
 
             // Generate the waveform texture

@@ -1,5 +1,9 @@
+#region
+
 using System;
 using UnityEngine.Assertions;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -10,25 +14,22 @@ namespace UnityEngine.Rendering.PostProcessing
         public const int k_Precision = 128;
         public const float k_Step = 1f / k_Precision;
 
-        public AnimationCurve curve;
+        [SerializeField] private readonly bool m_Loop;
 
-        [SerializeField]
-        bool m_Loop;
+        [SerializeField] private readonly float m_Range;
 
-        [SerializeField]
-        float m_ZeroValue;
-
-        [SerializeField]
-        float m_Range;
-
-        AnimationCurve m_InternalLoopingCurve;
-
-        // Used to track frame changes for data caching
-        int frameCount = -1;
+        [SerializeField] private readonly float m_ZeroValue;
 
         // Instead of trying to be smart and blend two curves by generating a new one, we'll simply
         // store the curve data in a float array and blend these instead.
         internal float[] cachedData;
+
+        public AnimationCurve curve;
+
+        // Used to track frame changes for data caching
+        private int frameCount = -1;
+
+        private AnimationCurve m_InternalLoopingCurve;
 
         public Spline(AnimationCurve curve, float zeroValue, bool loop, Vector2 bounds)
         {
@@ -62,8 +63,8 @@ namespace UnityEngine.Rendering.PostProcessing
                 m_InternalLoopingCurve.AddKey(next);
             }
 
-            for (int i = 0; i < k_Precision; i++)
-                cachedData[i] = Evaluate((float)i * k_Step);
+            for (var i = 0; i < k_Precision; i++)
+                cachedData[i] = Evaluate(i * k_Step);
 
             frameCount = Time.renderedFrameCount;
         }
@@ -83,8 +84,9 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             unchecked
             {
-                int hash = 17;
-                hash = hash * 23 + curve.GetHashCode(); // Not implemented in Unity, so it'll always return the same value :(
+                var hash = 17;
+                hash = hash * 23 + curve
+                           .GetHashCode(); // Not implemented in Unity, so it'll always return the same value :(
                 return hash;
             }
         }

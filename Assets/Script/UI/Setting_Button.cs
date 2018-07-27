@@ -1,38 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Setting_Button : MonoBehaviour {
+#endregion
+
+public class Setting_Button : MonoBehaviour
+{
+    public AudioManager AudioManager;
+
+    public Image bgmImage;
+    private bool bgmOn;
 
     public Image controlImage;
     public Sprite[] controlSprite = new Sprite[2];
 
-    public Image bgmImage;
-    public Image sfxImage;
-    public Sprite[] soundSprite = new Sprite[2];
-
-    public GameObject settingPanel;
-
-    private bool easyControl;
-    private bool bgmOn;
-    private bool sfxOn;
-
     public GameObject creditButton;
     public GameObject creditPanel;
 
-    public AudioManager AudioManager;
+    private bool easyControl;
+
+    public GameObject settingPanel;
+    public Image sfxImage;
+    private bool sfxOn;
+    public Sprite[] soundSprite = new Sprite[2];
 
     public void ControlBtnPress()
     {
         if (easyControl)
-        {
             controlImage.sprite = controlSprite[0];
-        }
         else
-        {
             controlImage.sprite = controlSprite[1];
-        }
 
         easyControl = !easyControl;
     }
@@ -56,13 +54,9 @@ public class Setting_Button : MonoBehaviour {
     public void SFXBtnPress()
     {
         if (sfxOn)
-        {
             sfxImage.sprite = soundSprite[0];
-        }
         else
-        {
             sfxImage.sprite = soundSprite[1];
-        }
 
         sfxOn = !sfxOn;
     }
@@ -76,5 +70,4 @@ public class Setting_Button : MonoBehaviour {
     {
         creditPanel.SetActive(false);
     }
-
 }

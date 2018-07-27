@@ -1,6 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -11,16 +13,13 @@ namespace Gamekit2D
 
         private void Reset()
         {
-            GetComponent<BoxCollider2D>().isTrigger = true; 
+            GetComponent<BoxCollider2D>().isTrigger = true;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            PlayerCharacter c = collision.GetComponent<PlayerCharacter>();
-            if(c != null)
-            {
-                c.SetChekpoint(this);
-            }
+            var c = collision.GetComponent<PlayerCharacter>();
+            if (c != null) c.SetChekpoint(this);
         }
     }
 }

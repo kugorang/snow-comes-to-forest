@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
-using UnityEngine.Tilemaps;
+
+#endregion
 
 namespace Gamekit2D
 {
     public static class Vector2Extension
     {
-
         public static Vector2 Rotate(this Vector2 v, float degrees)
         {
-            float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
-            float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
+            var sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
+            var cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
 
-            float tx = v.x;
-            float ty = v.y;
-            v.x = (cos * tx) - (sin * ty);
-            v.y = (sin * tx) + (cos * ty);
+            var tx = v.x;
+            var ty = v.y;
+            v.x = cos * tx - sin * ty;
+            v.y = sin * tx + cos * ty;
             return v;
         }
     }
@@ -65,17 +64,14 @@ namespace Gamekit2D
     {
         public static bool ValidCollision(this PlatformEffector2D effector, Vector2 velocity)
         {
-            float dot = Vector2.Dot(effector.transform.up, -velocity.normalized);
-            float cos = Mathf.Cos(effector.surfaceArc * 0.5f * Mathf.Deg2Rad);
+            var dot = Vector2.Dot(effector.transform.up, -velocity.normalized);
+            var cos = Mathf.Cos(effector.surfaceArc * 0.5f * Mathf.Deg2Rad);
 
             //we round both the dot & cos to 1/1000 precision to avoid undefined behaviour on edge case (e.g. side of a paltform with 180 side arc)
             dot = Mathf.Round(dot * 1000.0f) / 1000.0f;
             cos = Mathf.Round(cos * 1000.0f) / 1000.0f;
 
-            if (dot > cos)
-            {
-                return true;
-            }
+            if (dot > cos) return true;
 
             return false;
         }

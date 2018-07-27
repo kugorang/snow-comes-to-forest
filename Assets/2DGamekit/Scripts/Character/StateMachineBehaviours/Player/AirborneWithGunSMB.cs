@@ -1,6 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -22,9 +24,9 @@ namespace Gamekit2D
 
         public override void OnSLStatePreExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            AnimatorStateInfo nextState = animator.GetNextAnimatorStateInfo (0);
-            if (!nextState.IsTag ("WithGun"))
-                m_MonoBehaviour.ForceNotHoldingGun ();
+            var nextState = animator.GetNextAnimatorStateInfo(0);
+            if (!nextState.IsTag("WithGun"))
+                m_MonoBehaviour.ForceNotHoldingGun();
         }
     }
 }

@@ -1,18 +1,23 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Rendering.PostProcessing;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
     public static class EditorUtilities
     {
-        static Dictionary<string, GUIContent> s_GUIContentCache;
-        static Dictionary<Type, AttributeDecorator> s_AttributeDecorators;
+        private static readonly Dictionary<string, GUIContent> s_GUIContentCache;
+        private static readonly Dictionary<Type, AttributeDecorator> s_AttributeDecorators;
 
-        static PostProcessEffectSettings s_ClipboardContent;
+        private static PostProcessEffectSettings s_ClipboardContent;
 
         static EditorUtilities()
         {
@@ -21,29 +26,29 @@ namespace UnityEditor.Rendering.PostProcessing
             ReloadDecoratorTypes();
         }
 
-        [Callbacks.DidReloadScripts]
-        static void OnEditorReload()
+        [DidReloadScripts]
+        private static void OnEditorReload()
         {
             ReloadDecoratorTypes();
         }
 
-        static void ReloadDecoratorTypes()
+        private static void ReloadDecoratorTypes()
         {
             s_AttributeDecorators.Clear();
 
             // Look for all the valid attribute decorators
             var types = RuntimeUtilities.GetAllAssemblyTypes()
-                            .Where(
-                                t => t.IsSubclassOf(typeof(AttributeDecorator))
-                                  && t.IsDefined(typeof(DecoratorAttribute), false)
-                                  && !t.IsAbstract
-                            );
+                .Where(
+                    t => t.IsSubclassOf(typeof(AttributeDecorator))
+                         && t.IsDefined(typeof(DecoratorAttribute), false)
+                         && !t.IsAbstract
+                );
 
             // Store them
             foreach (var type in types)
             {
                 var attr = type.GetAttribute<DecoratorAttribute>();
-                var decorator = (AttributeDecorator)Activator.CreateInstance(type);
+                var decorator = (AttributeDecorator) Activator.CreateInstance(type);
                 s_AttributeDecorators.Add(attr.attributeType, decorator);
             }
         }
@@ -93,6 +98,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
                 GUILayout.Space(8);
             }
+
             GUILayout.Space(11);
         }
 
@@ -116,7 +122,8 @@ namespace UnityEditor.Rendering.PostProcessing
         {
             var oldColor = GUI.color;
             GUI.color = new Color(0.6f, 0.6f, 0.6f, 0.75f);
-            property.boolValue = GUI.Toggle(rect, property.boolValue, GetContent("|Override this setting for this volume."), Styling.smallTickbox);
+            property.boolValue = GUI.Toggle(rect, property.boolValue,
+                GetContent("|Override this setting for this volume."), Styling.smallTickbox);
             GUI.color = oldColor;
         }
 
@@ -143,7 +150,7 @@ namespace UnityEditor.Rendering.PostProcessing
             backgroundRect.width += 4f;
 
             // Background
-            float backgroundTint = EditorGUIUtility.isProSkin ? 0.1f : 1f;
+            var backgroundTint = EditorGUIUtility.isProSkin ? 0.1f : 1f;
             EditorGUI.DrawRect(backgroundRect, new Color(backgroundTint, backgroundTint, backgroundTint, 0.2f));
 
             // Title
@@ -162,7 +169,8 @@ namespace UnityEditor.Rendering.PostProcessing
             return state;
         }
 
-        public static bool DrawHeader(string title, SerializedProperty group, SerializedProperty activeField, PostProcessEffectSettings target, Action resetAction, Action removeAction)
+        public static bool DrawHeader(string title, SerializedProperty group, SerializedProperty activeField,
+            PostProcessEffectSettings target, Action resetAction, Action removeAction)
         {
             Assert.IsNotNull(group);
             Assert.IsNotNull(activeField);
@@ -190,16 +198,19 @@ namespace UnityEditor.Rendering.PostProcessing
             backgroundRect.width += 4f;
 
             // Background
-            float backgroundTint = EditorGUIUtility.isProSkin ? 0.1f : 1f;
+            var backgroundTint = EditorGUIUtility.isProSkin ? 0.1f : 1f;
             EditorGUI.DrawRect(backgroundRect, new Color(backgroundTint, backgroundTint, backgroundTint, 0.2f));
 
             // Title
             using (new EditorGUI.DisabledScope(!activeField.boolValue))
+            {
                 EditorGUI.LabelField(labelRect, GetContent(title), EditorStyles.boldLabel);
+            }
 
             // Active checkbox
             activeField.serializedObject.Update();
-            activeField.boolValue = GUI.Toggle(toggleRect, activeField.boolValue, GUIContent.none, Styling.smallTickbox);
+            activeField.boolValue =
+                GUI.Toggle(toggleRect, activeField.boolValue, GUIContent.none, Styling.smallTickbox);
             activeField.serializedObject.ApplyModifiedProperties();
 
             // Dropdown menu icon
@@ -209,7 +220,7 @@ namespace UnityEditor.Rendering.PostProcessing
             var e = Event.current;
 
             if (e.type == EventType.MouseDown)
-            {   
+            {
                 if (menuRect.Contains(e.mousePosition))
                 {
                     ShowHeaderContextMenu(new Vector2(menuRect.x, menuRect.yMax), target, resetAction, removeAction);
@@ -229,7 +240,8 @@ namespace UnityEditor.Rendering.PostProcessing
             return group.isExpanded;
         }
 
-        static void ShowHeaderContextMenu(Vector2 position, PostProcessEffectSettings target, Action resetAction, Action removeAction)
+        private static void ShowHeaderContextMenu(Vector2 position, PostProcessEffectSettings target,
+            Action resetAction, Action removeAction)
         {
             Assert.IsNotNull(resetAction);
             Assert.IsNotNull(removeAction);
@@ -248,7 +260,7 @@ namespace UnityEditor.Rendering.PostProcessing
             menu.DropDown(new Rect(position, Vector2.zero));
         }
 
-        static void CopySettings(PostProcessEffectSettings target)
+        private static void CopySettings(PostProcessEffectSettings target)
         {
             Assert.IsNotNull(target);
 
@@ -258,11 +270,11 @@ namespace UnityEditor.Rendering.PostProcessing
                 s_ClipboardContent = null;
             }
 
-            s_ClipboardContent = (PostProcessEffectSettings)ScriptableObject.CreateInstance(target.GetType());
+            s_ClipboardContent = (PostProcessEffectSettings) ScriptableObject.CreateInstance(target.GetType());
             EditorUtility.CopySerializedIfDifferent(target, s_ClipboardContent);
         }
 
-        static void PasteSettings(PostProcessEffectSettings target)
+        private static void PasteSettings(PostProcessEffectSettings target)
         {
             Assert.IsNotNull(target);
             Assert.IsNotNull(s_ClipboardContent);
@@ -272,10 +284,10 @@ namespace UnityEditor.Rendering.PostProcessing
             EditorUtility.CopySerializedIfDifferent(s_ClipboardContent, target);
         }
 
-        static bool CanPaste(PostProcessEffectSettings target)
+        private static bool CanPaste(PostProcessEffectSettings target)
         {
             return s_ClipboardContent != null
-                && s_ClipboardContent.GetType() == target.GetType();
+                   && s_ClipboardContent.GetType() == target.GetType();
         }
     }
 }

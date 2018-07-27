@@ -10,14 +10,13 @@
 
     public abstract class Monitor
     {
-        public RenderTexture output { get; protected set; }
-
         internal bool requested = false;
+        public RenderTexture output { get; protected set; }
 
         public bool IsRequestedAndSupported()
         {
             return requested
-                && SystemInfo.supportsComputeShaders;
+                   && SystemInfo.supportsComputeShaders;
         }
 
         internal virtual bool NeedsHalfRes()

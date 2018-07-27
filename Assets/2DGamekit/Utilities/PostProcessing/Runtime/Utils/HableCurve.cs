@@ -4,41 +4,16 @@ namespace UnityEngine.Rendering.PostProcessing
     // http://filmicworlds.com/blog/filmic-tonemapping-with-piecewise-power-curves/
     public class HableCurve
     {
-        public class Segment
+        public readonly Segment[] segments = new Segment[3];
+
+        public readonly Uniforms uniforms;
+
+        public HableCurve()
         {
-            public float offsetX;
-            public float offsetY;
-            public float scaleX;
-            public float scaleY;
-            public float lnA;
-            public float B;
+            for (var i = 0; i < 3; i++)
+                segments[i] = new Segment();
 
-            public float Eval(float x)
-            {
-                float x0 = (x - offsetX) * scaleX;
-                float y0 = 0f;
-
-                // log(0) is undefined but our function should evaluate to 0. There are better ways to handle this,
-                // but it's doing it the slow way here for clarity.
-                if (x0 > 0)
-                    y0 = Mathf.Exp(lnA + B * Mathf.Log(x0));
-
-                return y0 * scaleY + offsetY;
-            }
-        }
-
-        struct DirectParams
-        {
-            internal float x0;
-            internal float y0;
-            internal float x1;
-            internal float y1;
-            internal float W;
-
-            internal float overshootX;
-            internal float overshootY;
-
-            internal float gamma;
+            uniforms = new Uniforms(this);
         }
 
         public float whitePoint { get; private set; }
@@ -46,26 +21,17 @@ namespace UnityEngine.Rendering.PostProcessing
         public float x0 { get; private set; }
         public float x1 { get; private set; }
 
-        public readonly Segment[] segments = new Segment[3];
-
-        public HableCurve()
-        {
-            for (int i = 0; i < 3; i++)
-                segments[i] = new Segment();
-
-            uniforms = new Uniforms(this);
-        }
-
         public float Eval(float x)
         {
-            float normX = x * inverseWhitePoint;
-            int index = (normX < x0) ? 0 : ((normX < x1) ? 1 : 2);
+            var normX = x * inverseWhitePoint;
+            var index = normX < x0 ? 0 : (normX < x1 ? 1 : 2);
             var segment = segments[index];
-            float ret = segment.Eval(normX);
+            var ret = segment.Eval(normX);
             return ret;
         }
 
-        public void Init(float toeStrength, float toeLength, float shoulderStrength, float shoulderLength, float shoulderAngle, float gamma)
+        public void Init(float toeStrength, float toeLength, float shoulderStrength, float shoulderLength,
+            float shoulderAngle, float gamma)
         {
             var dstParams = new DirectParams();
 
@@ -86,21 +52,21 @@ namespace UnityEngine.Rendering.PostProcessing
             // Apply base params
             {
                 // Toe goes from 0 to 0.5
-                float x0 = toeLength * 0.5f;
-                float y0 = (1f - toeStrength) * x0; // Lerp from 0 to x0
+                var x0 = toeLength * 0.5f;
+                var y0 = (1f - toeStrength) * x0; // Lerp from 0 to x0
 
-                float remainingY = 1f - y0;
+                var remainingY = 1f - y0;
 
-                float initialW = x0 + remainingY;
+                var initialW = x0 + remainingY;
 
-                float y1_offset = (1f - shoulderStrength) * remainingY;
-                float x1 = x0 + y1_offset;
-                float y1 = y0 + y1_offset;
+                var y1_offset = (1f - shoulderStrength) * remainingY;
+                var x1 = x0 + y1_offset;
+                var y1 = y0 + y1_offset;
 
                 // Filmic shoulder strength is in F stops
-                float extraW = RuntimeUtilities.Exp2(shoulderLength) - 1f;
+                var extraW = RuntimeUtilities.Exp2(shoulderLength) - 1f;
 
-                float W = initialW + extraW;
+                var W = initialW + extraW;
 
                 dstParams.x0 = x0;
                 dstParams.y0 = y0;
@@ -112,13 +78,13 @@ namespace UnityEngine.Rendering.PostProcessing
                 dstParams.gamma = gamma;
             }
 
-            dstParams.overshootX = (dstParams.W * 2f) * shoulderAngle * shoulderLength;
+            dstParams.overshootX = dstParams.W * 2f * shoulderAngle * shoulderLength;
             dstParams.overshootY = 0.5f * shoulderAngle * shoulderLength;
 
             InitSegments(dstParams);
         }
 
-        void InitSegments(DirectParams srcParams)
+        private void InitSegments(DirectParams srcParams)
         {
             var paramsCopy = srcParams;
 
@@ -131,13 +97,13 @@ namespace UnityEngine.Rendering.PostProcessing
             paramsCopy.x1 /= srcParams.W;
             paramsCopy.overshootX = srcParams.overshootX / srcParams.W;
 
-            float toeM = 0f;
-            float shoulderM = 0f;
+            var toeM = 0f;
+            var shoulderM = 0f;
             {
                 float m, b;
                 AsSlopeIntercept(out m, out b, paramsCopy.x0, paramsCopy.x1, paramsCopy.y0, paramsCopy.y1);
 
-                float g = srcParams.gamma;
+                var g = srcParams.gamma;
 
                 // Base function of linear section plus gamma is
                 // y = (mx+b)^g
@@ -171,7 +137,7 @@ namespace UnityEngine.Rendering.PostProcessing
             }
 
             this.x0 = paramsCopy.x0;
-            this.x1 = paramsCopy.x1;
+            x1 = paramsCopy.x1;
 
             // Toe section
             {
@@ -192,14 +158,14 @@ namespace UnityEngine.Rendering.PostProcessing
                 // Use the simple version that is usually too flat 
                 var shoulderSegment = segments[2];
 
-                float x0 = (1f + paramsCopy.overshootX) - paramsCopy.x1;
-                float y0 = (1f + paramsCopy.overshootY) - paramsCopy.y1;
+                var x0 = 1f + paramsCopy.overshootX - paramsCopy.x1;
+                var y0 = 1f + paramsCopy.overshootY - paramsCopy.y1;
 
                 float lnA, B;
                 SolveAB(out lnA, out B, x0, y0, shoulderM);
 
-                shoulderSegment.offsetX = (1f + paramsCopy.overshootX);
-                shoulderSegment.offsetY = (1f + paramsCopy.overshootY);
+                shoulderSegment.offsetX = 1f + paramsCopy.overshootX;
+                shoulderSegment.offsetY = 1f + paramsCopy.overshootY;
 
                 shoulderSegment.scaleX = -1f;
                 shoulderSegment.scaleY = -1f;
@@ -211,8 +177,8 @@ namespace UnityEngine.Rendering.PostProcessing
             // skipped the overshoot part.
             {
                 // Evaluate shoulder at the end of the curve
-                float scale = segments[2].Eval(1f);
-                float invScale = 1f / scale;
+                var scale = segments[2].Eval(1f);
+                var invScale = 1f / scale;
 
                 segments[0].offsetY *= invScale;
                 segments[0].scaleY *= invScale;
@@ -231,17 +197,17 @@ namespace UnityEngine.Rendering.PostProcessing
         //   f(0)   = 0; not really a constraint
         //   f(x0)  = y0
         //   f'(x0) = m
-        void SolveAB(out float lnA, out float B, float x0, float y0, float m)
+        private void SolveAB(out float lnA, out float B, float x0, float y0, float m)
         {
-            B = (m * x0) / y0;
+            B = m * x0 / y0;
             lnA = Mathf.Log(y0) - B * Mathf.Log(x0);
         }
 
         // Convert to y=mx+b
-        void AsSlopeIntercept(out float m, out float b, float x0, float x1, float y0, float y1)
+        private void AsSlopeIntercept(out float m, out float b, float x0, float x1, float y0, float y1)
         {
-            float dy = (y1 - y0);
-            float dx = (x1 - x0);
+            var dy = y1 - y0;
+            var dx = x1 - x0;
 
             if (dx == 0)
                 m = 1f;
@@ -253,10 +219,47 @@ namespace UnityEngine.Rendering.PostProcessing
 
         // f(x) = (mx+b)^g
         // f'(x) = gm(mx+b)^(g-1)
-        float EvalDerivativeLinearGamma(float m, float b, float g, float x)
+        private float EvalDerivativeLinearGamma(float m, float b, float g, float x)
         {
-            float ret = g * m * Mathf.Pow(m * x + b, g - 1f);
+            var ret = g * m * Mathf.Pow(m * x + b, g - 1f);
             return ret;
+        }
+
+        public class Segment
+        {
+            public float B;
+            public float lnA;
+            public float offsetX;
+            public float offsetY;
+            public float scaleX;
+            public float scaleY;
+
+            public float Eval(float x)
+            {
+                var x0 = (x - offsetX) * scaleX;
+                var y0 = 0f;
+
+                // log(0) is undefined but our function should evaluate to 0. There are better ways to handle this,
+                // but it's doing it the slow way here for clarity.
+                if (x0 > 0)
+                    y0 = Mathf.Exp(lnA + B * Mathf.Log(x0));
+
+                return y0 * scaleY + offsetY;
+            }
+        }
+
+        private struct DirectParams
+        {
+            internal float x0;
+            internal float y0;
+            internal float x1;
+            internal float y1;
+            internal float W;
+
+            internal float overshootX;
+            internal float overshootY;
+
+            internal float gamma;
         }
 
         //
@@ -264,7 +267,7 @@ namespace UnityEngine.Rendering.PostProcessing
         //
         public class Uniforms
         {
-            HableCurve parent;
+            private readonly HableCurve parent;
 
             internal Uniforms(HableCurve parent)
             {
@@ -330,7 +333,5 @@ namespace UnityEngine.Rendering.PostProcessing
                 }
             }
         }
-
-        public readonly Uniforms uniforms;
     }
 }

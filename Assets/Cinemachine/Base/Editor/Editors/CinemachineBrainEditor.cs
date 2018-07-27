@@ -1,20 +1,26 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿#region
+
 using System.Collections.Generic;
-using Cinemachine.Utility;
 using System.IO;
+using Cinemachine.Utility;
+using UnityEditor;
+using UnityEditorInternal;
+using UnityEngine;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
     [CustomEditor(typeof(CinemachineBrain))]
     internal sealed class CinemachineBrainEditor : BaseEditor<CinemachineBrain>
     {
-        EmbeddeAssetEditor<CinemachineBlenderSettings> m_BlendsEditor;
-        bool mEventsExpanded = false;
+        private static readonly string kGizmoFileName = "Cinemachine/cm_logo_lg.png";
+        private EmbeddeAssetEditor<CinemachineBlenderSettings> m_BlendsEditor;
+        private bool mEventsExpanded;
 
         protected override List<string> GetExcludedPropertiesInInspector()
         {
-            List<string> excluded = base.GetExcludedPropertiesInInspector();
+            var excluded = base.GetExcludedPropertiesInInspector();
             excluded.Add(FieldPath(x => x.m_CameraCutEvent));
             excluded.Add(FieldPath(x => x.m_CameraActivatedEvent));
             excluded.Add(FieldPath(x => x.m_CustomBlends));
@@ -24,11 +30,8 @@ namespace Cinemachine.Editor
         private void OnEnable()
         {
             m_BlendsEditor = new EmbeddeAssetEditor<CinemachineBlenderSettings>(
-                    FieldPath(x => x.m_CustomBlends), this);
-            m_BlendsEditor.OnChanged = (CinemachineBlenderSettings b) =>
-                {
-                    UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
-                };
+                FieldPath(x => x.m_CustomBlends), this);
+            m_BlendsEditor.OnChanged = b => { InternalEditorUtility.RepaintAllViews(); };
         }
 
         private void OnDisable()
@@ -43,13 +46,15 @@ namespace Cinemachine.Editor
 
             // Show the active camera and blend
             GUI.enabled = false;
-            ICinemachineCamera vcam = Target.ActiveVirtualCamera;
-            Transform activeCam = (vcam != null && vcam.VirtualCameraGameObject != null)
-                ? vcam.VirtualCameraGameObject.transform : null;
+            var vcam = Target.ActiveVirtualCamera;
+            var activeCam = vcam != null && vcam.VirtualCameraGameObject != null
+                ? vcam.VirtualCameraGameObject.transform
+                : null;
             EditorGUILayout.ObjectField("Live Camera", activeCam, typeof(Transform), true);
             EditorGUILayout.DelayedTextField(
                 "Live Blend", Target.ActiveBlend != null
-                ? Target.ActiveBlend.Description : string.Empty);
+                    ? Target.ActiveBlend.Description
+                    : string.Empty);
             GUI.enabled = true;
 
             // Normal properties
@@ -67,6 +72,7 @@ namespace Cinemachine.Editor
                 EditorGUILayout.PropertyField(FindProperty(x => x.m_CameraCutEvent));
                 EditorGUILayout.PropertyField(FindProperty(x => x.m_CameraActivatedEvent));
             }
+
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -74,50 +80,50 @@ namespace Cinemachine.Editor
         private static void DrawBrainGizmos(CinemachineBrain brain, GizmoType drawType)
         {
             if (brain.OutputCamera != null && brain.m_ShowCameraFrustum)
-            {
                 DrawCameraFrustumGizmo(
-                    brain, LensSettings.FromCamera(brain.OutputCamera), 
-                    brain.transform.localToWorldMatrix, 
+                    brain, LensSettings.FromCamera(brain.OutputCamera),
+                    brain.transform.localToWorldMatrix,
                     Color.white); // GML why is this color hardcoded?
-            }
         }
 
         internal static void DrawCameraFrustumGizmo(
-            CinemachineBrain brain, LensSettings lens, 
+            CinemachineBrain brain, LensSettings lens,
             Matrix4x4 transform, Color color)
         {
             float aspect = 1;
-            bool ortho = false;
+            var ortho = false;
             if (brain != null)
             {
                 aspect = brain.OutputCamera.aspect;
                 ortho = brain.OutputCamera.orthographic;
             }
 
-            Matrix4x4 originalMatrix = Gizmos.matrix;
-            Color originalGizmoColour = Gizmos.color;
+            var originalMatrix = Gizmos.matrix;
+            var originalGizmoColour = Gizmos.color;
             Gizmos.color = color;
             Gizmos.matrix = transform;
             if (ortho)
             {
-                Vector3 size = new Vector3(
-                        aspect * lens.OrthographicSize * 2, 
-                        lens.OrthographicSize * 2, 
-                        lens.NearClipPlane + lens.FarClipPlane);
+                var size = new Vector3(
+                    aspect * lens.OrthographicSize * 2,
+                    lens.OrthographicSize * 2,
+                    lens.NearClipPlane + lens.FarClipPlane);
                 Gizmos.DrawWireCube(
-                    new Vector3(0, 0, (size.z / 2) + lens.NearClipPlane), size);
+                    new Vector3(0, 0, size.z / 2 + lens.NearClipPlane), size);
             }
             else
             {
                 Gizmos.DrawFrustum(
-                        Vector3.zero, lens.FieldOfView,
-                        lens.FarClipPlane, lens.NearClipPlane, aspect);
+                    Vector3.zero, lens.FieldOfView,
+                    lens.FarClipPlane, lens.NearClipPlane, aspect);
             }
+
             Gizmos.matrix = originalMatrix;
             Gizmos.color = originalGizmoColour;
         }
 
-        [DrawGizmo(GizmoType.Active | GizmoType.InSelectionHierarchy | GizmoType.Pickable, typeof(CinemachineVirtualCameraBase))]
+        [DrawGizmo(GizmoType.Active | GizmoType.InSelectionHierarchy | GizmoType.Pickable,
+            typeof(CinemachineVirtualCameraBase))]
         internal static void DrawVirtualCameraBaseGizmos(CinemachineVirtualCameraBase vcam, GizmoType selectionType)
         {
             // Don't draw gizmos on hidden stuff
@@ -127,7 +133,7 @@ namespace Cinemachine.Editor
             if (vcam.ParentCamera != null && (selectionType & GizmoType.Active) == 0)
                 return;
 
-            CameraState state = vcam.State;
+            var state = vcam.State;
             Gizmos.DrawIcon(state.FinalPosition, kGizmoFileName, true);
 
             DrawCameraFrustumGizmo(
@@ -135,26 +141,25 @@ namespace Cinemachine.Editor
                 state.Lens,
                 Matrix4x4.TRS(
                     state.FinalPosition,
-                    UnityQuaternionExtensions.Normalized(state.FinalOrientation), Vector3.one),
+                    state.FinalOrientation.Normalized(), Vector3.one),
                 CinemachineCore.Instance.IsLive(vcam)
                     ? CinemachineSettings.CinemachineCoreSettings.ActiveGizmoColour
                     : CinemachineSettings.CinemachineCoreSettings.InactiveGizmoColour);
         }
 
-        static string kGizmoFileName = "Cinemachine/cm_logo_lg.png";
         [InitializeOnLoad]
-        static class InstallGizmos
+        private static class InstallGizmos
         {
             static InstallGizmos()
             {
-                string srcFile = ScriptableObjectUtility.CinemachineInstallPath + "/Gizmos/" + kGizmoFileName;
+                var srcFile = ScriptableObjectUtility.CinemachineInstallPath + "/Gizmos/" + kGizmoFileName;
                 if (File.Exists(srcFile))
                 {
-                    string dstFile = Application.dataPath + "/Gizmos";
+                    var dstFile = Application.dataPath + "/Gizmos";
                     if (!Directory.Exists(dstFile))
                         Directory.CreateDirectory(dstFile);
                     dstFile += "/" + kGizmoFileName;
-                    if (!File.Exists(dstFile) 
+                    if (!File.Exists(dstFile)
                         || File.GetCreationTime(dstFile) < File.GetCreationTime(srcFile))
                     {
                         if (!Directory.Exists(Path.GetDirectoryName(dstFile)))

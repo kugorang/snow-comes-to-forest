@@ -1,6 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -15,33 +17,36 @@ namespace Gamekit2D
             ONCE
         }
 
-        public PlatformCatcher platformCatcher;
-        public float speed = 1.0f;
-        public MovingPlatformType platformType;
-
-        public bool startMovingOnlyWhenVisible;
         public bool isMovingAtStart = true;
 
-        [HideInInspector]
-        public Vector3[] localNodes = new Vector3[1];
+        [HideInInspector] public Vector3[] localNodes = new Vector3[1];
 
-        public float[] waitTimes = new float[1];
-
-        public Vector3[] worldNode {  get { return m_WorldNode; } }
-
-        protected Vector3[] m_WorldNode;
-
-        protected int m_Current = 0;
-        protected int m_Next = 0;
+        protected int m_Current;
         protected int m_Dir = 1;
+        protected int m_Next;
+
+        protected Rigidbody2D m_Rigidbody2D;
+
+        protected bool m_Started;
+        protected Vector2 m_Velocity;
+        protected bool m_VeryFirstStart;
 
         protected float m_WaitTime = -1.0f;
 
-        protected Rigidbody2D m_Rigidbody2D;
-        protected Vector2 m_Velocity;
+        protected Vector3[] m_WorldNode;
 
-        protected bool m_Started = false;
-        protected bool m_VeryFirstStart = false;
+        public PlatformCatcher platformCatcher;
+        public MovingPlatformType platformType;
+        public float speed = 1.0f;
+
+        public bool startMovingOnlyWhenVisible;
+
+        public float[] waitTimes = new float[1];
+
+        public Vector3[] worldNode
+        {
+            get { return m_WorldNode; }
+        }
 
         public Vector2 Velocity
         {
@@ -58,7 +63,7 @@ namespace Gamekit2D
             m_Rigidbody2D.isKinematic = true;
 
             if (platformCatcher == null)
-                platformCatcher = GetComponent<PlatformCatcher> ();
+                platformCatcher = GetComponent<PlatformCatcher>();
         }
 
         private void Start()
@@ -68,10 +73,10 @@ namespace Gamekit2D
 
             if (platformCatcher == null)
                 platformCatcher = GetComponent<PlatformCatcher>();
-      
+
             //Allow to make platform only move when they became visible
-            Renderer[] renderers = GetComponentsInChildren<Renderer>();
-            for(int i = 0; i < renderers.Length; ++i)
+            var renderers = GetComponentsInChildren<Renderer>();
+            for (var i = 0; i < renderers.Length; ++i)
             {
                 var b = renderers[i].gameObject.AddComponent<VisibleBubbleUp>();
                 b.objectBecameVisible = BecameVisible;
@@ -81,7 +86,7 @@ namespace Gamekit2D
             //but as the platform will move during gameplay, that would also move the node. So we convert the local nodes
             // (only used at edit time) to world position (only use at runtime)
             m_WorldNode = new Vector3[localNodes.Length];
-            for (int i = 0; i < m_WorldNode.Length; ++i)
+            for (var i = 0; i < m_WorldNode.Length; ++i)
                 m_WorldNode[i] = transform.TransformPoint(localNodes[i]);
 
             Init();
@@ -102,7 +107,9 @@ namespace Gamekit2D
                 m_VeryFirstStart = true;
             }
             else
+            {
                 m_Started = false;
+            }
         }
 
         private void FixedUpdate()
@@ -114,22 +121,22 @@ namespace Gamekit2D
             if (m_Current == m_Next)
                 return;
 
-            if(m_WaitTime > 0)
+            if (m_WaitTime > 0)
             {
                 m_WaitTime -= Time.deltaTime;
                 return;
             }
 
-            float distanceToGo = speed * Time.deltaTime;
+            var distanceToGo = speed * Time.deltaTime;
 
-            while(distanceToGo > 0)
+            while (distanceToGo > 0)
             {
-
                 Vector2 direction = m_WorldNode[m_Next] - transform.position;
 
-                float dist = distanceToGo;
-                if(direction.sqrMagnitude < dist * dist)
-                {   //we have to go farther than our current goal point, so we set the distance to the remaining distance
+                var dist = distanceToGo;
+                if (direction.sqrMagnitude < dist * dist)
+                {
+                    //we have to go farther than our current goal point, so we set the distance to the remaining distance
                     //then we change the current & next indexes
                     dist = direction.magnitude;
 
@@ -141,9 +148,7 @@ namespace Gamekit2D
                     {
                         m_Next += 1;
                         if (m_Next >= m_WorldNode.Length)
-                        { //we reach the end
-
-                            switch(platformType)
+                            switch (platformType)
                             {
                                 case MovingPlatformType.BACK_FORTH:
                                     m_Next = m_WorldNode.Length - 2;
@@ -157,14 +162,11 @@ namespace Gamekit2D
                                     StopMoving();
                                     break;
                             }
-                        }
                     }
                     else
                     {
                         m_Next -= 1;
-                        if(m_Next < 0)
-                        { //reached the beginning again
-
+                        if (m_Next < 0)
                             switch (platformType)
                             {
                                 case MovingPlatformType.BACK_FORTH:
@@ -179,7 +181,6 @@ namespace Gamekit2D
                                     StopMoving();
                                     break;
                             }
-                        }
                     }
                 }
 
@@ -187,13 +188,13 @@ namespace Gamekit2D
 
                 //transform.position +=  direction.normalized * dist;
                 m_Rigidbody2D.MovePosition(m_Rigidbody2D.position + m_Velocity);
-                platformCatcher.MoveCaughtObjects (m_Velocity);
+                platformCatcher.MoveCaughtObjects(m_Velocity);
                 //We remove the distance we moved. That way if we didn't had enough distance to the next goal, we will do a new loop to finish
                 //the remaining distance we have to cover this frame toward the new goal
                 distanceToGo -= dist;
 
                 // we have some wait time set, that mean we reach a point where we have to wait. So no need to continue to move the platform, early exit.
-                if (m_WaitTime > 0.001f) 
+                if (m_WaitTime > 0.001f)
                     break;
             }
         }

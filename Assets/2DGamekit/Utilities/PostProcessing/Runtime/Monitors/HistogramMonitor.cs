@@ -1,4 +1,8 @@
+#region
+
 using System;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -13,14 +17,15 @@ namespace UnityEngine.Rendering.PostProcessing
             Master
         }
 
-        public int width = 512;
-        public int height = 256;
         public Channel channel = Channel.Master;
+        public int height = 256;
 
-        ComputeBuffer m_Data;
-        int m_NumBins;
-        int m_ThreadGroupSizeX;
-        int m_ThreadGroupSizeY;
+        private ComputeBuffer m_Data;
+        private int m_NumBins;
+        private int m_ThreadGroupSizeX;
+        private int m_ThreadGroupSizeY;
+
+        public int width = 512;
 
         internal override void OnEnable()
         {
@@ -65,9 +70,9 @@ namespace UnityEngine.Rendering.PostProcessing
             cmd.BeginSample("GammaHistogram");
 
             // Clear the buffer on every frame as we use it to accumulate values on every frame
-            int kernel = compute.FindKernel("KHistogramClear");
+            var kernel = compute.FindKernel("KHistogramClear");
             cmd.SetComputeBufferParam(compute, kernel, "_HistogramBuffer", m_Data);
-            cmd.DispatchCompute(compute, kernel, Mathf.CeilToInt(m_NumBins / (float)m_ThreadGroupSizeX), 1, 1);
+            cmd.DispatchCompute(compute, kernel, Mathf.CeilToInt(m_NumBins / (float) m_ThreadGroupSizeX), 1, 1);
 
             // Gather all pixels and fill in our histogram
             kernel = compute.FindKernel("KHistogramGather");
@@ -75,13 +80,13 @@ namespace UnityEngine.Rendering.PostProcessing
                 context.width / 2,
                 context.height / 2,
                 RuntimeUtilities.isLinearColorSpace ? 1 : 0,
-                (int)channel
+                (int) channel
             );
 
             cmd.SetComputeVectorParam(compute, "_Params", parameters);
             cmd.SetComputeTextureParam(compute, kernel, "_Source", ShaderIDs.HalfResFinalCopy);
             cmd.SetComputeBufferParam(compute, kernel, "_HistogramBuffer", m_Data);
-            cmd.DispatchCompute(compute, kernel, 
+            cmd.DispatchCompute(compute, kernel,
                 Mathf.CeilToInt(parameters.x / m_ThreadGroupSizeX),
                 Mathf.CeilToInt(parameters.y / m_ThreadGroupSizeY),
                 1

@@ -1,6 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -8,10 +10,9 @@ namespace Gamekit2D
     {
         public Transform target;
 
-        void Update()
+        private void Update()
         {
             transform.LookAt(target);
         }
-
     }
 }

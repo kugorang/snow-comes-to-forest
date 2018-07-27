@@ -1,33 +1,34 @@
+#region
+
 using UnityEditor;
+using UnityEditorInternal;
 using UnityEngine;
-using System.Collections.Generic;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
     [CustomEditor(typeof(CinemachineClearShot))]
-    internal sealed class CinemachineClearShotEditor 
+    internal sealed class CinemachineClearShotEditor
         : CinemachineVirtualCameraBaseEditor<CinemachineClearShot>
     {
-        EmbeddeAssetEditor<CinemachineBlenderSettings> m_BlendsEditor;
-        ColliderState m_ColliderState;
+        private EmbeddeAssetEditor<CinemachineBlenderSettings> m_BlendsEditor;
+        private ColliderState m_ColliderState;
 
-        private UnityEditorInternal.ReorderableList mChildList;
+        private ReorderableList mChildList;
 
         protected override void OnEnable()
         {
             base.OnEnable();
             m_BlendsEditor = new EmbeddeAssetEditor<CinemachineBlenderSettings>(
-                    FieldPath(x => x.m_CustomBlends), this);
-            m_BlendsEditor.OnChanged = (CinemachineBlenderSettings b) =>
-                {
-                    UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
-                };
-            m_BlendsEditor.OnCreateEditor = (UnityEditor.Editor ed) =>
-                {
-                    CinemachineBlenderSettingsEditor editor = ed as CinemachineBlenderSettingsEditor;
-                    if (editor != null)
-                        editor.GetAllVirtualCameras = () => { return Target.ChildCameras; };
-                };
+                FieldPath(x => x.m_CustomBlends), this);
+            m_BlendsEditor.OnChanged = b => { InternalEditorUtility.RepaintAllViews(); };
+            m_BlendsEditor.OnCreateEditor = ed =>
+            {
+                var editor = ed as CinemachineBlenderSettingsEditor;
+                if (editor != null)
+                    editor.GetAllVirtualCameras = () => { return Target.ChildCameras; };
+            };
             mChildList = null;
         }
 
@@ -89,123 +90,131 @@ namespace Cinemachine.Editor
             DrawExtensionsWidgetInInspector();
         }
 
-        enum ColliderState
+        private ColliderState GetColliderState()
         {
-            NoCollider, 
-            ColliderOnAllChildren, 
-            ColliderOnSomeChildren, 
-            ColliderOnParent, 
-            ColliderOnChildrenAndParent 
-        }
-
-        ColliderState GetColliderState()
-        {
-            int numChildren = 0;
-            int numColliderChildren = 0;
-            bool colliderOnParent = ObjectHasCollider(Target);
+            var numChildren = 0;
+            var numColliderChildren = 0;
+            var colliderOnParent = ObjectHasCollider(Target);
 
             var children = Target.m_ChildCameras;
             numChildren = children == null ? 0 : children.Length;
-            for (int i = 0; i < numChildren; ++i)
+            for (var i = 0; i < numChildren; ++i)
                 if (ObjectHasCollider(children[i]))
                     ++numColliderChildren;
             if (colliderOnParent)
-                return (numColliderChildren > 0) 
-                    ? ColliderState.ColliderOnChildrenAndParent : ColliderState.ColliderOnParent;
+                return numColliderChildren > 0
+                    ? ColliderState.ColliderOnChildrenAndParent
+                    : ColliderState.ColliderOnParent;
             if (numColliderChildren > 0)
-                return (numColliderChildren == numChildren) 
-                    ? ColliderState.ColliderOnAllChildren : ColliderState.ColliderOnSomeChildren;
+                return numColliderChildren == numChildren
+                    ? ColliderState.ColliderOnAllChildren
+                    : ColliderState.ColliderOnSomeChildren;
             return ColliderState.NoCollider;
         }
 
-        bool ObjectHasCollider(object obj)
+        private bool ObjectHasCollider(object obj)
         {
-            CinemachineVirtualCameraBase vcam = obj as CinemachineVirtualCameraBase;
-            var collider = (vcam == null) ? null : vcam.GetComponent<CinemachineCollider>();
-            return (collider != null && collider.enabled);
+            var vcam = obj as CinemachineVirtualCameraBase;
+            var collider = vcam == null ? null : vcam.GetComponent<CinemachineCollider>();
+            return collider != null && collider.enabled;
         }
 
-        void SetupChildList()
+        private void SetupChildList()
         {
             float vSpace = 2;
             float hSpace = 3;
-            float floatFieldWidth = EditorGUIUtility.singleLineHeight * 2.5f;
+            var floatFieldWidth = EditorGUIUtility.singleLineHeight * 2.5f;
 
-            mChildList = new UnityEditorInternal.ReorderableList(
-                    serializedObject, FindProperty(x => x.m_ChildCameras), true, true, true, true);
+            mChildList = new ReorderableList(
+                serializedObject, FindProperty(x => x.m_ChildCameras), true, true, true, true);
 
-            mChildList.drawHeaderCallback = (Rect rect) =>
-                {
-                    EditorGUI.LabelField(rect, "Virtual Camera Children");
-                    GUIContent priorityText = new GUIContent("Priority");
-                    var textDimensions = GUI.skin.label.CalcSize(priorityText);
-                    rect.x += rect.width - textDimensions.x;
-                    rect.width = textDimensions.x;
-                    EditorGUI.LabelField(rect, priorityText);
-                };
+            mChildList.drawHeaderCallback = rect =>
+            {
+                EditorGUI.LabelField(rect, "Virtual Camera Children");
+                var priorityText = new GUIContent("Priority");
+                var textDimensions = GUI.skin.label.CalcSize(priorityText);
+                rect.x += rect.width - textDimensions.x;
+                rect.width = textDimensions.x;
+                EditorGUI.LabelField(rect, priorityText);
+            };
             mChildList.drawElementCallback
-                = (Rect rect, int index, bool isActive, bool isFocused) =>
+                = (rect, index, isActive, isFocused) =>
                 {
                     rect.y += vSpace;
                     rect.width -= floatFieldWidth + hSpace;
                     rect.height = EditorGUIUtility.singleLineHeight;
-                    SerializedProperty element = mChildList.serializedProperty.GetArrayElementAtIndex(index);
-                    if (m_ColliderState == ColliderState.ColliderOnSomeChildren 
+                    var element = mChildList.serializedProperty.GetArrayElementAtIndex(index);
+                    if (m_ColliderState == ColliderState.ColliderOnSomeChildren
                         || m_ColliderState == ColliderState.ColliderOnChildrenAndParent)
                     {
-                        bool hasCollider = ObjectHasCollider(element.objectReferenceValue);
-                        if ((m_ColliderState == ColliderState.ColliderOnSomeChildren && !hasCollider)
-                            || (m_ColliderState == ColliderState.ColliderOnChildrenAndParent && hasCollider))
+                        var hasCollider = ObjectHasCollider(element.objectReferenceValue);
+                        if (m_ColliderState == ColliderState.ColliderOnSomeChildren && !hasCollider
+                            || m_ColliderState == ColliderState.ColliderOnChildrenAndParent && hasCollider)
                         {
-                            float width = rect.width;
+                            var width = rect.width;
                             rect.width = rect.height;
-                            GUIContent label = new GUIContent("");
+                            var label = new GUIContent("");
                             label.image = EditorGUIUtility.IconContent("console.warnicon.sml").image;
                             EditorGUI.LabelField(rect, label);
-                            width -= rect.width; rect.x += rect.width; rect.width = width;
+                            width -= rect.width;
+                            rect.x += rect.width;
+                            rect.width = width;
                         }
                     }
+
                     EditorGUI.PropertyField(rect, element, GUIContent.none);
 
-                    SerializedObject obj = new SerializedObject(element.objectReferenceValue);
-                    rect.x += rect.width + hSpace; rect.width = floatFieldWidth;
-                    SerializedProperty priorityProp = obj.FindProperty(() => Target.m_Priority);
-                    float oldWidth = EditorGUIUtility.labelWidth;
+                    var obj = new SerializedObject(element.objectReferenceValue);
+                    rect.x += rect.width + hSpace;
+                    rect.width = floatFieldWidth;
+                    var priorityProp = obj.FindProperty(() => Target.m_Priority);
+                    var oldWidth = EditorGUIUtility.labelWidth;
                     EditorGUIUtility.labelWidth = hSpace * 2;
                     EditorGUI.PropertyField(rect, priorityProp, new GUIContent(" "));
                     EditorGUIUtility.labelWidth = oldWidth;
                     obj.ApplyModifiedProperties();
                 };
-            mChildList.onChangedCallback = (UnityEditorInternal.ReorderableList l) =>
-                {
-                    if (l.index < 0 || l.index >= l.serializedProperty.arraySize)
-                        return;
-                    Object o = l.serializedProperty.GetArrayElementAtIndex(
-                            l.index).objectReferenceValue;
-                    CinemachineVirtualCameraBase vcam = (o != null)
-                        ? (o as CinemachineVirtualCameraBase) : null;
-                    if (vcam != null)
-                        vcam.transform.SetSiblingIndex(l.index);
-                };
-            mChildList.onAddCallback = (UnityEditorInternal.ReorderableList l) =>
-                {
-                    var index = l.serializedProperty.arraySize;
-                    var vcam = CinemachineMenu.CreateDefaultVirtualCamera();
-                    Undo.SetTransformParent(vcam.transform, Target.transform, "");
-                    var collider = Undo.AddComponent<CinemachineCollider>(vcam.gameObject);
-                    collider.m_AvoidObstacles = false;
-                    Undo.RecordObject(collider, "create ClearShot child");
-                    vcam.transform.SetSiblingIndex(index);
-                };
-            mChildList.onRemoveCallback = (UnityEditorInternal.ReorderableList l) =>
-                {
-                    Object o = l.serializedProperty.GetArrayElementAtIndex(
-                            l.index).objectReferenceValue;
-                    CinemachineVirtualCameraBase vcam = (o != null)
-                        ? (o as CinemachineVirtualCameraBase) : null;
-                    if (vcam != null)
-                        Undo.DestroyObjectImmediate(vcam.gameObject);
-                };
+            mChildList.onChangedCallback = l =>
+            {
+                if (l.index < 0 || l.index >= l.serializedProperty.arraySize)
+                    return;
+                var o = l.serializedProperty.GetArrayElementAtIndex(
+                    l.index).objectReferenceValue;
+                var vcam = o != null
+                    ? o as CinemachineVirtualCameraBase
+                    : null;
+                if (vcam != null)
+                    vcam.transform.SetSiblingIndex(l.index);
+            };
+            mChildList.onAddCallback = l =>
+            {
+                var index = l.serializedProperty.arraySize;
+                var vcam = CinemachineMenu.CreateDefaultVirtualCamera();
+                Undo.SetTransformParent(vcam.transform, Target.transform, "");
+                var collider = Undo.AddComponent<CinemachineCollider>(vcam.gameObject);
+                collider.m_AvoidObstacles = false;
+                Undo.RecordObject(collider, "create ClearShot child");
+                vcam.transform.SetSiblingIndex(index);
+            };
+            mChildList.onRemoveCallback = l =>
+            {
+                var o = l.serializedProperty.GetArrayElementAtIndex(
+                    l.index).objectReferenceValue;
+                var vcam = o != null
+                    ? o as CinemachineVirtualCameraBase
+                    : null;
+                if (vcam != null)
+                    Undo.DestroyObjectImmediate(vcam.gameObject);
+            };
+        }
+
+        private enum ColliderState
+        {
+            NoCollider,
+            ColliderOnAllChildren,
+            ColliderOnSomeChildren,
+            ColliderOnParent,
+            ColliderOnChildrenAndParent
         }
     }
 }

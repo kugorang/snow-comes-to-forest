@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using UnityEditor;
 using UnityEngine;
+
+#endregion
 
 namespace Light2D
 {
     public class LightingSystemCreationWindow : EditorWindow
     {
+        private int _ambientLightLayer;
         private int _lightObstaclesLayer;
         private int _lightSourcesLayer;
-        private int _ambientLightLayer;
 
         public static void CreateWindow()
         {
@@ -19,12 +19,12 @@ namespace Light2D
             window.position = new Rect(200, 200, 500, 140);
         }
 
-        void OnGUI()
+        private void OnGUI()
         {
             if (FindObjectOfType<LightingSystem>())
-            {
-                GUILayout.Label("WARNING: existing lighting system is found.\nIt is recommended to remove it first, before adding new one.", EditorStyles.boldLabel);
-            }
+                GUILayout.Label(
+                    "WARNING: existing lighting system is found.\nIt is recommended to remove it first, before adding new one.",
+                    EditorStyles.boldLabel);
 
             GUILayout.Label("Select layers you wish to use. You could modify them later in created object.");
             _lightObstaclesLayer = EditorGUILayout.LayerField("Light Obstacles", _lightObstaclesLayer);
@@ -34,10 +34,11 @@ namespace Light2D
             if (GUILayout.Button("Create"))
             {
                 var mainCamera = Camera.main;
-                var lighingSystem = mainCamera.GetComponent<LightingSystem>() ?? mainCamera.gameObject.AddComponent<LightingSystem>();
+                var lighingSystem = mainCamera.GetComponent<LightingSystem>() ??
+                                    mainCamera.gameObject.AddComponent<LightingSystem>();
 
                 var prefab = Resources.Load<GameObject>("Lighting Camera");
-                var lightingSystemObj = (GameObject)Instantiate(prefab);
+                var lightingSystemObj = Instantiate(prefab);
                 lightingSystemObj.name = lightingSystemObj.name.Replace("(Clone)", "");
                 lightingSystemObj.transform.parent = mainCamera.transform;
                 lightingSystemObj.transform.localPosition = Vector3.zero;

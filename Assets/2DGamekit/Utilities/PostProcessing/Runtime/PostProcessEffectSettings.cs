@@ -1,7 +1,11 @@
+#region
+
 using System;
 using System.Collections.ObjectModel;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -14,18 +18,18 @@ namespace UnityEngine.Rendering.PostProcessing
 
         // This is the true state of the effect override in the stack - so you can disable a lower
         // priority effect by pushing a higher priority effect with enabled set to false.
-        public BoolParameter enabled = new BoolParameter { overrideState = true, value = false };
+        public BoolParameter enabled = new BoolParameter {overrideState = true, value = false};
 
         internal ReadOnlyCollection<ParameterOverride> parameters;
 
-        void OnEnable()
+        private void OnEnable()
         {
             // Automatically grab all fields of type ParameterOverride for this instance
             parameters = GetType()
                 .GetFields(BindingFlags.Public | BindingFlags.Instance)
                 .Where(t => t.FieldType.IsSubclassOf(typeof(ParameterOverride)))
                 .OrderBy(t => t.MetadataToken) // Guaranteed order
-                .Select(t => (ParameterOverride)t.GetValue(this))
+                .Select(t => (ParameterOverride) t.GetValue(this))
                 .ToList()
                 .AsReadOnly();
 
@@ -33,7 +37,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 parameter.OnEnable();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (parameters == null)
                 return;
@@ -67,7 +71,7 @@ namespace UnityEngine.Rendering.PostProcessing
             {
                 //return parameters.Aggregate(17, (i, p) => i * 23 + p.GetHash());
 
-                int hash = 17;
+                var hash = 17;
 
                 foreach (var p in parameters)
                     hash = hash * 23 + p.GetHash();

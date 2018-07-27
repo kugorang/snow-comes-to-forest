@@ -1,7 +1,11 @@
+#region
+
 using System;
 using System.Linq.Expressions;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
@@ -10,7 +14,7 @@ namespace UnityEditor.Rendering.PostProcessing
     {
         protected T m_Target
         {
-            get { return (T)target; }
+            get { return (T) target; }
         }
 
         protected SerializedProperty FindProperty<TValue>(Expression<Func<T, TValue>> expr)

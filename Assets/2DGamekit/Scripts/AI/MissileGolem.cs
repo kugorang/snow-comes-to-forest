@@ -1,79 +1,85 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using BTAI;
-using UnityEngine.Events;
+﻿#region
+
 using System;
+using BTAI;
 using Gamekit2D;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
+
+#endregion
 
 public class MissileGolem : MonoBehaviour
 #if UNITY_EDITOR
-    , BTAI.IBTDebugable
+    , IBTDebugable
 #endif
 {
-    [System.Serializable]
-    public class BossRound
-    {
-        public float platformSpeed = 1;
-        public MovingPlatform[] platforms;
-        public GameObject[] enableOnProgress;
-        public int bossHP = 10;
-        public int shieldHP = 10;
-    }
+    private Root ai;
 
-    public Transform target;
+    private Animator animator;
+    public float beamDelay, grenadeDelay, lightningDelay, cleanupDelay, deathDelay;
+
+    [Header("Audio")] public AudioClip bossDeathClip;
+
+    public AudioClip bossMusic;
+    public Damageable damageable;
+    public AudioClip deathClip;
+    public float delay = 2;
+
+    [Space] public GameObject[] disableOnDeath;
+
+    public Grenade grenade;
+    public Vector2 grenadeLaunchVelocity;
+    public Transform grenadeSpawnPoint;
+    public RandomAudioPlayer grenadeThrowAudioPlayer;
+
+    [Header("UI")] public Slider healthSlider;
+
+    public RandomAudioPlayer laserFireAudioPlayer;
 
     public int laserStrikeCount = 2;
     public float laserTrackingSpeed = 30.0f;
-    public float delay = 2;
-    public float beamDelay, grenadeDelay, lightningDelay, cleanupDelay, deathDelay;
-
-    public GameObject shield, beamLaser;
-    public GunnerProjectile projectile;
-    public Grenade grenade;
-    public GameObject lightning;
-    public Damageable damageable;
-    public float lightningTime = 1;
-    public Transform grenadeSpawnPoint;
-    public Vector2 grenadeLaunchVelocity;
-    [Space]
-    public BossRound[] rounds;
-    [Space]
-    public GameObject[] disableOnDeath;
-    public UnityEvent onDefeated;
-
-    [Header("Audio")]
-    public AudioClip bossDeathClip;
-    public AudioClip playerDeathClip;
-    public AudioClip postBossClip;
-    public AudioClip bossMusic;
-    [Space]
-    public RandomAudioPlayer stepAudioPlayer;
-    public RandomAudioPlayer laserFireAudioPlayer;
-    public RandomAudioPlayer grenadeThrowAudioPlayer;
     public RandomAudioPlayer lightingAttackAudioPlayer;
-    public RandomAudioPlayer takingDamage;
-    public RandomAudioPlayer shieldUpAudioPlayer;
-    public RandomAudioPlayer shieldDownAudioPlayer;
-    [Space]
-    public AudioSource roundDeathSource;
-    public AudioClip startRound2Clip;
-    public AudioClip startRound3Clip;
-    public AudioClip deathClip;
-
-    [Header("UI")]
-    public Slider healthSlider;
-    public Slider shieldSlider;
-
-    bool onFloor = false;
-    int round = 0;
-
-    private int m_TotalHealth = 0;
-    private int m_CurrentHealth = 0;
+    public GameObject lightning;
+    public float lightningTime = 1;
+    private int m_CurrentHealth;
 
     //used to track target movement, to correct for it.
     private Vector2 m_PreviousTargetPosition;
+
+    private int m_TotalHealth;
+    public UnityEvent onDefeated;
+
+    private bool onFloor;
+    private Vector3 originShieldScale;
+    public AudioClip playerDeathClip;
+    public AudioClip postBossClip;
+    public GunnerProjectile projectile;
+    private int round;
+
+    [Space] public AudioSource roundDeathSource;
+
+    [Space] public BossRound[] rounds;
+
+    public GameObject shield, beamLaser;
+    public RandomAudioPlayer shieldDownAudioPlayer;
+    public Slider shieldSlider;
+    public RandomAudioPlayer shieldUpAudioPlayer;
+    public AudioClip startRound2Clip;
+    public AudioClip startRound3Clip;
+
+    [Space] public RandomAudioPlayer stepAudioPlayer;
+
+    public RandomAudioPlayer takingDamage;
+
+    public Transform target;
+
+#if UNITY_EDITOR
+    public Root GetAIRoot()
+    {
+        return ai;
+    }
+#endif
 
 
     public void SetEllenFloor(bool onFloor)
@@ -81,22 +87,16 @@ public class MissileGolem : MonoBehaviour
         this.onFloor = onFloor;
     }
 
-    Animator animator;
-    Root ai;
-    Vector3 originShieldScale;
 
-
-    void OnEnable()
+    private void OnEnable()
     {
         if (PlayerCharacter.PlayerInstance != null)
-        {
             PlayerCharacter.PlayerInstance.damageable.OnDie.AddListener(PlayerDied);
-        }
         originShieldScale = shield.transform.localScale;
         animator = GetComponent<Animator>();
-        
+
         round = 0;
-        
+
         ai = BT.Root();
         ai.OpenBranch(
             //First Round
@@ -106,17 +106,17 @@ public class MissileGolem : MonoBehaviour
                 //grenade enabled is true only on 2 and 3 round, so allow to just test if it's the 1st round or not here
                 BT.If(GrenadeEnabled).OpenBranch(
                     BT.Trigger(animator, "Enabled")
-                    ),
+                ),
                 BT.Wait(delay),
                 BT.Call(ActivateShield),
                 BT.Wait(delay),
                 BT.While(ShieldIsUp).OpenBranch(
-                    BT.RandomSequence(new int[] { 1, 6, 4, 4 }).OpenBranch(
+                    BT.RandomSequence(new[] {1, 6, 4, 4}).OpenBranch(
                         BT.Root().OpenBranch(
                             BT.Trigger(animator, "Walk"),
                             BT.Wait(0.2f),
                             BT.WaitForAnimatorState(animator, "Idle")
-                            ),
+                        ),
                         BT.Repeat(laserStrikeCount).OpenBranch(
                             BT.SetActive(beamLaser, true),
                             BT.Trigger(animator, "Beam"),
@@ -164,10 +164,7 @@ public class MissileGolem : MonoBehaviour
 
         //we aggregate the total health to set the slider to the proper value
         //(as the boss is actually "killed" every round and regenerated, we can't use directly its current health)
-        for(int i = 0; i < rounds.Length; ++i)
-        {
-            m_TotalHealth += rounds[i].bossHP;
-        }
+        for (var i = 0; i < rounds.Length; ++i) m_TotalHealth += rounds[i].bossHP;
         m_CurrentHealth = m_TotalHealth;
 
         healthSlider.maxValue = m_TotalHealth;
@@ -180,17 +177,15 @@ public class MissileGolem : MonoBehaviour
     private void OnDisable()
     {
         if (PlayerCharacter.PlayerInstance != null)
-        {
             PlayerCharacter.PlayerInstance.damageable.OnDie.RemoveListener(PlayerDied);
-        }
     }
 
-    void PlayerDied(Damager d, Damageable da)
+    private void PlayerDied(Damager d, Damageable da)
     {
         BackgroundMusicPlayer.Instance.PushClip(playerDeathClip);
     }
 
-    void ActivateShield()
+    private void ActivateShield()
     {
         shieldUpAudioPlayer.PlayRandomSound();
 
@@ -199,7 +194,7 @@ public class MissileGolem : MonoBehaviour
 
         shieldSlider.GetComponent<Animator>().Play("BossShieldActivate");
 
-        Damageable shieldDamageable = shield.GetComponent<Damageable>();
+        var shieldDamageable = shield.GetComponent<Damageable>();
 
         //need to be set after enabled happen, otherwise enable reset health. That why we use round - 1, round was already advance at that point
         shieldDamageable.SetHealth(rounds[round - 1].shieldHP);
@@ -207,7 +202,7 @@ public class MissileGolem : MonoBehaviour
         shieldSlider.value = shieldSlider.maxValue;
     }
 
-    void FireLaser()
+    private void FireLaser()
     {
         laserFireAudioPlayer.PlayRandomSound();
 
@@ -217,7 +212,7 @@ public class MissileGolem : MonoBehaviour
         p.initialForce = new Vector3(dir.x, dir.y) * 1000;
     }
 
-    void ThrowGrenade()
+    private void ThrowGrenade()
     {
         grenadeThrowAudioPlayer.PlayRandomSound();
 
@@ -226,49 +221,49 @@ public class MissileGolem : MonoBehaviour
         p.initialForce = grenadeLaunchVelocity;
     }
 
-    bool GrenadeEnabled()
+    private bool GrenadeEnabled()
     {
         return round > 1;
     }
 
-    void ActivateLightning()
+    private void ActivateLightning()
     {
         lightingAttackAudioPlayer.PlayRandomSound();
 
-        var p = Instantiate(lightning) as GameObject;
+        var p = Instantiate(lightning);
         p.transform.position = transform.position;
         Destroy(p, lightningTime);
     }
 
-    void DeactivateLighting()
+    private void DeactivateLighting()
     {
         lightingAttackAudioPlayer.Stop();
     }
 
     private void FixedUpdate()
     {
-        if (target != null)
-        {
-            m_PreviousTargetPosition = target.position;
-        }
+        if (target != null) m_PreviousTargetPosition = target.position;
     }
 
-    void Update()
+    private void Update()
     {
         ai.Tick();
         if (beamLaser != null && target != null)
         {
-            Vector2 targetMovement = (Vector2)target.position - m_PreviousTargetPosition;
+            var targetMovement = (Vector2) target.position - m_PreviousTargetPosition;
             targetMovement.Normalize();
-            Vector3 targetPos = target.position + Vector3.up * (1.0f + targetMovement.y * 0.5f);
+            var targetPos = target.position + Vector3.up * (1.0f + targetMovement.y * 0.5f);
 
-            beamLaser.transform.rotation = Quaternion.RotateTowards(beamLaser.transform.rotation, Quaternion.Euler(0, 0, Vector3.SignedAngle(Vector3.left, targetPos - beamLaser.transform.position, Vector3.forward)), laserTrackingSpeed * Time.deltaTime);
+            beamLaser.transform.rotation = Quaternion.RotateTowards(beamLaser.transform.rotation,
+                Quaternion.Euler(0, 0,
+                    Vector3.SignedAngle(Vector3.left, targetPos - beamLaser.transform.position, Vector3.forward)),
+                laserTrackingSpeed * Time.deltaTime);
         }
 
         shield.transform.localScale = Vector3.Lerp(shield.transform.localScale, originShieldScale, Time.deltaTime);
     }
 
-    void Cleanup()
+    private void Cleanup()
     {
         shieldSlider.GetComponent<Animator>().Play("BossShieldDefeat");
         healthSlider.GetComponent<Animator>().Play("BossHealthDefeat");
@@ -286,39 +281,39 @@ public class MissileGolem : MonoBehaviour
         beamLaser.SetActive(false);
     }
 
-    void Die()
+    private void Die()
     {
         onDefeated.Invoke();
     }
 
-    bool EllenOnPlatform()
+    private bool EllenOnPlatform()
     {
         return !onFloor;
     }
 
-    bool EllenOnFloor()
+    private bool EllenOnFloor()
     {
         return onFloor;
     }
 
-    bool IsAlive()
+    private bool IsAlive()
     {
         var alive = damageable.CurrentHealth > 0;
         return alive;
     }
 
-    bool IsNotAlmostDead()
+    private bool IsNotAlmostDead()
     {
         var alive = damageable.CurrentHealth > 1;
         return alive;
     }
 
-    bool ShieldIsUp()
+    private bool ShieldIsUp()
     {
         return shield.GetComponent<Damageable>().CurrentHealth > 0;
     }
 
-    void NextRound()
+    private void NextRound()
     {
         damageable.SetHealth(rounds[round].bossHP);
         damageable.EnableInvulnerability(true);
@@ -327,10 +322,8 @@ public class MissileGolem : MonoBehaviour
             p.gameObject.SetActive(true);
             p.speed = rounds[round].platformSpeed;
         }
-        foreach (var g in rounds[round].enableOnProgress)
-        {
-            g.SetActive(true);
-        }
+
+        foreach (var g in rounds[round].enableOnProgress) g.SetActive(true);
         round++;
 
         if (round == 2)
@@ -347,14 +340,12 @@ public class MissileGolem : MonoBehaviour
         }
     }
 
-    void Disabled()
+    private void Disabled()
     {
-
     }
 
-    void Enabled()
+    private void Enabled()
     {
-
     }
 
     public void Damaged(Damager damager, Damageable damageable)
@@ -381,10 +372,13 @@ public class MissileGolem : MonoBehaviour
         stepAudioPlayer.PlayRandomSound();
     }
 
-#if UNITY_EDITOR
-    public BTAI.Root GetAIRoot()
+    [Serializable]
+    public class BossRound
     {
-        return ai;
+        public int bossHP = 10;
+        public GameObject[] enableOnProgress;
+        public MovingPlatform[] platforms;
+        public float platformSpeed = 1;
+        public int shieldHP = 10;
     }
-#endif
 }

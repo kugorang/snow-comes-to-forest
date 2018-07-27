@@ -1,36 +1,46 @@
-﻿using System.Collections;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+#endregion
+
 namespace Gamekit2D
 {
-    [System.Serializable]
+    [Serializable]
     public class VFX
     {
-        [System.Serializable]
-        public class VFXOverride
-        {
-            public TileBase tile;
-            public GameObject prefab;
-        }
+        public float lifetime = 1;
+
+        [NonSerialized] public VFXInstancePool pool;
 
         public GameObject prefab;
-        public float lifetime = 1;
         public VFXOverride[] vfxOverride;
+        [NonSerialized] public Dictionary<TileBase, VFXInstancePool> vfxOverrideDictionnary;
 
-        [System.NonSerialized] public VFXInstancePool pool;
-        [System.NonSerialized] public Dictionary<TileBase, VFXInstancePool> vfxOverrideDictionnary;
+        [Serializable]
+        public class VFXOverride
+        {
+            public GameObject prefab;
+            public TileBase tile;
+        }
     }
 
-    public class VFXInstance : PoolObject<VFXInstancePool, VFXInstance>, System.IComparable<VFXInstance>
+    public class VFXInstance : PoolObject<VFXInstancePool, VFXInstance>, IComparable<VFXInstance>
     {
-        public float expires;
         public Animation animation;
         public AudioSource audioSource;
+        public float expires;
+        public Transform parent;
         public ParticleSystem[] particleSystems;
         public Transform transform;
-        public Transform parent;
+
+        public int CompareTo(VFXInstance other)
+        {
+            return expires.CompareTo(other.expires);
+        }
 
         protected override void SetReferences()
         {
@@ -50,16 +60,14 @@ namespace Gamekit2D
                 animation.Rewind();
                 animation.Play();
             }
+
             if (audioSource != null)
                 audioSource.Play();
         }
 
         public override void Sleep()
         {
-            for (var i = 0; i < particleSystems.Length; i++)
-            {
-                particleSystems[i].Stop();
-            }
+            for (var i = 0; i < particleSystems.Length; i++) particleSystems[i].Stop();
             if (animation != null)
                 animation.Stop();
             if (audioSource != null)
@@ -71,21 +79,23 @@ namespace Gamekit2D
         {
             transform.localPosition = position;
         }
-
-        public int CompareTo(VFXInstance other)
-        {
-            return expires.CompareTo(other.expires);
-        }
-
     }
 
     public class VFXInstancePool : ObjectPool<VFXInstancePool, VFXInstance>
     {
-
     }
 
     public class VFXController : MonoBehaviour
     {
+        protected static VFXController instance;
+
+        private readonly Dictionary<int, VFX> m_FxPools = new Dictionary<int, VFX>();
+        private readonly PriorityQueue<PendingVFX> m_PendingFx = new PriorityQueue<PendingVFX>();
+        private readonly PriorityQueue<VFXInstance> m_RunningFx = new PriorityQueue<VFXInstance>();
+
+
+        public VFX[] vfxConfig;
+
         public static VFXController Instance
         {
             get
@@ -93,55 +103,31 @@ namespace Gamekit2D
                 if (instance != null)
                     return instance;
 
-                instance = FindObjectOfType<VFXController> ();
+                instance = FindObjectOfType<VFXController>();
 
                 if (instance != null)
                     return instance;
 
-                return CreateDefault ();
+                return CreateDefault();
             }
         }
 
-        protected static VFXController instance;
-
-        public static VFXController CreateDefault ()
+        public static VFXController CreateDefault()
         {
-            VFXController controllerPrefab = Resources.Load<VFXController> ("VFXController");
-            instance = Instantiate (controllerPrefab);
+            var controllerPrefab = Resources.Load<VFXController>("VFXController");
+            instance = Instantiate(controllerPrefab);
             return instance;
         }
-
-        struct PendingVFX : System.IComparable<PendingVFX>
-        {
-            public VFX vfx;
-            public Vector3 position;
-            public float startAt;
-            public bool flip;
-            public Transform parent;
-            public TileBase tileOverride;
-
-            public int CompareTo(PendingVFX other)
-            {
-                return startAt.CompareTo(other.startAt);
-            }
-        }
-
-
-        public VFX[] vfxConfig;
-
-        Dictionary<int, VFX> m_FxPools = new Dictionary<int, VFX>();
-        PriorityQueue<VFXInstance> m_RunningFx = new PriorityQueue<VFXInstance>();
-        PriorityQueue<PendingVFX> m_PendingFx = new PriorityQueue<PendingVFX>();
 
         public void Awake()
         {
             if (Instance != this)
             {
-                Destroy (gameObject);
+                Destroy(gameObject);
                 return;
             }
 
-            DontDestroyOnLoad (gameObject);
+            DontDestroyOnLoad(gameObject);
 
             foreach (var vfx in vfxConfig)
             {
@@ -150,11 +136,11 @@ namespace Gamekit2D
                 vfx.pool.prefab = vfx.prefab;
 
                 vfx.vfxOverrideDictionnary = new Dictionary<TileBase, VFXInstancePool>();
-                for(int i = 0; i < vfx.vfxOverride.Length; ++i)
+                for (var i = 0; i < vfx.vfxOverride.Length; ++i)
                 {
-                    TileBase tb = vfx.vfxOverride[i].tile;
+                    var tb = vfx.vfxOverride[i].tile;
 
-                    GameObject obj = new GameObject("vfxOverride");
+                    var obj = new GameObject("vfxOverride");
                     obj.transform.SetParent(transform);
                     vfx.vfxOverrideDictionnary[tb] = obj.AddComponent<VFXInstancePool>();
                     vfx.vfxOverrideDictionnary[tb].initialPoolCount = 2;
@@ -165,12 +151,14 @@ namespace Gamekit2D
             }
         }
 
-        public void Trigger(string name, Vector3 position, float startDelay, bool flip, Transform parent, TileBase tileOverride = null)
+        public void Trigger(string name, Vector3 position, float startDelay, bool flip, Transform parent,
+            TileBase tileOverride = null)
         {
             Trigger(StringToHash(name), position, startDelay, flip, parent, tileOverride);
         }
 
-        public void Trigger(int hash, Vector3 position, float startDelay, bool flip, Transform parent, TileBase tileOverride = null)
+        public void Trigger(int hash, Vector3 position, float startDelay, bool flip, Transform parent,
+            TileBase tileOverride = null)
         {
             VFX vfx;
             if (!m_FxPools.TryGetValue(hash, out vfx))
@@ -180,26 +168,34 @@ namespace Gamekit2D
             else
             {
                 if (startDelay > 0)
-                {
-                    m_PendingFx.Push(new PendingVFX() { vfx = vfx, position = position, startAt = Time.time + startDelay, flip = flip, parent = parent, tileOverride = tileOverride });
-                }
+                    m_PendingFx.Push(new PendingVFX
+                    {
+                        vfx = vfx,
+                        position = position,
+                        startAt = Time.time + startDelay,
+                        flip = flip,
+                        parent = parent,
+                        tileOverride = tileOverride
+                    });
                 else
                     CreateInstance(vfx, position, flip, parent, tileOverride);
             }
         }
 
-        void Update()
+        private void Update()
         {
             while (!m_RunningFx.Empty && m_RunningFx.First.expires <= Time.time)
             {
                 var instance = m_RunningFx.Pop();
                 instance.objectPool.Push(instance);
             }
+
             while (!m_PendingFx.Empty && m_PendingFx.First.startAt <= Time.time)
             {
                 var task = m_PendingFx.Pop();
                 CreateInstance(task.vfx, task.position, task.flip, task.parent, task.tileOverride);
             }
+
             var instances = m_RunningFx.items;
             for (var i = 0; i < instances.Count; i++)
             {
@@ -209,7 +205,7 @@ namespace Gamekit2D
             }
         }
 
-        void CreateInstance(VFX vfx, Vector4 position, bool flip, Transform parent, TileBase tileOverride)
+        private void CreateInstance(VFX vfx, Vector4 position, bool flip, Transform parent, TileBase tileOverride)
         {
             VFXInstancePool poolToUse = null;
 
@@ -233,6 +229,19 @@ namespace Gamekit2D
             return name.GetHashCode();
         }
 
+        private struct PendingVFX : IComparable<PendingVFX>
+        {
+            public VFX vfx;
+            public Vector3 position;
+            public float startAt;
+            public bool flip;
+            public Transform parent;
+            public TileBase tileOverride;
 
+            public int CompareTo(PendingVFX other)
+            {
+                return startAt.CompareTo(other.startAt);
+            }
+        }
     }
 }

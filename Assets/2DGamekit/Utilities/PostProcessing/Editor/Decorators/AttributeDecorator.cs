@@ -1,5 +1,9 @@
+#region
+
 using System;
 using UnityEngine;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
@@ -12,6 +16,7 @@ namespace UnityEditor.Rendering.PostProcessing
             return true;
         }
 
-        public abstract bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title, Attribute attribute);
+        public abstract bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title,
+            Attribute attribute);
     }
 }

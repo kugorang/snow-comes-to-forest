@@ -1,22 +1,27 @@
-using UnityEditor;
-using UnityEngine;
+#region
+
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditorInternal;
+using UnityEngine;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
     [CustomEditor(typeof(CinemachineTargetGroup))]
     internal sealed class CinemachineTargetGroupEditor : BaseEditor<CinemachineTargetGroup>
     {
-        private UnityEditorInternal.ReorderableList mTargetList;
+        private ReorderableList mTargetList;
 
         protected override List<string> GetExcludedPropertiesInInspector()
         {
-            List<string> excluded = base.GetExcludedPropertiesInInspector();
+            var excluded = base.GetExcludedPropertiesInInspector();
             excluded.Add(FieldPath(x => x.m_Targets));
             return excluded;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             mTargetList = null;
         }
@@ -34,61 +39,68 @@ namespace Cinemachine.Editor
                 serializedObject.ApplyModifiedProperties();
         }
 
-        void SetupTargetList()
+        private void SetupTargetList()
         {
             float vSpace = 2;
-            float floatFieldWidth = EditorGUIUtility.singleLineHeight * 3f;
-            float hBigSpace = EditorGUIUtility.singleLineHeight * 2 / 3;
+            var floatFieldWidth = EditorGUIUtility.singleLineHeight * 3f;
+            var hBigSpace = EditorGUIUtility.singleLineHeight * 2 / 3;
 
-            mTargetList = new UnityEditorInternal.ReorderableList(
-                    serializedObject, FindProperty(x => x.m_Targets),
-                    true, true, true, true);
+            mTargetList = new ReorderableList(
+                serializedObject, FindProperty(x => x.m_Targets),
+                true, true, true, true);
 
             // Needed for accessing field names as strings
-            CinemachineTargetGroup.Target def = new CinemachineTargetGroup.Target();
+            var def = new CinemachineTargetGroup.Target();
 
-            mTargetList.drawHeaderCallback = (Rect rect) =>
-                {
-                    rect.width -= EditorGUIUtility.singleLineHeight + 2 * (floatFieldWidth + hBigSpace);
-                    Vector2 pos = rect.position; pos.x += EditorGUIUtility.singleLineHeight;
-                    rect.position = pos;
-                    EditorGUI.LabelField(rect, "Target");
+            mTargetList.drawHeaderCallback = rect =>
+            {
+                rect.width -= EditorGUIUtility.singleLineHeight + 2 * (floatFieldWidth + hBigSpace);
+                var pos = rect.position;
+                pos.x += EditorGUIUtility.singleLineHeight;
+                rect.position = pos;
+                EditorGUI.LabelField(rect, "Target");
 
-                    pos.x += rect.width + hBigSpace; rect.width = floatFieldWidth; rect.position = pos;
-                    EditorGUI.LabelField(rect, "Weight");
+                pos.x += rect.width + hBigSpace;
+                rect.width = floatFieldWidth;
+                rect.position = pos;
+                EditorGUI.LabelField(rect, "Weight");
 
-                    pos.x += rect.width + hBigSpace; rect.position = pos;
-                    EditorGUI.LabelField(rect, "Radius");
-                };
+                pos.x += rect.width + hBigSpace;
+                rect.position = pos;
+                EditorGUI.LabelField(rect, "Radius");
+            };
 
             mTargetList.drawElementCallback
-                = (Rect rect, int index, bool isActive, bool isFocused) =>
+                = (rect, index, isActive, isFocused) =>
                 {
-                    SerializedProperty elemProp = mTargetList.serializedProperty.GetArrayElementAtIndex(index);
+                    var elemProp = mTargetList.serializedProperty.GetArrayElementAtIndex(index);
 
                     rect.y += vSpace;
                     rect.height = EditorGUIUtility.singleLineHeight;
-                    Vector2 pos = rect.position;
+                    var pos = rect.position;
                     //rect.width -= hSpace + 2 * EditorGUIUtility.singleLineHeight;
                     rect.width -= 2 * (floatFieldWidth + hBigSpace);
                     EditorGUI.PropertyField(rect, elemProp.FindPropertyRelative(() => def.target), GUIContent.none);
 
-                    float oldWidth = EditorGUIUtility.labelWidth;
-                    EditorGUIUtility.labelWidth = EditorGUIUtility.singleLineHeight; 
-                    pos.x += rect.width; rect.width = floatFieldWidth + hBigSpace; rect.position = pos;
+                    var oldWidth = EditorGUIUtility.labelWidth;
+                    EditorGUIUtility.labelWidth = EditorGUIUtility.singleLineHeight;
+                    pos.x += rect.width;
+                    rect.width = floatFieldWidth + hBigSpace;
+                    rect.position = pos;
                     EditorGUI.PropertyField(rect, elemProp.FindPropertyRelative(() => def.weight), new GUIContent(" "));
-                    pos.x += rect.width; rect.position = pos;
+                    pos.x += rect.width;
+                    rect.position = pos;
                     EditorGUI.PropertyField(rect, elemProp.FindPropertyRelative(() => def.radius), new GUIContent(" "));
-                    EditorGUIUtility.labelWidth = oldWidth; 
+                    EditorGUIUtility.labelWidth = oldWidth;
                 };
 
-            mTargetList.onAddCallback = (UnityEditorInternal.ReorderableList l) =>
-                {
-                    var index = l.serializedProperty.arraySize;
-                    ++l.serializedProperty.arraySize;
-                    SerializedProperty elemProp = mTargetList.serializedProperty.GetArrayElementAtIndex(index);
-                    elemProp.FindPropertyRelative(() => def.weight).floatValue = 1;
-                };
+            mTargetList.onAddCallback = l =>
+            {
+                var index = l.serializedProperty.arraySize;
+                ++l.serializedProperty.arraySize;
+                var elemProp = mTargetList.serializedProperty.GetArrayElementAtIndex(index);
+                elemProp.FindPropertyRelative(() => def.weight).floatValue = 1;
+            };
         }
     }
 }

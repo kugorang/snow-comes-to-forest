@@ -1,22 +1,26 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Rendering.PostProcessing;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
     public sealed class EffectListEditor
     {
-        Editor m_BaseEditor;
+        private readonly Editor m_BaseEditor;
+        private PostProcessProfile m_Asset;
+        private List<PostProcessEffectBaseEditor> m_Editors;
 
-        PostProcessProfile m_Asset;
-        SerializedObject m_SerializedObject;
-        SerializedProperty m_SettingsProperty;
-
-        Dictionary<Type, Type> m_EditorTypes; // SettingsType => EditorType
-        List<PostProcessEffectBaseEditor> m_Editors;
+        private Dictionary<Type, Type> m_EditorTypes; // SettingsType => EditorType
+        private SerializedObject m_SerializedObject;
+        private SerializedProperty m_SettingsProperty;
 
         public EffectListEditor(Editor editor)
         {
@@ -28,7 +32,7 @@ namespace UnityEditor.Rendering.PostProcessing
         {
             Assert.IsNotNull(asset);
             Assert.IsNotNull(serializedObject);
-            
+
             m_Asset = asset;
             m_SerializedObject = serializedObject;
             m_SettingsProperty = serializedObject.FindProperty("settings");
@@ -39,11 +43,11 @@ namespace UnityEditor.Rendering.PostProcessing
 
             // Gets the list of all available postfx editors
             var editorTypes = RuntimeUtilities.GetAllAssemblyTypes()
-                                .Where(
-                                    t => t.IsSubclassOf(typeof(PostProcessEffectBaseEditor))
-                                      && t.IsDefined(typeof(PostProcessEditorAttribute), false)
-                                      && !t.IsAbstract
-                                );
+                .Where(
+                    t => t.IsSubclassOf(typeof(PostProcessEffectBaseEditor))
+                         && t.IsDefined(typeof(PostProcessEditorAttribute), false)
+                         && !t.IsAbstract
+                );
 
             // Map them to their corresponding settings type
             foreach (var editorType in editorTypes)
@@ -53,14 +57,14 @@ namespace UnityEditor.Rendering.PostProcessing
             }
 
             // Create editors for existing settings
-            for (int i = 0; i < m_Asset.settings.Count; i++)
+            for (var i = 0; i < m_Asset.settings.Count; i++)
                 CreateEditor(m_Asset.settings[i], m_SettingsProperty.GetArrayElementAtIndex(i));
 
             // Keep track of undo/redo to redraw the inspector when that happens
             Undo.undoRedoPerformed += OnUndoRedoPerformed;
         }
 
-        void OnUndoRedoPerformed()
+        private void OnUndoRedoPerformed()
         {
             m_Asset.isDirty = true;
 
@@ -74,7 +78,7 @@ namespace UnityEditor.Rendering.PostProcessing
             m_BaseEditor.Repaint();
         }
 
-        void CreateEditor(PostProcessEffectSettings settings, SerializedProperty property, int index = -1)
+        private void CreateEditor(PostProcessEffectSettings settings, SerializedProperty property, int index = -1)
         {
             var settingsType = settings.GetType();
             Type editorType;
@@ -82,7 +86,7 @@ namespace UnityEditor.Rendering.PostProcessing
             if (!m_EditorTypes.TryGetValue(settingsType, out editorType))
                 editorType = typeof(DefaultPostProcessEffectEditor);
 
-            var editor = (PostProcessEffectBaseEditor)Activator.CreateInstance(editorType);
+            var editor = (PostProcessEffectBaseEditor) Activator.CreateInstance(editorType);
             editor.Init(settings, m_BaseEditor);
             editor.baseProperty = property.Copy();
 
@@ -94,7 +98,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
         // Clears & recreate all editors - mainly used when the volume has been modified outside of
         // the editor (user scripts, inspector reset etc).
-        void RefreshEditors()
+        private void RefreshEditors()
         {
             // Disable all editors first
             foreach (var editor in m_Editors)
@@ -104,7 +108,7 @@ namespace UnityEditor.Rendering.PostProcessing
             m_Editors.Clear();
 
             // Recreate editors for existing settings, if any
-            for (int i = 0; i < m_Asset.settings.Count; i++)
+            for (var i = 0; i < m_Asset.settings.Count; i++)
                 CreateEditor(m_Asset.settings[i], m_SettingsProperty.GetArrayElementAtIndex(i));
         }
 
@@ -133,35 +137,35 @@ namespace UnityEditor.Rendering.PostProcessing
                 m_Asset.isDirty = false;
             }
 
-            bool isEditable = !VersionControl.Provider.isActive
-                || AssetDatabase.IsOpenForEdit(m_Asset, StatusQueryOptions.UseCachedIfPossible);
+            var isEditable = !Provider.isActive
+                             || AssetDatabase.IsOpenForEdit(m_Asset, StatusQueryOptions.UseCachedIfPossible);
 
             using (new EditorGUI.DisabledScope(!isEditable))
             {
                 EditorGUILayout.LabelField(EditorUtilities.GetContent("Overrides"), EditorStyles.boldLabel);
 
                 // Override list
-                for (int i = 0; i < m_Editors.Count; i++)
+                for (var i = 0; i < m_Editors.Count; i++)
                 {
                     var editor = m_Editors[i];
-                    string title = editor.GetDisplayTitle();
-                    int id = i; // Needed for closure capture below
+                    var title = editor.GetDisplayTitle();
+                    var id = i; // Needed for closure capture below
 
                     EditorUtilities.DrawSplitter();
-                    bool displayContent = EditorUtilities.DrawHeader(
+                    var displayContent = EditorUtilities.DrawHeader(
                         title,
                         editor.baseProperty,
                         editor.activeProperty,
                         editor.target,
                         () => ResetEffectOverride(editor.target.GetType(), id),
                         () => RemoveEffectOverride(id)
-                        );
+                    );
 
                     if (displayContent)
-                    {
                         using (new EditorGUI.DisabledScope(!editor.activeProperty.boolValue))
+                        {
                             editor.OnInternalInspectorGUI();
-                    }
+                        }
                 }
 
                 if (m_Editors.Count > 0)
@@ -183,7 +187,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     {
                         var type = kvp.Key;
                         var title = EditorUtilities.GetContent(kvp.Value.menuItem);
-                        bool exists = m_Asset.HasSettings(type);
+                        var exists = m_Asset.HasSettings(type);
 
                         if (!exists)
                             menu.AddItem(title, false, () => AddEffectOverride(type));
@@ -198,7 +202,7 @@ namespace UnityEditor.Rendering.PostProcessing
             }
         }
 
-        void AddEffectOverride(Type type)
+        private void AddEffectOverride(Type type)
         {
             m_SerializedObject.Update();
 
@@ -223,10 +227,10 @@ namespace UnityEditor.Rendering.PostProcessing
             m_SerializedObject.ApplyModifiedProperties();
         }
 
-        void RemoveEffectOverride(int id)
+        private void RemoveEffectOverride(int id)
         {
             // Huh. Hack to keep foldout state on the next element...
-            bool nextFoldoutState = false;
+            var nextFoldoutState = false;
             if (id < m_Editors.Count - 1)
                 nextFoldoutState = m_Editors[id + 1].baseProperty.isExpanded;
 
@@ -246,12 +250,12 @@ namespace UnityEditor.Rendering.PostProcessing
             m_SettingsProperty.DeleteArrayElementAtIndex(id);
 
             // Finally refresh editor reference to the serialized settings list
-            for (int i = 0; i < m_Editors.Count; i++)
+            for (var i = 0; i < m_Editors.Count; i++)
                 m_Editors[i].baseProperty = m_SettingsProperty.GetArrayElementAtIndex(i).Copy();
 
             if (id < m_Editors.Count)
                 m_Editors[id].baseProperty.isExpanded = nextFoldoutState;
-            
+
             m_SerializedObject.ApplyModifiedProperties();
 
             // Destroy the setting object after ApplyModifiedProperties(). If we do it before, redo
@@ -266,7 +270,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
         // Reset is done by deleting and removing the object from the list and adding a new one in
         // the place as it was before
-        void ResetEffectOverride(Type type, int id)
+        private void ResetEffectOverride(Type type, int id)
         {
             // Remove from the cached editors list
             m_Editors[id].OnDisable();
@@ -298,15 +302,15 @@ namespace UnityEditor.Rendering.PostProcessing
             // Same as RemoveEffectOverride, destroy at the end so it's recreated first on Undo to
             // make sure the GUID exists before undoing the list state
             Undo.DestroyObjectImmediate(prevSettings);
-            
+
             // Force save / refresh
             EditorUtility.SetDirty(m_Asset);
             AssetDatabase.SaveAssets();
         }
 
-        PostProcessEffectSettings CreateNewEffect(Type type)
+        private PostProcessEffectSettings CreateNewEffect(Type type)
         {
-            var effect = (PostProcessEffectSettings)ScriptableObject.CreateInstance(type);
+            var effect = (PostProcessEffectSettings) ScriptableObject.CreateInstance(type);
             effect.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
             effect.name = type.Name;
             effect.enabled.value = true;

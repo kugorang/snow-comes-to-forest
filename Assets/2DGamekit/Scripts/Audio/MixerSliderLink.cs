@@ -1,24 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Audio;
+using UnityEngine.UI;
+
+#endregion
 
 namespace Gamekit2D
 {
     [RequireComponent(typeof(Slider))]
     public class MixerSliderLink : MonoBehaviour
     {
+        protected Slider m_Slider;
+
+        public float maxAttenuation;
+        public float minAttenuation = -80.0f;
         public AudioMixer mixer;
         public string mixerParameter;
 
-        public float maxAttenuation = 0.0f;
-        public float minAttenuation = -80.0f;
 
-        protected Slider m_Slider;
-
-
-        void Awake ()
+        private void Awake()
         {
             m_Slider = GetComponent<Slider>();
 
@@ -31,7 +32,7 @@ namespace Gamekit2D
         }
 
 
-        void SliderValueChange(float value)
+        private void SliderValueChange(float value)
         {
             mixer.SetFloat(mixerParameter, minAttenuation + value * (maxAttenuation - minAttenuation));
         }

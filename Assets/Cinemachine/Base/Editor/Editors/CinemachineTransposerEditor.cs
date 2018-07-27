@@ -1,6 +1,10 @@
-using UnityEngine;
-using UnityEditor;
+#region
+
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
@@ -9,7 +13,7 @@ namespace Cinemachine.Editor
     {
         protected override List<string> GetExcludedPropertiesInInspector()
         {
-            List<string> excluded = base.GetExcludedPropertiesInInspector();
+            var excluded = base.GetExcludedPropertiesInInspector();
             switch (Target.m_BindingMode)
             {
                 default:
@@ -35,6 +39,7 @@ namespace Cinemachine.Editor
                     excluded.Add(FieldPath(x => x.m_RollDamping));
                     break;
             }
+
             return excluded;
         }
 
@@ -49,21 +54,21 @@ namespace Cinemachine.Editor
         }
 
         [DrawGizmo(GizmoType.Active | GizmoType.Selected, typeof(CinemachineTransposer))]
-        static void DrawTransposerGizmos(CinemachineTransposer target, GizmoType selectionType)
+        private static void DrawTransposerGizmos(CinemachineTransposer target, GizmoType selectionType)
         {
             if (target.IsValid)
             {
-                Color originalGizmoColour = Gizmos.color;
+                var originalGizmoColour = Gizmos.color;
                 Gizmos.color = CinemachineCore.Instance.IsLive(target.VirtualCamera)
                     ? CinemachineSettings.CinemachineCoreSettings.ActiveGizmoColour
                     : CinemachineSettings.CinemachineCoreSettings.InactiveGizmoColour;
 
-                Vector3 up = Vector3.up;
-                CinemachineBrain brain = CinemachineCore.Instance.FindPotentialTargetBrain(target.VirtualCamera);
+                var up = Vector3.up;
+                var brain = CinemachineCore.Instance.FindPotentialTargetBrain(target.VirtualCamera);
                 if (brain != null)
                     up = brain.DefaultWorldUp;
-                Vector3 targetPos = target.FollowTarget.position;
-                Vector3 desiredPos = target.GeTargetCameraPosition(up);
+                var targetPos = target.FollowTarget.position;
+                var desiredPos = target.GeTargetCameraPosition(up);
                 Gizmos.DrawLine(targetPos, desiredPos);
                 Gizmos.DrawWireSphere(desiredPos, HandleUtility.GetHandleSize(desiredPos) / 20);
                 Gizmos.color = originalGizmoColour;

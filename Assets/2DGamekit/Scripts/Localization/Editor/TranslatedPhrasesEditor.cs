@@ -1,78 +1,76 @@
-﻿using UnityEditor;
+﻿#region
+
+using UnityEditor;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     [CustomEditor(typeof(TranslatedPhrases))]
     public class TranslatedPhrasesEditor : Editor
     {
-        SerializedProperty m_LanguageProp;
-        SerializedProperty m_OriginalPhrasesProp;
-        SerializedProperty m_PhrasesProp;
-        TranslatedPhrases m_TranslatedPhrases;
-        OriginalPhrases m_OriginalPhrases;
+        private SerializedProperty m_LanguageProp;
+        private OriginalPhrases m_OriginalPhrases;
+        private SerializedProperty m_OriginalPhrasesProp;
+        private SerializedProperty m_PhrasesProp;
+        private TranslatedPhrases m_TranslatedPhrases;
 
-        void OnEnable ()
+        private void OnEnable()
         {
-            m_LanguageProp = serializedObject.FindProperty ("language");
+            m_LanguageProp = serializedObject.FindProperty("language");
             m_OriginalPhrasesProp = serializedObject.FindProperty("originalPhrases");
             m_PhrasesProp = serializedObject.FindProperty("phrases");
 
-            m_TranslatedPhrases = (TranslatedPhrases)target;
+            m_TranslatedPhrases = (TranslatedPhrases) target;
 
-            if (m_OriginalPhrasesProp.objectReferenceValue != null)
-            {
-                OriginalPhrasesSetup ();
-            }
+            if (m_OriginalPhrasesProp.objectReferenceValue != null) OriginalPhrasesSetup();
         }
 
-        public override void OnInspectorGUI ()
+        public override void OnInspectorGUI()
         {
-            serializedObject.Update ();
+            serializedObject.Update();
 
-            EditorGUILayout.PropertyField (m_LanguageProp);
+            EditorGUILayout.PropertyField(m_LanguageProp);
 
-            EditorGUI.BeginChangeCheck ();
-            EditorGUILayout.PropertyField (m_OriginalPhrasesProp);
-            if (EditorGUI.EndChangeCheck () && m_OriginalPhrasesProp.objectReferenceValue != null)
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(m_OriginalPhrasesProp);
+            if (EditorGUI.EndChangeCheck() && m_OriginalPhrasesProp.objectReferenceValue != null)
+                OriginalPhrasesSetup();
+
+            for (var i = 0; i < m_PhrasesProp.arraySize; i++)
             {
-                OriginalPhrasesSetup ();
-            }
+                var elementProp = m_PhrasesProp.GetArrayElementAtIndex(i);
+                var keyProp = elementProp.FindPropertyRelative("key");
+                var valueProp = elementProp.FindPropertyRelative("value");
 
-            for (int i = 0; i < m_PhrasesProp.arraySize; i++)
-            {
-                SerializedProperty elementProp = m_PhrasesProp.GetArrayElementAtIndex (i);
-                SerializedProperty keyProp = elementProp.FindPropertyRelative ("key");
-                SerializedProperty valueProp = elementProp.FindPropertyRelative ("value");
-
-                Rect propertyRect = EditorGUILayout.GetControlRect (GUILayout.Height (EditorGUIUtility.singleLineHeight * 2f));
-                GUI.Box (propertyRect, GUIContent.none);
+                var propertyRect =
+                    EditorGUILayout.GetControlRect(GUILayout.Height(EditorGUIUtility.singleLineHeight * 2f));
+                GUI.Box(propertyRect, GUIContent.none);
                 propertyRect.height = EditorGUIUtility.singleLineHeight;
                 propertyRect.width *= 0.25f;
-                EditorGUI.LabelField (propertyRect, new GUIContent(keyProp.stringValue), GUIContent.none);
+                EditorGUI.LabelField(propertyRect, new GUIContent(keyProp.stringValue), GUIContent.none);
 
                 propertyRect.x += propertyRect.width;
                 propertyRect.width *= 3f;
-                EditorGUI.LabelField (propertyRect, new GUIContent(m_OriginalPhrases.phrases[i].value));
+                EditorGUI.LabelField(propertyRect, new GUIContent(m_OriginalPhrases.phrases[i].value));
 
                 propertyRect.y += EditorGUIUtility.singleLineHeight;
                 valueProp.stringValue = EditorGUI.TextField(propertyRect, GUIContent.none, valueProp.stringValue);
             }
 
-            serializedObject.ApplyModifiedProperties ();
+            serializedObject.ApplyModifiedProperties();
         }
 
-        void OriginalPhrasesSetup ()
+        private void OriginalPhrasesSetup()
         {
             m_OriginalPhrases = m_OriginalPhrasesProp.objectReferenceValue as OriginalPhrases;
             m_PhrasesProp.arraySize = m_OriginalPhrases.phrases.Count;
 
             serializedObject.ApplyModifiedProperties();
 
-            for (int i = 0; i < m_PhrasesProp.arraySize; i++)
-            {
+            for (var i = 0; i < m_PhrasesProp.arraySize; i++)
                 m_TranslatedPhrases.phrases[i].key = m_OriginalPhrases.phrases[i].key;
-            }
         }
     }
 }

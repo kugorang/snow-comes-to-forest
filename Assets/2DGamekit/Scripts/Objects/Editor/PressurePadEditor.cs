@@ -1,26 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEditor;
-using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     [CustomEditor(typeof(PressurePad))]
     public class PressurePadEditor : Editor
     {
-        SerializedProperty m_PlatformCatcherProp;
-        SerializedProperty m_ActivationTypeProp;
-        SerializedProperty m_RequiredCountProp;
-        SerializedProperty m_RequiredMassProp;
-        SerializedProperty m_DeactivatedBoxSpriteProp;
-        SerializedProperty m_ActivatedBoxSpriteProp;
-        SerializedProperty m_BoxesProp;
-        SerializedProperty m_OnPressedProp;
-        SerializedProperty m_OnReleaseProp;
+        private SerializedProperty m_ActivatedBoxSpriteProp;
+        private SerializedProperty m_ActivationTypeProp;
+        private SerializedProperty m_BoxesProp;
+        private SerializedProperty m_DeactivatedBoxSpriteProp;
+        private SerializedProperty m_OnPressedProp;
+        private SerializedProperty m_OnReleaseProp;
+        private SerializedProperty m_PlatformCatcherProp;
+        private SerializedProperty m_RequiredCountProp;
+        private SerializedProperty m_RequiredMassProp;
 
-        void OnEnable ()
+        private void OnEnable()
         {
-            m_PlatformCatcherProp = serializedObject.FindProperty ("platformCatcher");
+            m_PlatformCatcherProp = serializedObject.FindProperty("platformCatcher");
             m_ActivationTypeProp = serializedObject.FindProperty("activationType");
             m_RequiredCountProp = serializedObject.FindProperty("requiredCount");
             m_RequiredMassProp = serializedObject.FindProperty("requiredMass");
@@ -31,26 +32,27 @@ namespace Gamekit2D
             m_OnReleaseProp = serializedObject.FindProperty("OnRelease");
         }
 
-        public override void OnInspectorGUI ()
+        public override void OnInspectorGUI()
         {
-            serializedObject.Update ();
+            serializedObject.Update();
 
-            EditorGUILayout.PropertyField (m_PlatformCatcherProp);
-            EditorGUILayout.PropertyField (m_ActivationTypeProp);
-            if((PressurePad.ActivationType)m_ActivationTypeProp.enumValueIndex == PressurePad.ActivationType.ItemCount)
-                EditorGUILayout.PropertyField (m_RequiredCountProp);
+            EditorGUILayout.PropertyField(m_PlatformCatcherProp);
+            EditorGUILayout.PropertyField(m_ActivationTypeProp);
+            if ((PressurePad.ActivationType) m_ActivationTypeProp.enumValueIndex ==
+                PressurePad.ActivationType.ItemCount)
+                EditorGUILayout.PropertyField(m_RequiredCountProp);
             else
-                EditorGUILayout.PropertyField (m_RequiredMassProp);
+                EditorGUILayout.PropertyField(m_RequiredMassProp);
 
-            EditorGUILayout.PropertyField (m_DeactivatedBoxSpriteProp);
-            EditorGUILayout.PropertyField (m_ActivatedBoxSpriteProp);
-            EditorGUILayout.PropertyField (m_BoxesProp, true);
-            
-            
-            EditorGUILayout.PropertyField (m_OnPressedProp);
+            EditorGUILayout.PropertyField(m_DeactivatedBoxSpriteProp);
+            EditorGUILayout.PropertyField(m_ActivatedBoxSpriteProp);
+            EditorGUILayout.PropertyField(m_BoxesProp, true);
+
+
+            EditorGUILayout.PropertyField(m_OnPressedProp);
             EditorGUILayout.PropertyField(m_OnReleaseProp);
 
-            serializedObject.ApplyModifiedProperties ();
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

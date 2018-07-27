@@ -1,12 +1,16 @@
-﻿using UnityEngine;
+﻿#region
 
-public class AudioManager : MonoBehaviour 
+using UnityEngine;
+
+#endregion
+
+public class AudioManager : MonoBehaviour
 {
     private static AudioManager _instance;
 
     // 배경음악 상태
     private int _bgmAlive;
-    
+
     // 효과음 상태
     private int _effAlive;
 
@@ -14,18 +18,18 @@ public class AudioManager : MonoBehaviour
     {
         if (_instance != null)
             return _instance;
-        
+
         _instance = FindObjectOfType<AudioManager>();
 
-        if (_instance != null) 
+        if (_instance != null)
             return _instance;
-        
+
         var container = new GameObject("AudioManager");
         _instance = container.AddComponent<AudioManager>();
 
         return _instance;
     }
-    
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -39,7 +43,7 @@ public class AudioManager : MonoBehaviour
     // alive = 0 -> OFF
 
     /// <summary>
-    /// 배경음악 상태 가져오기
+    ///     배경음악 상태 가져오기
     /// </summary>
     /// <returns></returns>
     public int GetBgmAlive()
@@ -48,7 +52,7 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 배경음악 상태 설정
+    ///     배경음악 상태 설정
     /// </summary>
     /// <param name="alive">ON OFF 상태</param>
     private void SetBgmAlive(int alive)
@@ -58,7 +62,7 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 효과음 상태 가져오기
+    ///     효과음 상태 가져오기
     /// </summary>
     /// <returns></returns>
     public int GetEffAlive()
@@ -67,7 +71,7 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 효과음 상태 설정
+    ///     효과음 상태 설정
     /// </summary>
     /// <param name="alive">On Off 상태</param>
     private void SetEffAlive(int alive)
@@ -77,7 +81,7 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 배경음악 끄기
+    ///     배경음악 끄기
     /// </summary>
     public void BgmOff()
     {
@@ -85,15 +89,15 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 배경음악 켜기
+    ///     배경음악 켜기
     /// </summary>
     public void BgmOn()
     {
         SetBgmAlive(1);
     }
-    
+
     /// <summary>
-    /// 배경음악 끄기
+    ///     배경음악 끄기
     /// </summary>
     public void EffOff()
     {
@@ -101,7 +105,7 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 배경음악 켜기
+    ///     배경음악 켜기
     /// </summary>
     public void EffOn()
     {

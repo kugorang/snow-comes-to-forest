@@ -1,7 +1,12 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Callbacks;
 using UnityEngine.Assertions;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -9,7 +14,27 @@ namespace UnityEngine.Rendering.PostProcessing
     // TODO: Deal with 2D volumes !
     public sealed class PostProcessManager
     {
-        static PostProcessManager s_Instance;
+        private const int k_MaxLayerCount = 32; // Max amount of layers available in Unity
+        private static PostProcessManager s_Instance;
+        private readonly List<PostProcessEffectSettings> m_BaseSettings;
+        private readonly Dictionary<int, List<PostProcessVolume>> m_SortedVolumes;
+        private readonly Dictionary<int, bool> m_SortNeeded;
+        private readonly List<Collider> m_TempColliders;
+        private readonly List<PostProcessVolume> m_Volumes;
+
+        public readonly Dictionary<Type, PostProcessAttribute> settingsTypes;
+
+        private PostProcessManager()
+        {
+            m_SortedVolumes = new Dictionary<int, List<PostProcessVolume>>();
+            m_Volumes = new List<PostProcessVolume>();
+            m_SortNeeded = new Dictionary<int, bool>();
+            m_BaseSettings = new List<PostProcessEffectSettings>();
+            m_TempColliders = new List<Collider>(5);
+
+            settingsTypes = new Dictionary<Type, PostProcessAttribute>();
+            ReloadBaseTypes();
+        }
 
         public static PostProcessManager instance
         {
@@ -22,38 +47,17 @@ namespace UnityEngine.Rendering.PostProcessing
             }
         }
 
-        const int k_MaxLayerCount = 32; // Max amount of layers available in Unity
-        readonly Dictionary<int, List<PostProcessVolume>> m_SortedVolumes;
-        readonly List<PostProcessVolume> m_Volumes;
-        readonly Dictionary<int, bool> m_SortNeeded;
-        readonly List<PostProcessEffectSettings> m_BaseSettings;
-        readonly List<Collider> m_TempColliders;
-
-        public readonly Dictionary<Type, PostProcessAttribute> settingsTypes;
-
-        PostProcessManager()
-        {
-            m_SortedVolumes = new Dictionary<int, List<PostProcessVolume>>();
-            m_Volumes = new List<PostProcessVolume>();
-            m_SortNeeded = new Dictionary<int, bool>();
-            m_BaseSettings = new List<PostProcessEffectSettings>();
-            m_TempColliders = new List<Collider>(5);
-
-            settingsTypes = new Dictionary<Type, PostProcessAttribute>();
-            ReloadBaseTypes();
-        }
-
 #if UNITY_EDITOR
         // Called every time Unity recompile scripts in the editor. We need this to keep track of
         // any new custom effect the user might add to the project
-        [UnityEditor.Callbacks.DidReloadScripts]
-        static void OnEditorReload()
+        [DidReloadScripts]
+        private static void OnEditorReload()
         {
             instance.ReloadBaseTypes();
         }
 #endif
 
-        void CleanBaseTypes()
+        private void CleanBaseTypes()
         {
             settingsTypes.Clear();
 
@@ -65,17 +69,17 @@ namespace UnityEngine.Rendering.PostProcessing
 
         // This will be called only once at runtime and everytime script reload kicks-in in the
         // editor as we need to keep track of any compatible post-processing effects in the project
-        void ReloadBaseTypes()
+        private void ReloadBaseTypes()
         {
             CleanBaseTypes();
 
             // Rebuild the base type map
             var types = RuntimeUtilities.GetAllAssemblyTypes()
-                            .Where(
-                                t => t.IsSubclassOf(typeof(PostProcessEffectSettings))
-                                  && t.IsDefined(typeof(PostProcessAttribute), false)
-                                  && !t.IsAbstract
-                            );
+                .Where(
+                    t => t.IsSubclassOf(typeof(PostProcessEffectSettings))
+                         && t.IsDefined(typeof(PostProcessAttribute), false)
+                         && !t.IsAbstract
+                );
 
             foreach (var type in types)
             {
@@ -83,7 +87,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
                 // Create an instance for each effect type, these will be used for the lowest
                 // priority global volume as we need a default state when exiting volume ranges
-                var inst = (PostProcessEffectSettings)ScriptableObject.CreateInstance(type);
+                var inst = (PostProcessEffectSettings) ScriptableObject.CreateInstance(type);
                 inst.SetAllOverridesTo(true, false);
                 m_BaseSettings.Add(inst);
             }
@@ -91,12 +95,13 @@ namespace UnityEngine.Rendering.PostProcessing
 
         // Gets a list of all volumes currently affecting the given layer. Results aren't sorted.
         // Volume with weight of 0 or no profile set will be skipped. Results list won't be cleared.
-        public void GetActiveVolumes(PostProcessLayer layer, List<PostProcessVolume> results, bool skipDisabled = true, bool skipZeroWeight = true)
+        public void GetActiveVolumes(PostProcessLayer layer, List<PostProcessVolume> results, bool skipDisabled = true,
+            bool skipZeroWeight = true)
         {
             // If no trigger is set, only global volumes will have influence
-            int mask = layer.volumeLayer.value;
+            var mask = layer.volumeLayer.value;
             var volumeTrigger = layer.volumeTrigger;
-            bool onlyGlobal = volumeTrigger == null;
+            var onlyGlobal = volumeTrigger == null;
             var triggerPos = onlyGlobal ? Vector3.zero : volumeTrigger.position;
 
             // Sort the cached volume list(s) for the given layer mask if needed and return it
@@ -106,7 +111,8 @@ namespace UnityEngine.Rendering.PostProcessing
             foreach (var volume in volumes)
             {
                 // Skip disabled volumes and volumes without any data or weight
-                if ((skipDisabled && !volume.enabled) || volume.profileRef == null || (skipZeroWeight && volume.weight <= 0f))
+                if (skipDisabled && !volume.enabled || volume.profileRef == null ||
+                    skipZeroWeight && volume.weight <= 0f)
                     continue;
 
                 // Global volume always have influence
@@ -126,7 +132,7 @@ namespace UnityEngine.Rendering.PostProcessing
                     continue;
 
                 // Find closest distance to volume, 0 means it's inside it
-                float closestDistanceSqr = float.PositiveInfinity;
+                var closestDistanceSqr = float.PositiveInfinity;
 
                 foreach (var collider in colliders)
                 {
@@ -141,7 +147,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 }
 
                 colliders.Clear();
-                float blendDistSqr = volume.blendDistance * volume.blendDistance;
+                var blendDistSqr = volume.blendDistance * volume.blendDistance;
 
                 // Check for influence
                 if (closestDistanceSqr <= blendDistSqr)
@@ -159,28 +165,24 @@ namespace UnityEngine.Rendering.PostProcessing
 
         public PostProcessVolume GetHighestPriorityVolume(LayerMask mask)
         {
-            float highestPriority = float.NegativeInfinity;
+            var highestPriority = float.NegativeInfinity;
             PostProcessVolume output = null;
 
             List<PostProcessVolume> volumes;
             if (m_SortedVolumes.TryGetValue(mask, out volumes))
-            {
                 foreach (var volume in volumes)
-                {
                     if (volume.priority > highestPriority)
                     {
                         highestPriority = volume.priority;
                         output = volume;
                     }
-                }
-            }
 
             return output;
         }
 
         public PostProcessVolume QuickVolume(int layer, float priority, params PostProcessEffectSettings[] settings)
         {
-            var gameObject = new GameObject()
+            var gameObject = new GameObject
             {
                 name = "Quick Volume",
                 layer = layer,
@@ -221,7 +223,7 @@ namespace UnityEngine.Rendering.PostProcessing
             Register(volume, newLayer);
         }
 
-        void Register(PostProcessVolume volume, int layer)
+        private void Register(PostProcessVolume volume, int layer)
         {
             m_Volumes.Add(volume);
 
@@ -239,11 +241,11 @@ namespace UnityEngine.Rendering.PostProcessing
 
         internal void Register(PostProcessVolume volume)
         {
-            int layer = volume.gameObject.layer;
+            var layer = volume.gameObject.layer;
             Register(volume, layer);
         }
 
-        void Unregister(PostProcessVolume volume, int layer)
+        private void Unregister(PostProcessVolume volume, int layer)
         {
             m_Volumes.Remove(volume);
 
@@ -261,19 +263,19 @@ namespace UnityEngine.Rendering.PostProcessing
 
         internal void Unregister(PostProcessVolume volume)
         {
-            int layer = volume.gameObject.layer;
+            var layer = volume.gameObject.layer;
             Unregister(volume, layer);
         }
 
         // Faster version of OverrideSettings to force replace values in the global state
-        void ReplaceData(PostProcessLayer postProcessLayer)
+        private void ReplaceData(PostProcessLayer postProcessLayer)
         {
             foreach (var settings in m_BaseSettings)
             {
                 var target = postProcessLayer.GetBundle(settings.GetType()).settings;
-                int count = settings.parameters.Count;
+                var count = settings.parameters.Count;
 
-                for (int i = 0; i < count; i++)
+                for (var i = 0; i < count; i++)
                     target.parameters[i].SetValue(settings.parameters[i]);
             }
         }
@@ -284,9 +286,9 @@ namespace UnityEngine.Rendering.PostProcessing
             ReplaceData(postProcessLayer);
 
             // If no trigger is set, only global volumes will have influence
-            int mask = postProcessLayer.volumeLayer.value;
+            var mask = postProcessLayer.volumeLayer.value;
             var volumeTrigger = postProcessLayer.volumeTrigger;
-            bool onlyGlobal = volumeTrigger == null;
+            var onlyGlobal = volumeTrigger == null;
             var triggerPos = onlyGlobal ? Vector3.zero : volumeTrigger.position;
 
             // Sort the cached volume list(s) for the given layer mask if needed and return it
@@ -318,7 +320,7 @@ namespace UnityEngine.Rendering.PostProcessing
                     continue;
 
                 // Find closest distance to volume, 0 means it's inside it
-                float closestDistanceSqr = float.PositiveInfinity;
+                var closestDistanceSqr = float.PositiveInfinity;
 
                 foreach (var collider in colliders)
                 {
@@ -333,7 +335,7 @@ namespace UnityEngine.Rendering.PostProcessing
                 }
 
                 colliders.Clear();
-                float blendDistSqr = volume.blendDistance * volume.blendDistance;
+                var blendDistSqr = volume.blendDistance * volume.blendDistance;
 
                 // Volume has no influence, ignore it
                 // Note: Volume doesn't do anything when `closestDistanceSqr = blendDistSqr` but
@@ -343,17 +345,17 @@ namespace UnityEngine.Rendering.PostProcessing
                     continue;
 
                 // Volume has influence
-                float interpFactor = 1f;
+                var interpFactor = 1f;
 
                 if (blendDistSqr > 0f)
-                    interpFactor = 1f - (closestDistanceSqr / blendDistSqr);
+                    interpFactor = 1f - closestDistanceSqr / blendDistSqr;
 
                 // No need to clamp01 the interpolation factor as it'll always be in [0;1[ range
                 postProcessLayer.OverrideSettings(settings, interpFactor * Mathf.Clamp01(volume.weight));
             }
         }
 
-        List<PostProcessVolume> GrabVolumes(LayerMask mask)
+        private List<PostProcessVolume> GrabVolumes(LayerMask mask)
         {
             List<PostProcessVolume> list;
 
@@ -389,14 +391,14 @@ namespace UnityEngine.Rendering.PostProcessing
         // Custom insertion sort. First sort will be slower but after that it'll be faster than
         // using List<T>.Sort() which is also unstable by nature.
         // Sort order is ascending.
-        static void SortByPriority(List<PostProcessVolume> volumes)
+        private static void SortByPriority(List<PostProcessVolume> volumes)
         {
             Assert.IsNotNull(volumes, "Trying to sort volumes of non-initialized layer");
 
-            for (int i = 1; i < volumes.Count; i++)
+            for (var i = 1; i < volumes.Count; i++)
             {
                 var temp = volumes[i];
-                int j = i - 1;
+                var j = i - 1;
 
                 while (j >= 0 && volumes[j].priority > temp.priority)
                 {

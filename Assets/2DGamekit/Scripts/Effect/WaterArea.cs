@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿#region
+
 using System.Collections.Generic;
-using Gamekit2D;
 using UnityEngine;
-using UnityEngine.Profiling;
 #if UNITY_EDITOR
 using UnityEditor;
+
 #endif
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -15,53 +17,44 @@ namespace Gamekit2D
     [RequireComponent(typeof(BoxCollider2D))]
     public class WaterArea : MonoBehaviour
     {
-        protected struct WaterColumn
-        {
-            public float currentHeight;
-            public float baseHeight;
-            public float velocity;
-            public float xPosition;
-            public int vertexIndex;
-        }
+        private const float NEIGHBOUR_TRANSFER = 0.001f;
+        private readonly int m_SplashPlayerPoolSize = 5;
 
-        const float NEIGHBOUR_TRANSFER = 0.001f;
+        public float dampening = 0.93f;
+
+        protected BoxCollider2D m_BoxCollider;
+        protected ParticleSystem m_Bubbles;
+        protected BuoyancyEffector2D m_BuoyancyEffector;
+
+        protected WaterColumn[] m_Columns;
+        protected int m_CurrentSplashPlayer;
+        protected Damager m_Damager;
+        protected MeshFilter m_Filter;
+        protected Vector2 m_LowerCorner;
+        protected Mesh m_Mesh;
+
+        protected MeshRenderer m_Renderer;
+
+        protected RandomAudioPlayer[] m_SplashSourcePool;
+        protected ParticleSystem m_Steam;
+        protected float m_Width;
+        protected Vector3[] meshVertices;
+        public float neighbourTransfer = 0.03f;
+        public Vector2 offset;
 
         public int pointPerUnits = 5;
-        public Vector2 offset;
         public Vector2 size = new Vector2(6f, 2f);
 
         public int sortingLayerID;
         public int sortingLayerOrder = 3;
 
-        public float dampening = 0.93f;
-        public float tension = 0.025f;
-        public float neighbourTransfer = 0.03f;
-
         public RandomAudioPlayer splashPlayerPrefab;
+        public float tension = 0.025f;
 
         public BoxCollider2D boxCollider2D
         {
             get { return m_BoxCollider; }
         }
-
-        protected MeshRenderer m_Renderer;
-        protected MeshFilter m_Filter;
-        protected Mesh m_Mesh;
-
-        protected BoxCollider2D m_BoxCollider;
-        protected Damager m_Damager;
-        protected ParticleSystem m_Bubbles;
-        protected ParticleSystem m_Steam;
-        protected BuoyancyEffector2D m_BuoyancyEffector;
-
-        protected WaterColumn[] m_Columns;
-        protected float m_Width;
-        protected Vector2 m_LowerCorner;
-
-        protected RandomAudioPlayer[] m_SplashSourcePool;
-        protected int m_CurrentSplashPlayer = 0;
-        readonly int m_SplashPlayerPoolSize = 5;
-        protected Vector3[] meshVertices;
 
         private void OnEnable()
         {
@@ -77,7 +70,7 @@ namespace Gamekit2D
                 if (splashPlayerPrefab != null)
                 {
                     m_SplashSourcePool = new RandomAudioPlayer[m_SplashPlayerPoolSize];
-                    for (int i = 0; i < m_SplashPlayerPoolSize; ++i)
+                    for (var i = 0; i < m_SplashPlayerPoolSize; ++i)
                     {
                         m_SplashSourcePool[i] = Instantiate(splashPlayerPrefab);
                         m_SplashSourcePool[i].transform.SetParent(transform);
@@ -111,9 +104,9 @@ namespace Gamekit2D
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            for (int i = 0; i < m_Columns.Length; ++i)
+            for (var i = 0; i < m_Columns.Length; ++i)
             {
                 //float ratio = ((float)i) / m_columns.Length;
 
@@ -125,7 +118,7 @@ namespace Gamekit2D
                 if (i < m_Columns.Length - 1)
                     rightDelta = neighbourTransfer * (m_Columns[i + 1].currentHeight - m_Columns[i].currentHeight);
 
-                float force = leftDelta;
+                var force = leftDelta;
                 force += rightDelta;
                 force += tension * (m_Columns[i].baseHeight - m_Columns[i].currentHeight);
 
@@ -134,10 +127,8 @@ namespace Gamekit2D
                 m_Columns[i].currentHeight += m_Columns[i].velocity;
             }
 
-            for (int i = 0; i < m_Columns.Length; ++i)
-            {
+            for (var i = 0; i < m_Columns.Length; ++i)
                 meshVertices[m_Columns[i].vertexIndex].y = m_Columns[i].currentHeight;
-            }
 
             m_Mesh.vertices = meshVertices;
 
@@ -146,17 +137,17 @@ namespace Gamekit2D
 
         public void AdjustComponentSizes()
         {
-            ParticleSystem.ShapeModule steamShape = m_Steam.shape;
+            var steamShape = m_Steam.shape;
             steamShape.radius = size.x * 0.5f;
 
-            Vector3 steamLocalPosition = m_Steam.transform.localPosition;
+            var steamLocalPosition = m_Steam.transform.localPosition;
             steamLocalPosition = offset + Vector2.up * size.y * 0.5f;
             m_Steam.transform.localPosition = steamLocalPosition;
 
-            ParticleSystem.ShapeModule bubblesShape = m_Bubbles.shape;
+            var bubblesShape = m_Bubbles.shape;
             bubblesShape.radius = size.x * 0.5f;
 
-            Vector3 bubblesLocalPosition = m_Bubbles.transform.localPosition;
+            var bubblesLocalPosition = m_Bubbles.transform.localPosition;
             bubblesLocalPosition = offset + Vector2.down * size.y * 0.5f;
             m_Bubbles.transform.localPosition = bubblesLocalPosition;
 
@@ -184,19 +175,19 @@ namespace Gamekit2D
 
             m_Width = size.x;
 
-            int count = Mathf.CeilToInt(size.x * (pointPerUnits - 1)) + 1;
+            var count = Mathf.CeilToInt(size.x * (pointPerUnits - 1)) + 1;
 
             m_Columns = new WaterColumn[count + 1];
 
-            float step = size.x / count;
+            var step = size.x / count;
 
-            Vector3[] pts = new Vector3[(count + 1) * 2];
-            Vector3[] normal = new Vector3[(count + 1) * 2];
-            Vector2[] uvs = new Vector2[(count + 1) * 2];
-            Vector2[] uvs2 = new Vector2[(count + 1) * 2];
-            int[] indices = new int[6 * count];
+            var pts = new Vector3[(count + 1) * 2];
+            var normal = new Vector3[(count + 1) * 2];
+            var uvs = new Vector2[(count + 1) * 2];
+            var uvs2 = new Vector2[(count + 1) * 2];
+            var indices = new int[6 * count];
 
-            for (int i = 0; i <= count; ++i)
+            for (var i = 0; i <= count; ++i)
             {
                 pts[i * 2 + 0].Set(m_LowerCorner.x + step * i, m_LowerCorner.y, 0);
                 pts[i * 2 + 1].Set(m_LowerCorner.x + step * i, m_LowerCorner.y + size.y, 0);
@@ -204,8 +195,8 @@ namespace Gamekit2D
                 normal[i * 2 + 0].Set(0, 0, 1);
                 normal[i * 2 + 1].Set(0, 0, 1);
 
-                uvs[i * 2 + 0].Set(((float) i) / count, 0);
-                uvs[i * 2 + 1].Set(((float) i) / count, 1);
+                uvs[i * 2 + 0].Set((float) i / count, 0);
+                uvs[i * 2 + 1].Set((float) i / count, 1);
 
                 //Set the 2nd uv set to local position, allow for coherent tiling of normal map
                 uvs2[i * 2 + 0].Set(pts[i * 2 + 0].x, pts[i * 2 + 0].y);
@@ -213,8 +204,8 @@ namespace Gamekit2D
 
                 if (i > 0)
                 {
-                    int arrayIdx = (i - 1) * 6;
-                    int startingIdx = (i - 1) * 2;
+                    var arrayIdx = (i - 1) * 6;
+                    var startingIdx = (i - 1) * 2;
 
                     indices[arrayIdx + 0] = startingIdx;
                     indices[arrayIdx + 1] = startingIdx + 1;
@@ -262,7 +253,7 @@ namespace Gamekit2D
             if (splashPlayerPrefab == null)
                 return; //the splash prefab wasn't set, we don't have any instance of it to play sound
 
-            int use = m_CurrentSplashPlayer;
+            var use = m_CurrentSplashPlayer;
             m_CurrentSplashPlayer = (m_CurrentSplashPlayer + 1) % m_SplashPlayerPoolSize;
 
             m_SplashSourcePool[use].transform.position = position;
@@ -275,17 +266,17 @@ namespace Gamekit2D
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
+            var rb = collision.GetComponent<Rigidbody2D>();
             if (rb == null || rb.bodyType == RigidbodyType2D.Static)
                 return; //we don't care about static rigidbody, they can't "fall" in water
 
-            Bounds bounds = collision.bounds;
+            var bounds = collision.bounds;
 
-            List<int> touchedColumnIndices = new List<int>();
-            float divisionWith = m_Width / m_Columns.Length;
+            var touchedColumnIndices = new List<int>();
+            var divisionWith = m_Width / m_Columns.Length;
 
-            Vector3 localMin = transform.InverseTransformPoint(bounds.min);
-            Vector3 localMax = transform.InverseTransformPoint(bounds.max);
+            var localMin = transform.InverseTransformPoint(bounds.min);
+            var localMax = transform.InverseTransformPoint(bounds.max);
 
             // find all our springs within the bounds
             var xMin = localMin.x;
@@ -295,28 +286,31 @@ namespace Gamekit2D
             PlaySplash(new Vector3(bounds.min.x + bounds.extents.x, bounds.min.y, bounds.min.z));
 
             for (var i = 0; i < m_Columns.Length; i++)
-            {
                 if (m_Columns[i].xPosition > xMin && m_Columns[i].xPosition < xMax)
                     touchedColumnIndices.Add(i);
-            }
 
             // if we have no hits we should loop back through and find the 2 closest verts and use them
             if (touchedColumnIndices.Count == 0)
-            {
                 for (var i = 0; i < m_Columns.Length; i++)
-                {
                     // widen our search to included divisitionWidth padding on each side so we definitely get a couple hits
                     if (m_Columns[i].xPosition + divisionWith > xMin && m_Columns[i].xPosition - divisionWith < xMax)
                         touchedColumnIndices.Add(i);
-                }
-            }
 
-            float testForce = 0.2f;
-            for (int i = 0; i < touchedColumnIndices.Count; ++i)
+            var testForce = 0.2f;
+            for (var i = 0; i < touchedColumnIndices.Count; ++i)
             {
-                int idx = touchedColumnIndices[i];
+                var idx = touchedColumnIndices[i];
                 m_Columns[idx].velocity -= testForce;
             }
+        }
+
+        protected struct WaterColumn
+        {
+            public float currentHeight;
+            public float baseHeight;
+            public float velocity;
+            public float xPosition;
+            public int vertexIndex;
         }
     }
 
@@ -324,18 +318,18 @@ namespace Gamekit2D
     [CustomEditor(typeof(WaterArea))]
     public class WaterAreaEditor : Editor
     {
-        protected WaterArea m_WaterArea;
-        protected Vector2 m_PrevSize;
-        protected Vector2 m_PrevOffset;
+        protected int m_CurrentLayer;
 
         protected SerializedProperty m_OffsetProp;
+        protected Vector2 m_PrevOffset;
+        protected Vector2 m_PrevSize;
         protected SerializedProperty m_SizeProp;
-        protected SerializedProperty m_SortingLayerProp;
         protected SerializedProperty m_SortingLayerOrderProp;
-        protected SerializedProperty m_SplashPlayerPrefabProp;
+        protected SerializedProperty m_SortingLayerProp;
 
         protected string[] m_SortingLayers;
-        protected int m_CurrentLayer;
+        protected SerializedProperty m_SplashPlayerPrefabProp;
+        protected WaterArea m_WaterArea;
 
         private void OnEnable()
         {
@@ -346,10 +340,10 @@ namespace Gamekit2D
             m_PrevOffset = m_WaterArea.boxCollider2D.offset;
 
             m_CurrentLayer = -1;
-            int defaultLayer = 0;
-            SortingLayer[] layers = SortingLayer.layers;
+            var defaultLayer = 0;
+            var layers = SortingLayer.layers;
             m_SortingLayers = new string[layers.Length];
-            for (int i = 0; i < layers.Length; ++i)
+            for (var i = 0; i < layers.Length; ++i)
             {
                 m_SortingLayers[i] = layers[i].name;
                 if (layers[i].id == m_WaterArea.sortingLayerID)
@@ -382,10 +376,10 @@ namespace Gamekit2D
 
             EditorGUI.BeginChangeCheck();
 
-            Vector2 newOffsetValue = EditorGUILayout.Vector2Field("Offset", m_OffsetProp.vector2Value);
+            var newOffsetValue = EditorGUILayout.Vector2Field("Offset", m_OffsetProp.vector2Value);
             if (newOffsetValue.x > 0f && newOffsetValue.y > 0f)
                 m_OffsetProp.vector2Value = newOffsetValue;
-            Vector2 newSizeValue = EditorGUILayout.Vector2Field("Size", m_SizeProp.vector2Value);
+            var newSizeValue = EditorGUILayout.Vector2Field("Size", m_SizeProp.vector2Value);
             if (newSizeValue.x > 0f && newSizeValue.y > 0f)
                 m_SizeProp.vector2Value = newSizeValue;
 
@@ -402,16 +396,16 @@ namespace Gamekit2D
             m_WaterArea.neighbourTransfer =
                 EditorGUILayout.FloatField("Neighbour Transfer", m_WaterArea.neighbourTransfer);
 
-            if (EditorGUI.EndChangeCheck() || (m_WaterArea.boxCollider2D != null &&
-                                               (m_PrevSize != m_WaterArea.boxCollider2D.size ||
-                                                m_PrevOffset != m_WaterArea.boxCollider2D.offset)))
+            if (EditorGUI.EndChangeCheck() || m_WaterArea.boxCollider2D != null &&
+                (m_PrevSize != m_WaterArea.boxCollider2D.size ||
+                 m_PrevOffset != m_WaterArea.boxCollider2D.offset))
             {
                 m_WaterArea.RecomputeMesh();
                 EditorUtility.SetDirty(target);
             }
 
             EditorGUI.BeginChangeCheck();
-            int sortLayer = EditorGUILayout.Popup("Sorting Layer", m_CurrentLayer, m_SortingLayers);
+            var sortLayer = EditorGUILayout.Popup("Sorting Layer", m_CurrentLayer, m_SortingLayers);
             if (sortLayer != m_CurrentLayer)
             {
                 m_WaterArea.sortingLayerID = SortingLayer.NameToID(m_SortingLayers[sortLayer]);

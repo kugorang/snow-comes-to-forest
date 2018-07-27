@@ -534,19 +534,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47a7e7f46c1f7fb4bb3ec21bef2f859d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AudioManager: {fileID: 576073131}
+  bgmImage: {fileID: 1275830014}
   controlImage: {fileID: 0}
   controlSprite:
   - {fileID: 21300000, guid: c6eb059edafdec145981f4443aa0e0c9, type: 3}
   - {fileID: 21300000, guid: 9408474c303cd5a45a8bf61c7adc1316, type: 3}
-  bgmImage: {fileID: 1275830014}
+  creditButton: {fileID: 1824420273}
+  creditPanel: {fileID: 1181033483}
+  settingPanel: {fileID: 1218899262}
   sfxImage: {fileID: 99324989}
   soundSprite:
   - {fileID: 21300000, guid: be42ebf08c30a4142a78db0254badff0, type: 3}
   - {fileID: 21300000, guid: 8fbe6a8967488604e883091861302633, type: 3}
-  settingPanel: {fileID: 1218899262}
-  creditButton: {fileID: 1824420273}
-  creditPanel: {fileID: 1181033483}
-  AudioManager: {fileID: 0}
 --- !u!114 &120206323
 MonoBehaviour:
   m_ObjectHideFlags: 0

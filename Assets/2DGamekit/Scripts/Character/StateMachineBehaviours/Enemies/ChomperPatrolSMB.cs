@@ -1,6 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -10,7 +12,7 @@ namespace Gamekit2D
         {
             //We do this explicitly here instead of in the enemy class, that allow to handle obstacle differently according to state
             // (e.g. look at the ChomperRunToTargetSMB that stop the pursuit if there is an obstacle) 
-            float dist = m_MonoBehaviour.speed;
+            var dist = m_MonoBehaviour.speed;
             if (m_MonoBehaviour.CheckForObstacle(dist))
             {
                 //this will inverse the move vector, and UpdateFacing will then flip the sprite & forward vector as moveVector will be in the other direction

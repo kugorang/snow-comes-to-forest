@@ -1,4 +1,8 @@
+#region
+
 using System;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -12,7 +16,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
         public T GetValue<T>()
         {
-            return ((ParameterOverride<T>)this).value;
+            return ((ParameterOverride<T>) this).value;
         }
 
         // This is used in case you need to access fields/properties that can't be accessed in the
@@ -81,7 +85,7 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             unchecked
             {
-                int hash = 17;
+                var hash = 17;
                 hash = hash * 23 + overrideState.GetHashCode();
                 hash = hash * 23 + value.GetHashCode();
                 return hash;
@@ -121,12 +125,14 @@ namespace UnityEngine.Rendering.PostProcessing
         {
             // Int snapping interpolation. Don't use this for enums as they don't necessarily have
             // contiguous values. Use the default interpolator instead (same as bool).
-            value = (int)(from + (to - from) * t);
+            value = (int) (from + (to - from) * t);
         }
     }
 
     [Serializable]
-    public sealed class BoolParameter : ParameterOverride<bool> {}
+    public sealed class BoolParameter : ParameterOverride<bool>
+    {
+    }
 
     [Serializable]
     public sealed class ColorParameter : ParameterOverride<Color>
@@ -188,7 +194,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
         public override void Interp(Spline from, Spline to, float t)
         {
-            int frameCount = Time.renderedFrameCount;
+            var frameCount = Time.renderedFrameCount;
 
             if (from == null || to == null)
             {
@@ -199,10 +205,10 @@ namespace UnityEngine.Rendering.PostProcessing
             from.Cache(frameCount);
             to.Cache(frameCount);
 
-            for (int i = 0; i < Spline.k_Precision; i++)
+            for (var i = 0; i < Spline.k_Precision; i++)
             {
-                float a = from.cachedData[i];
-                float b = to.cachedData[i];
+                var a = from.cachedData[i];
+                var b = to.cachedData[i];
                 value.cachedData[i] = a + (b - a) * t;
             }
         }

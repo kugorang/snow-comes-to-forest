@@ -1,34 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEditor;
-using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public abstract class DataPersisterEditor : Editor
     {
-        IDataPersister m_DataPersister;
+        private IDataPersister m_DataPersister;
 
         protected virtual void OnEnable()
         {
-            m_DataPersister = (IDataPersister)target;
+            m_DataPersister = (IDataPersister) target;
         }
 
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
 
-            DataPersisterGUI (m_DataPersister);
+            DataPersisterGUI(m_DataPersister);
         }
 
-        public static void DataPersisterGUI (IDataPersister dataPersister)
+        public static void DataPersisterGUI(IDataPersister dataPersister)
         {
-            DataSettings dataSettings = dataPersister.GetDataSettings ();
+            var dataSettings = dataPersister.GetDataSettings();
 
-            DataSettings.PersistenceType persistenceType = (DataSettings.PersistenceType)EditorGUILayout.EnumPopup ("Persistence Type", dataSettings.persistenceType);
-            string dataTag = EditorGUILayout.TextField ("Data Tag", dataSettings.dataTag);
+            var persistenceType =
+                (DataSettings.PersistenceType) EditorGUILayout.EnumPopup("Persistence Type",
+                    dataSettings.persistenceType);
+            var dataTag = EditorGUILayout.TextField("Data Tag", dataSettings.dataTag);
 
-            dataPersister.SetDataSettings (dataTag, persistenceType);
+            dataPersister.SetDataSettings(dataTag, persistenceType);
         }
     }
 }

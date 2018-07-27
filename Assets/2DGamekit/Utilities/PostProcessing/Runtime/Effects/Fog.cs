@@ -1,4 +1,8 @@
+#region
+
 using System;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -19,9 +23,10 @@ namespace UnityEngine.Rendering.PostProcessing
         internal bool IsEnabledAndSupported(PostProcessRenderContext context)
         {
             return enabled
-                && RenderSettings.fog
-                && !RuntimeUtilities.scriptableRenderPipelineActive
-                && context.camera.actualRenderingPath == RenderingPath.DeferredShading;  // In forward fog is already done at shader level
+                   && RenderSettings.fog
+                   && !RuntimeUtilities.scriptableRenderPipelineActive
+                   && context.camera.actualRenderingPath ==
+                   RenderingPath.DeferredShading; // In forward fog is already done at shader level
         }
 
         internal void Render(PostProcessRenderContext context)
@@ -29,9 +34,12 @@ namespace UnityEngine.Rendering.PostProcessing
             var sheet = context.propertySheets.Get(context.resources.shaders.deferredFog);
             sheet.ClearKeywords();
 
-            var fogColor = RuntimeUtilities.isLinearColorSpace ? RenderSettings.fogColor.linear : RenderSettings.fogColor;
+            var fogColor = RuntimeUtilities.isLinearColorSpace
+                ? RenderSettings.fogColor.linear
+                : RenderSettings.fogColor;
             sheet.properties.SetVector(ShaderIDs.FogColor, fogColor);
-            sheet.properties.SetVector(ShaderIDs.FogParams, new Vector3(RenderSettings.fogDensity, RenderSettings.fogStartDistance, RenderSettings.fogEndDistance));
+            sheet.properties.SetVector(ShaderIDs.FogParams,
+                new Vector3(RenderSettings.fogDensity, RenderSettings.fogStartDistance, RenderSettings.fogEndDistance));
 
             var cmd = context.command;
             cmd.BlitFullscreenTriangle(context.source, context.destination, sheet, excludeSkybox ? 1 : 0);

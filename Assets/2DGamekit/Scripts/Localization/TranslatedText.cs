@@ -1,27 +1,31 @@
-﻿using TMPro;
+﻿#region
+
+using TMPro;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class TranslatedText : MonoBehaviour
     {
-        public TextMeshProUGUI text;
         public string phraseKey;
         public bool setTextOnStart = true;
+        public TextMeshProUGUI text;
 
-        void Awake ()
+        private void Awake()
         {
             if (text == null)
-                text = GetComponent<TextMeshProUGUI> ();
+                text = GetComponent<TextMeshProUGUI>();
         }
 
-        void Start ()
+        private void Start()
         {
-            if(setTextOnStart)
+            if (setTextOnStart)
                 text.text = Translator.Instance[phraseKey];
         }
 
-        public void SetText ()
+        public void SetText()
         {
             text.text = Translator.Instance[phraseKey];
         }

@@ -1,5 +1,9 @@
+#region
+
 using System;
 using UnityEngine.Serialization;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -7,26 +11,27 @@ namespace UnityEngine.Rendering.PostProcessing
     [PostProcess(typeof(ChromaticAberrationRenderer), "Unity/Chromatic Aberration")]
     public sealed class ChromaticAberration : PostProcessEffectSettings
     {
-        [Tooltip("Shift the hue of chromatic aberrations.")]
-        public TextureParameter spectralLut = new TextureParameter { value = null };
-
-        [Range(0f, 1f), Tooltip("Amount of tangential distortion.")]
-        public FloatParameter intensity = new FloatParameter { value = 0f };
-
         [FormerlySerializedAs("mobileOptimized")]
-        [Tooltip("Boost performances by lowering the effect quality. This settings is meant to be used on mobile and other low-end platforms but can also provide a nice performance boost on desktops and consoles.")]
-        public BoolParameter fastMode = new BoolParameter { value = false };
+        [Tooltip(
+            "Boost performances by lowering the effect quality. This settings is meant to be used on mobile and other low-end platforms but can also provide a nice performance boost on desktops and consoles.")]
+        public BoolParameter fastMode = new BoolParameter {value = false};
+
+        [Range(0f, 1f)] [Tooltip("Amount of tangential distortion.")]
+        public FloatParameter intensity = new FloatParameter {value = 0f};
+
+        [Tooltip("Shift the hue of chromatic aberrations.")]
+        public TextureParameter spectralLut = new TextureParameter {value = null};
 
         public override bool IsEnabledAndSupported(PostProcessRenderContext context)
         {
             return enabled.value
-                && intensity.value > 0f;
+                   && intensity.value > 0f;
         }
     }
 
     public sealed class ChromaticAberrationRenderer : PostProcessEffectRenderer<ChromaticAberration>
     {
-        Texture2D m_InternalSpectralLut;
+        private Texture2D m_InternalSpectralLut;
 
         public override void Render(PostProcessRenderContext context)
         {
@@ -45,7 +50,7 @@ namespace UnityEngine.Rendering.PostProcessing
                         hideFlags = HideFlags.DontSave
                     };
 
-                    m_InternalSpectralLut.SetPixels(new []
+                    m_InternalSpectralLut.SetPixels(new[]
                     {
                         new Color(1f, 0f, 0f),
                         new Color(0f, 1f, 0f),
@@ -57,7 +62,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
                 spectralLut = m_InternalSpectralLut;
             }
-            
+
             var sheet = context.uberSheet;
             sheet.EnableKeyword(settings.fastMode
                 ? "CHROMATIC_ABERRATION_LOW"

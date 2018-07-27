@@ -1,23 +1,28 @@
+#region
+
 using System;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
     public class PostProcessEffectBaseEditor
     {
-        internal PostProcessEffectSettings target { get; private set; }
-        internal SerializedObject serializedObject { get; private set; }
-
-        internal SerializedProperty baseProperty;
         internal SerializedProperty activeProperty;
 
-        SerializedProperty m_Enabled;
-        Editor m_Inspector;
+        internal SerializedProperty baseProperty;
+
+        private SerializedProperty m_Enabled;
+        private Editor m_Inspector;
 
         internal PostProcessEffectBaseEditor()
         {
         }
+
+        internal PostProcessEffectSettings target { get; private set; }
+        internal SerializedObject serializedObject { get; private set; }
 
         public void Repaint()
         {
@@ -60,26 +65,32 @@ namespace UnityEditor.Rendering.PostProcessing
             return ObjectNames.NicifyVariableName(target.GetType().Name);
         }
 
-        void TopRowFields()
+        private void TopRowFields()
         {
             using (new EditorGUILayout.HorizontalScope())
             {
-                if (GUILayout.Button(EditorUtilities.GetContent("All|Toggle all overrides on. To maximize performances you should only toggle overrides that you actually need."), Styling.miniLabelButton, GUILayout.Width(17f), GUILayout.ExpandWidth(false)))
+                if (GUILayout.Button(
+                    EditorUtilities.GetContent(
+                        "All|Toggle all overrides on. To maximize performances you should only toggle overrides that you actually need."),
+                    Styling.miniLabelButton, GUILayout.Width(17f), GUILayout.ExpandWidth(false)))
                     SetAllOverridesTo(true);
 
-                if (GUILayout.Button(EditorUtilities.GetContent("None|Toggle all overrides off."), Styling.miniLabelButton, GUILayout.Width(32f), GUILayout.ExpandWidth(false)))
+                if (GUILayout.Button(EditorUtilities.GetContent("None|Toggle all overrides off."),
+                    Styling.miniLabelButton, GUILayout.Width(32f), GUILayout.ExpandWidth(false)))
                     SetAllOverridesTo(false);
 
                 GUILayout.FlexibleSpace();
 
-                bool enabled = m_Enabled.boolValue;
-                enabled = GUILayout.Toggle(enabled, EditorUtilities.GetContent("On|Enable this effect."), EditorStyles.miniButtonLeft, GUILayout.Width(35f), GUILayout.ExpandWidth(false));
-                enabled = !GUILayout.Toggle(!enabled, EditorUtilities.GetContent("Off|Disable this effect."), EditorStyles.miniButtonRight, GUILayout.Width(35f), GUILayout.ExpandWidth(false));
+                var enabled = m_Enabled.boolValue;
+                enabled = GUILayout.Toggle(enabled, EditorUtilities.GetContent("On|Enable this effect."),
+                    EditorStyles.miniButtonLeft, GUILayout.Width(35f), GUILayout.ExpandWidth(false));
+                enabled = !GUILayout.Toggle(!enabled, EditorUtilities.GetContent("Off|Disable this effect."),
+                    EditorStyles.miniButtonRight, GUILayout.Width(35f), GUILayout.ExpandWidth(false));
                 m_Enabled.boolValue = enabled;
             }
         }
 
-        void SetAllOverridesTo(bool state)
+        private void SetAllOverridesTo(bool state)
         {
             Undo.RecordObject(target, "Toggle All");
             target.SetAllOverridesTo(state);
@@ -98,7 +109,7 @@ namespace UnityEditor.Rendering.PostProcessing
             var displayNameAttr = property.GetAttribute<DisplayNameAttribute>();
             if (displayNameAttr != null)
                 title.text = displayNameAttr.displayName;
-            
+
             // Add tooltip if it's missing and an attribute is available
             if (string.IsNullOrEmpty(title.tooltip))
             {
@@ -137,13 +148,13 @@ namespace UnityEditor.Rendering.PostProcessing
                 }
             }
 
-            bool invalidProp = false;
+            var invalidProp = false;
 
             if (decorator != null && !decorator.IsAutoProperty())
             {
                 if (decorator.OnGUI(property.value, property.overrideState, title, attribute))
                     return;
-                
+
                 // Attribute is invalid for the specified property; use default unity field instead
                 invalidProp = true;
             }
@@ -159,10 +170,8 @@ namespace UnityEditor.Rendering.PostProcessing
                 using (new EditorGUI.DisabledScope(!property.overrideState.boolValue))
                 {
                     if (decorator != null && !invalidProp)
-                    {
                         if (decorator.OnGUI(property.value, property.overrideState, title, attribute))
                             return;
-                    }
 
                     // Default unity field
                     if (property.value.hasVisibleChildren

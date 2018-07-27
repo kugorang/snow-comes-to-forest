@@ -1,26 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class GunnerShieldEffect : MonoBehaviour
     {
+        private const int count = 2;
+        protected float m_Intensity;
         protected Material m_Material;
-        protected float m_Intensity = 0.0f;
-
-        const int count = 2;
 
         private void Start()
         {
-            SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+            var renderer = GetComponent<SpriteRenderer>();
             m_Material = renderer.material;
             m_Intensity = 0.0f;
         }
 
         public void ShieldHit(Damager damager, Damageable damageable)
         {
-            Vector3 localPosition = transform.InverseTransformPoint(damager.transform.position);
+            var localPosition = transform.InverseTransformPoint(damager.transform.position);
 
             m_Material.SetVector("_HitPosition", localPosition);
             m_Intensity = 1.0f;
@@ -28,10 +29,7 @@ namespace Gamekit2D
 
         private void Update()
         {
-            if(m_Intensity > 0.0f)
-            {
-                m_Intensity = Mathf.Clamp(m_Intensity - Time.deltaTime, 0, 1);
-            }
+            if (m_Intensity > 0.0f) m_Intensity = Mathf.Clamp(m_Intensity - Time.deltaTime, 0, 1);
 
             m_Material.SetFloat("_HitIntensity", m_Intensity);
         }

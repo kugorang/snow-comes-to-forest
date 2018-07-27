@@ -1,10 +1,22 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class SavedData : MonoBehaviour
     {
+        protected static SavedData instance;
+        protected Dictionary<string, bool> m_BoolSavedData;
+        protected Dictionary<string, float> m_FloatSavedData;
+        protected Dictionary<string, int> m_IntSavedData;
+
+        protected Dictionary<string, string> m_StringSavedData;
+        protected Dictionary<string, Vector2> m_Vector2SavedData;
+
         public static SavedData Instance
         {
             get
@@ -17,43 +29,31 @@ namespace Gamekit2D
                 if (instance != null)
                     return instance;
 
-                GameObject spawnManagerGameObject = new GameObject("SpawnManager");
+                var spawnManagerGameObject = new GameObject("SpawnManager");
                 instance = spawnManagerGameObject.AddComponent<SavedData>();
 
                 return instance;
             }
         }
 
-        protected static SavedData instance;
-    
-        protected Dictionary<string, string> m_StringSavedData;
-        protected Dictionary<string, bool> m_BoolSavedData;
-        protected Dictionary<string, int> m_IntSavedData;
-        protected Dictionary<string, float> m_FloatSavedData;
-        protected Dictionary<string, Vector2> m_Vector2SavedData;
-    
-        void Start()
+        private void Start()
         {
             if (Instance != null)
-            {
                 Destroy(gameObject);
-            }
             else
-            {
                 DontDestroyOnLoad(gameObject);
-            }
         }
 
-        public static string Get (string key, out string value)
+        public static string Get(string key, out string value)
         {
             if (Instance.m_StringSavedData.TryGetValue(key, out value))
                 return value;
             throw new UnityException("No string data was found with the key - " + key);
         }
 
-        public static bool Get (string key, out bool value)
+        public static bool Get(string key, out bool value)
         {
-            if (Instance.m_BoolSavedData.TryGetValue (key, out value))
+            if (Instance.m_BoolSavedData.TryGetValue(key, out value))
                 return value;
             throw new UnityException("No bool data was found with the key - " + key);
         }
@@ -79,7 +79,7 @@ namespace Gamekit2D
             throw new UnityException("No Vector2 data was found with the key - " + key);
         }
 
-        public static void Set (string key, string value)
+        public static void Set(string key, string value)
         {
             if (Instance.m_StringSavedData.ContainsKey(key))
                 Instance.m_StringSavedData[key] = value;

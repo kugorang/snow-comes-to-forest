@@ -1,6 +1,10 @@
+#region
+
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
@@ -9,7 +13,7 @@ namespace Cinemachine.Editor
     {
         protected override List<string> GetExcludedPropertiesInInspector()
         {
-            List<string> excluded = base.GetExcludedPropertiesInInspector();
+            var excluded = base.GetExcludedPropertiesInInspector();
             switch (Target.m_CameraUp)
             {
                 default:
@@ -24,6 +28,7 @@ namespace Cinemachine.Editor
                     excluded.Add(FieldPath(x => x.m_RollDamping));
                     break;
             }
+
             return excluded;
         }
 
@@ -42,12 +47,12 @@ namespace Cinemachine.Editor
         {
             if (target.IsValid)
             {
-                CinemachinePathBase path = target.m_Path;
+                var path = target.m_Path;
                 if (path != null)
                 {
                     CinemachinePathEditor.DrawPathGizmo(path, path.m_Appearance.pathColor);
-                    Vector3 pos = path.EvaluatePositionAtUnit(target.m_PathPosition, target.m_PositionUnits);
-                    Color oldColor = Gizmos.color;
+                    var pos = path.EvaluatePositionAtUnit(target.m_PathPosition, target.m_PositionUnits);
+                    var oldColor = Gizmos.color;
                     Gizmos.color = CinemachineCore.Instance.IsLive(target.VirtualCamera)
                         ? CinemachineSettings.CinemachineCoreSettings.ActiveGizmoColour
                         : CinemachineSettings.CinemachineCoreSettings.InactiveGizmoColour;

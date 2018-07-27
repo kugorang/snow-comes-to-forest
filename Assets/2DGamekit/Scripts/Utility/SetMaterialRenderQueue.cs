@@ -1,19 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
-    public class SetMaterialRenderQueue : MonoBehaviour {
-
+    public class SetMaterialRenderQueue : MonoBehaviour
+    {
         public Material material;
         public int queueOverrideValue;
 
-        void Start ()
+        private void Start()
         {
             material.renderQueue = queueOverrideValue;
         }
-	
-	
     }
 }

@@ -1,28 +1,35 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using UnityEngine;
+
+#endregion
+
+#if UNITY_EDITOR
+#endif
 
 namespace Light2D
 {
     /// <summary>
-    /// Used to draw lights. Puts LightOrigin world position to UV1.
-    /// Supports Point and Line light types.
+    ///     Used to draw lights. Puts LightOrigin world position to UV1.
+    ///     Supports Point and Line light types.
     /// </summary>
     [ExecuteInEditMode]
     public class LightSprite : CustomSprite
     {
+        public enum LightShape
+        {
+            Point,
+            Line
+        }
+
         public static readonly List<LightSprite> AllLightSprites = new List<LightSprite>();
-        public Vector3 LightOrigin = new Vector3(0, 0, 1);
-        public LightShape Shape = LightShape.Point;
         private Matrix4x4 _modelMatrix;
         private Vector3 _oldLightOrigin;
         private LightShape _oldLightShape;
+        public Vector3 LightOrigin = new Vector3(0, 0, 1);
+        public LightShape Shape = LightShape.Point;
 
         public MeshRenderer Renderer
         {
@@ -41,7 +48,7 @@ namespace Light2D
         }
 
         /// <summary>
-        /// Update UV1 which is used for raytracking in shader. UV1 is set to world position of LightOrigin.
+        ///     Update UV1 which is used for raytracking in shader. UV1 is set to world position of LightOrigin.
         /// </summary>
         private void UpdatePosition()
         {
@@ -91,12 +98,6 @@ namespace Light2D
             }
 
             base.UpdateMeshData(forceUpdate);
-        }
-
-        public enum LightShape
-        {
-            Point,
-            Line,
         }
 
         private void OnDrawGizmosSelected()

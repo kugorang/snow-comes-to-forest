@@ -1,38 +1,38 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 public class LeafSpawner : MonoBehaviour
 {
+    public float interval;
+    public float maxRange;
 
-	public float minRange;
-	public float maxRange;
-	public float interval;
-	public float posY;
-	public string objTag;
-	public GameObject objToSpawn = null;
-	private Transform origin = null;
-	
+    public float minRange;
+    public string objTag;
+    public GameObject objToSpawn;
+    private Transform origin;
+    public float posY;
 
 
-	private void Awake()
-	{
-		origin = GameObject.FindGameObjectWithTag(objTag).GetComponent<Transform>();
-	}
+    private void Awake()
+    {
+        origin = GameObject.FindGameObjectWithTag(objTag).GetComponent<Transform>();
+    }
 
-	private void Start()
-	{
-		InvokeRepeating("Spawn",0f,interval);
-	}
+    private void Start()
+    {
+        InvokeRepeating("Spawn", 0f, interval);
+    }
 
-	void Spawn()
-	{
-		if (origin == null) return;
-		
-		float randomX = Random.Range(minRange, maxRange);
-		Vector3 SpawnPos = origin.position + Random.onUnitSphere * randomX;
-		SpawnPos = new Vector3(SpawnPos.x, posY, 0f);
-		Instantiate(objToSpawn, SpawnPos, Quaternion.identity);
-	}
+    private void Spawn()
+    {
+        if (origin == null) return;
+
+        var randomX = Random.Range(minRange, maxRange);
+        var SpawnPos = origin.position + Random.onUnitSphere * randomX;
+        SpawnPos = new Vector3(SpawnPos.x, posY, 0f);
+        Instantiate(objToSpawn, SpawnPos, Quaternion.identity);
+    }
 }

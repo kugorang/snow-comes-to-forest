@@ -1,11 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿#region
+
 using UnityEditor;
+
+#endregion
 
 namespace Gamekit2D
 {
     [CustomEditor(typeof(Damageable))]
     public class DamageableEditor : DataPersisterEditor
-    {}
+    {
+    }
 }

@@ -1,22 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class InstantiateObject : StateMachineBehaviour
     {
-
-        public GameObject target;
-        [Range(0, 1)]
-        public float spawnAt = 0;
+        public bool destroyOnExit = true;
+        private GameObject go;
         public bool isChildTransform = true;
         public Vector3 offset;
-        public bool destroyOnExit = true;
-        GameObject go;
+
+        [Range(0, 1)] public float spawnAt;
+
+        public GameObject target;
 
         // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-        override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if (spawnAt == 0)
                 Spawn(animator);
@@ -24,7 +26,7 @@ namespace Gamekit2D
 
         private void Spawn(Animator animator)
         {
-            go = Instantiate(target) as GameObject;
+            go = Instantiate(target);
             go.transform.position = animator.transform.position + offset;
             go.transform.rotation = animator.transform.rotation;
             if (isChildTransform) go.transform.parent = animator.transform;
@@ -32,15 +34,14 @@ namespace Gamekit2D
         }
 
         // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-        override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if (spawnAt > 0 && stateInfo.normalizedTime >= spawnAt && go == null)
                 Spawn(animator);
-
         }
 
         // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-        override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if (destroyOnExit && go != null)
                 Destroy(go);

@@ -1,4 +1,8 @@
+#region
+
 using System;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
@@ -6,29 +10,16 @@ namespace UnityEngine.Rendering.PostProcessing
     [Serializable]
     public sealed class ScalableAO : IAmbientOcclusionMethod
     {
-        RenderTexture m_Result;
-        PropertySheet m_PropertySheet;
-        AmbientOcclusion m_Settings;
-
-        readonly RenderTargetIdentifier[] m_MRT =
+        private readonly RenderTargetIdentifier[] m_MRT =
         {
             BuiltinRenderTextureType.GBuffer0, // Albedo, Occ
             BuiltinRenderTextureType.CameraTarget // Ambient
         };
 
-        readonly int[] m_SampleCount = { 4, 6, 10, 8, 12 };
-
-        enum Pass
-        {
-            OcclusionEstimationForward,
-            OcclusionEstimationDeferred,
-            HorizontalBlurForward,
-            HorizontalBlurDeferred,
-            VerticalBlur,
-            CompositionForward,
-            CompositionDeferred,
-            DebugOverlay
-        }
+        private readonly int[] m_SampleCount = {4, 6, 10, 8, 12};
+        private readonly AmbientOcclusion m_Settings;
+        private PropertySheet m_PropertySheet;
+        private RenderTexture m_Result;
 
         public ScalableAO(AmbientOcclusion settings)
         {
@@ -40,16 +31,52 @@ namespace UnityEngine.Rendering.PostProcessing
             return DepthTextureMode.Depth | DepthTextureMode.DepthNormals;
         }
 
-        void DoLazyInitialization(PostProcessRenderContext context)
+        public void RenderAfterOpaque(PostProcessRenderContext context)
+        {
+            var cmd = context.command;
+            cmd.BeginSample("Ambient Occlusion");
+            Render(context, cmd, 0);
+            cmd.SetGlobalTexture(ShaderIDs.SAOcclusionTexture, m_Result);
+            cmd.BlitFullscreenTriangle(BuiltinRenderTextureType.None, BuiltinRenderTextureType.CameraTarget,
+                m_PropertySheet, (int) Pass.CompositionForward);
+            cmd.EndSample("Ambient Occlusion");
+        }
+
+        public void RenderAmbientOnly(PostProcessRenderContext context)
+        {
+            var cmd = context.command;
+            cmd.BeginSample("Ambient Occlusion Render");
+            Render(context, cmd, 1);
+            cmd.EndSample("Ambient Occlusion Render");
+        }
+
+        public void CompositeAmbientOnly(PostProcessRenderContext context)
+        {
+            var cmd = context.command;
+            cmd.BeginSample("Ambient Occlusion Composite");
+            cmd.SetGlobalTexture(ShaderIDs.SAOcclusionTexture, m_Result);
+            cmd.BlitFullscreenTriangle(BuiltinRenderTextureType.None, m_MRT, BuiltinRenderTextureType.CameraTarget,
+                m_PropertySheet, (int) Pass.CompositionDeferred);
+            cmd.EndSample("Ambient Occlusion Composite");
+        }
+
+        public void Release()
+        {
+            RuntimeUtilities.Destroy(m_Result);
+            m_Result = null;
+        }
+
+        private void DoLazyInitialization(PostProcessRenderContext context)
         {
             m_PropertySheet = context.propertySheets.Get(context.resources.shaders.scalableAO);
 
-            bool reset = false;
+            var reset = false;
 
             if (m_Result == null || !m_Result.IsCreated())
             {
                 // Initial allocation
-                m_Result = context.GetScreenSpaceTemporaryRT(0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.Linear);
+                m_Result = context.GetScreenSpaceTemporaryRT(0, RenderTextureFormat.ARGB32,
+                    RenderTextureReadWrite.Linear);
                 m_Result.hideFlags = HideFlags.DontSave;
                 m_Result.filterMode = FilterMode.Bilinear;
 
@@ -68,18 +95,18 @@ namespace UnityEngine.Rendering.PostProcessing
                 m_Result.Create();
         }
 
-        void Render(PostProcessRenderContext context, CommandBuffer cmd, int occlusionSource)
+        private void Render(PostProcessRenderContext context, CommandBuffer cmd, int occlusionSource)
         {
             DoLazyInitialization(context);
             m_Settings.radius.value = Mathf.Max(m_Settings.radius.value, 1e-4f);
 
             // Material setup
             // Always use a quater-res AO buffer unless High/Ultra quality is set.
-            bool downsampling = (int)m_Settings.quality.value < (int)AmbientOcclusionQuality.High;
-            float px = m_Settings.intensity.value;
-            float py = m_Settings.radius.value;
-            float pz = downsampling ? 0.5f : 1f;
-            float pw = m_SampleCount[(int)m_Settings.quality.value];
+            var downsampling = (int) m_Settings.quality.value < (int) AmbientOcclusionQuality.High;
+            var px = m_Settings.intensity.value;
+            var py = m_Settings.radius.value;
+            var pz = downsampling ? 0.5f : 1f;
+            float pw = m_SampleCount[(int) m_Settings.quality.value];
 
             var sheet = m_PropertySheet;
             sheet.ClearKeywords();
@@ -94,73 +121,53 @@ namespace UnityEngine.Rendering.PostProcessing
                 sheet.EnableKeyword("APPLY_FORWARD_FOG");
                 sheet.properties.SetVector(
                     ShaderIDs.FogParams,
-                    new Vector3(RenderSettings.fogDensity, RenderSettings.fogStartDistance, RenderSettings.fogEndDistance)
+                    new Vector3(RenderSettings.fogDensity, RenderSettings.fogStartDistance,
+                        RenderSettings.fogEndDistance)
                 );
             }
 
             // Texture setup
-            int ts = downsampling ? 2 : 1;
+            var ts = downsampling ? 2 : 1;
             const RenderTextureFormat kFormat = RenderTextureFormat.ARGB32;
             const RenderTextureReadWrite kRWMode = RenderTextureReadWrite.Linear;
             const FilterMode kFilter = FilterMode.Bilinear;
 
             // AO buffer
             var rtMask = ShaderIDs.OcclusionTexture1;
-            int scaledWidth = context.width / ts;
-            int scaledHeight = context.height / ts;
+            var scaledWidth = context.width / ts;
+            var scaledHeight = context.height / ts;
             context.GetScreenSpaceTemporaryRT(cmd, rtMask, 0, kFormat, kRWMode, kFilter, scaledWidth, scaledHeight);
 
             // AO estimation
-            cmd.BlitFullscreenTriangle(BuiltinRenderTextureType.None, rtMask, sheet, (int)Pass.OcclusionEstimationForward + occlusionSource);
+            cmd.BlitFullscreenTriangle(BuiltinRenderTextureType.None, rtMask, sheet,
+                (int) Pass.OcclusionEstimationForward + occlusionSource);
 
             // Blur buffer
             var rtBlur = ShaderIDs.OcclusionTexture2;
             context.GetScreenSpaceTemporaryRT(cmd, rtBlur, 0, kFormat, kRWMode, kFilter);
 
             // Separable blur (horizontal pass)
-            cmd.BlitFullscreenTriangle(rtMask, rtBlur, sheet, (int)Pass.HorizontalBlurForward + occlusionSource);
+            cmd.BlitFullscreenTriangle(rtMask, rtBlur, sheet, (int) Pass.HorizontalBlurForward + occlusionSource);
             cmd.ReleaseTemporaryRT(rtMask);
 
             // Separable blur (vertical pass)
-            cmd.BlitFullscreenTriangle(rtBlur, m_Result, sheet, (int)Pass.VerticalBlur);
+            cmd.BlitFullscreenTriangle(rtBlur, m_Result, sheet, (int) Pass.VerticalBlur);
             cmd.ReleaseTemporaryRT(rtBlur);
 
             if (context.IsDebugOverlayEnabled(DebugOverlay.AmbientOcclusion))
-                context.PushDebugOverlay(cmd, m_Result, sheet, (int)Pass.DebugOverlay);
+                context.PushDebugOverlay(cmd, m_Result, sheet, (int) Pass.DebugOverlay);
         }
 
-        public void RenderAfterOpaque(PostProcessRenderContext context)
+        private enum Pass
         {
-            var cmd = context.command;
-            cmd.BeginSample("Ambient Occlusion");
-            Render(context, cmd, 0);
-            cmd.SetGlobalTexture(ShaderIDs.SAOcclusionTexture, m_Result);
-            cmd.BlitFullscreenTriangle(BuiltinRenderTextureType.None, BuiltinRenderTextureType.CameraTarget, m_PropertySheet, (int)Pass.CompositionForward);
-            cmd.EndSample("Ambient Occlusion");
-        }
-
-        public void RenderAmbientOnly(PostProcessRenderContext context)
-        {
-            var cmd = context.command;
-            cmd.BeginSample("Ambient Occlusion Render");
-            Render(context, cmd, 1);
-            cmd.EndSample("Ambient Occlusion Render");
-        }
-
-        public void CompositeAmbientOnly(PostProcessRenderContext context)
-        {
-            var cmd = context.command;
-            cmd.BeginSample("Ambient Occlusion Composite");
-            cmd.SetGlobalTexture(ShaderIDs.SAOcclusionTexture, m_Result);
-            cmd.BlitFullscreenTriangle(BuiltinRenderTextureType.None, m_MRT, BuiltinRenderTextureType.CameraTarget, m_PropertySheet, (int)Pass.CompositionDeferred);
-            cmd.EndSample("Ambient Occlusion Composite");
-        }
-
-        public void Release()
-        {
-            RuntimeUtilities.Destroy(m_Result);
-            m_Result = null;
+            OcclusionEstimationForward,
+            OcclusionEstimationDeferred,
+            HorizontalBlurForward,
+            HorizontalBlurDeferred,
+            VerticalBlur,
+            CompositionForward,
+            CompositionDeferred,
+            DebugOverlay
         }
     }
 }
-

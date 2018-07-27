@@ -1,20 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿#region
+
 using BTAI;
+using UnityEditor;
+using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class BTDebug : EditorWindow
     {
-        protected BTAI.Root _currentRoot = null;
+        protected Root _currentRoot;
 
 
         [MenuItem("Kit Tools/Behaviour Tree Debug")]
-        static void OpenWindow()
+        private static void OpenWindow()
         {
-            BTDebug btdebug = GetWindow<BTDebug>();
+            var btdebug = GetWindow<BTDebug>();
             btdebug.Show();
         }
 
@@ -29,27 +31,25 @@ namespace Gamekit2D
                 if (_currentRoot == null)
                     FindRoot();
                 else
-                {
                     RecursiveTreeParsing(_currentRoot, 0, true);
-                }
             }
         }
 
-        void Update()
+        private void Update()
         {
             Repaint();
         }
 
-        void RecursiveTreeParsing(Branch branch, int indent, bool parentIsActive)
+        private void RecursiveTreeParsing(Branch branch, int indent, bool parentIsActive)
         {
-            List<BTNode> nodes = branch.Children();
+            var nodes = branch.Children();
 
-            for(int i = 0; i < nodes.Count; ++i)
+            for (var i = 0; i < nodes.Count; ++i)
             {
                 EditorGUI.indentLevel = indent;
 
-                bool isActiveChild = branch.ActiveChild() == i;
-                GUI.color = (isActiveChild && parentIsActive) ? Color.green : Color.white;
+                var isActiveChild = branch.ActiveChild() == i;
+                GUI.color = isActiveChild && parentIsActive ? Color.green : Color.white;
                 EditorGUILayout.LabelField(nodes[i].ToString());
 
                 if (nodes[i] is Branch)
@@ -57,7 +57,7 @@ namespace Gamekit2D
             }
         }
 
-        void FindRoot()
+        private void FindRoot()
         {
             if (Selection.activeGameObject == null)
             {
@@ -65,13 +65,9 @@ namespace Gamekit2D
                 return;
             }
 
-            IBTDebugable debugable = Selection.activeGameObject.GetComponentInChildren<IBTDebugable>();
+            var debugable = Selection.activeGameObject.GetComponentInChildren<IBTDebugable>();
 
-            if(debugable != null)
-            {
-                _currentRoot = debugable.GetAIRoot();
-            }
+            if (debugable != null) _currentRoot = debugable.GetAIRoot();
         }
-
     }
 }

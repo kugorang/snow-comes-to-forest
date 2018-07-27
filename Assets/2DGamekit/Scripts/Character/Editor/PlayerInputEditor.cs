@@ -1,13 +1,17 @@
-﻿using UnityEditor;
+﻿#region
+
+using UnityEditor;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     [CustomEditor(typeof(PlayerInput))]
     public class PlayerInputEditor : DataPersisterEditor
     {
-        private bool m_IsPrefab = false;
-        private bool m_IsNotInstance = false;
+        private bool m_IsNotInstance;
+        private bool m_IsPrefab;
 
         protected override void OnEnable()
         {
@@ -19,15 +23,14 @@ namespace Gamekit2D
 
         public override void OnInspectorGUI()
         {
-            if(m_IsPrefab || m_IsNotInstance)
+            if (m_IsPrefab || m_IsNotInstance)
+            {
                 base.OnInspectorGUI();
+            }
             else
             {
                 EditorGUILayout.HelpBox("Modify the prefab and not this instance", MessageType.Warning);
-                if (GUILayout.Button("Select Prefab"))
-                {
-                    Selection.activeObject = PrefabUtility.GetPrefabParent(target);
-                }
+                if (GUILayout.Button("Select Prefab")) Selection.activeObject = PrefabUtility.GetPrefabParent(target);
             }
         }
     }

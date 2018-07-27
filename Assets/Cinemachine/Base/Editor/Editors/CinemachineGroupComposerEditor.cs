@@ -1,9 +1,13 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Cinemachine.Utility;
 using UnityEditor;
 using UnityEngine;
-using Cinemachine.Utility;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
@@ -11,7 +15,11 @@ namespace Cinemachine.Editor
     internal class CinemachineGroupComposerEditor : CinemachineComposerEditor
     {
         // Specialization
-        private CinemachineGroupComposer MyTarget { get { return target as CinemachineGroupComposer; } }
+        private CinemachineGroupComposer MyTarget
+        {
+            get { return target as CinemachineGroupComposer; }
+        }
+
         protected string FieldPath<TValue>(Expression<Func<CinemachineGroupComposer, TValue>> expr)
         {
             return ReflectionHelpers.GetFieldPath(expr);
@@ -19,9 +27,9 @@ namespace Cinemachine.Editor
 
         protected override List<string> GetExcludedPropertiesInInspector()
         {
-            List<string> excluded = base.GetExcludedPropertiesInInspector();
-            CinemachineBrain brain = CinemachineCore.Instance.FindPotentialTargetBrain(MyTarget.VirtualCamera);
-            bool ortho = brain != null ? brain.OutputCamera.orthographic : false;
+            var excluded = base.GetExcludedPropertiesInInspector();
+            var brain = CinemachineCore.Instance.FindPotentialTargetBrain(MyTarget.VirtualCamera);
+            var ortho = brain != null ? brain.OutputCamera.orthographic : false;
             if (ortho)
             {
                 excluded.Add(FieldPath(x => x.m_AdjustmentMode));
@@ -52,6 +60,7 @@ namespace Cinemachine.Editor
                         break;
                 }
             }
+
             return excluded;
         }
 
@@ -59,7 +68,7 @@ namespace Cinemachine.Editor
         {
             if (MyTarget.IsValid && MyTarget.TargetGroup == null)
                 EditorGUILayout.HelpBox(
-                    "The Framing settings will be ignored because the LookAt target is not a kind of CinemachineTargetGroup", 
+                    "The Framing settings will be ignored because the LookAt target is not a kind of CinemachineTargetGroup",
                     MessageType.Info);
 
             base.OnInspectorGUI();
@@ -71,8 +80,8 @@ namespace Cinemachine.Editor
             // Show the group bounding box, as viewed from the camera position
             if (target.TargetGroup != null)
             {
-                Matrix4x4 m = Gizmos.matrix;
-                Bounds b = target.m_LastBounds;
+                var m = Gizmos.matrix;
+                var b = target.m_LastBounds;
                 Gizmos.matrix = target.m_lastBoundsMatrix;
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawWireCube(b.center, b.size);

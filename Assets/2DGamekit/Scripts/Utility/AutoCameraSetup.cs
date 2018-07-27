@@ -1,7 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using Cinemachine;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -10,14 +12,14 @@ namespace Gamekit2D
         public bool autoSetupCameraFollow = true;
         public string cameraFollowGameObjectName = "Ellen";
 
-        void Awake ()
+        private void Awake()
         {
-            if(!autoSetupCameraFollow)
+            if (!autoSetupCameraFollow)
                 return;
 
-            CinemachineVirtualCamera cam = GetComponent<CinemachineVirtualCamera> ();
-        
-            if(cam == null)
+            var cam = GetComponent<CinemachineVirtualCamera>();
+
+            if (cam == null)
                 throw new UnityException("Virtual Camera was not found, default follow cannot be assigned.");
 
             //we manually do a "find", because otherwise, GameObject.Find seem to return object from a "preview scene" breaking the camera as the object is not the right one
@@ -26,7 +28,9 @@ namespace Gamekit2D
             foreach (var go in rootObj)
             {
                 if (go.name == cameraFollowGameObjectName)
+                {
                     cameraFollowGameObject = go;
+                }
                 else
                 {
                     var t = go.transform.Find(cameraFollowGameObjectName);
@@ -36,14 +40,12 @@ namespace Gamekit2D
 
                 if (cameraFollowGameObject != null) break;
             }
-        
-            if(cameraFollowGameObject == null)
-                throw new UnityException("GameObject called " + cameraFollowGameObjectName + " was not found, default follow cannot be assigned.");
 
-            if (cam.Follow == null)
-            {
-                cam.Follow = cameraFollowGameObject.transform;
-            }
+            if (cameraFollowGameObject == null)
+                throw new UnityException("GameObject called " + cameraFollowGameObjectName +
+                                         " was not found, default follow cannot be assigned.");
+
+            if (cam.Follow == null) cam.Follow = cameraFollowGameObject.transform;
         }
     }
 }

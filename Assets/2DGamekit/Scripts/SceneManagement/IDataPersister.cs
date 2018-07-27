@@ -1,10 +1,13 @@
-﻿using System;
-using UnityEngine;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace Gamekit2D
 {
     /// <summary>
-    /// Classes that implement this interface should have an serialized instance of DataSettings to register through.
+    ///     Classes that implement this interface should have an serialized instance of DataSettings to register through.
     /// </summary>
     public interface IDataPersister
     {
@@ -25,21 +28,20 @@ namespace Gamekit2D
             DoNotPersist,
             ReadOnly,
             WriteOnly,
-            ReadWrite,
+            ReadWrite
         }
 
-        public string dataTag = System.Guid.NewGuid().ToString();
+        public string dataTag = Guid.NewGuid().ToString();
         public PersistenceType persistenceType = PersistenceType.ReadWrite;
 
         public override string ToString()
         {
-            return dataTag + " " + persistenceType.ToString();
+            return dataTag + " " + persistenceType;
         }
     }
 
     public class Data
     {
-
     }
 
 

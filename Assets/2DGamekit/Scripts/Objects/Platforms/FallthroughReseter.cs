@@ -1,6 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
+using System.Collections;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -11,17 +14,17 @@ namespace Gamekit2D
             StartCoroutine(FallCoroutine(effector));
         }
 
-        IEnumerator FallCoroutine(PlatformEffector2D effector)
+        private IEnumerator FallCoroutine(PlatformEffector2D effector)
         {
-            int playerLayerMask = 1 << LayerMask.NameToLayer("Player");
-        
+            var playerLayerMask = 1 << LayerMask.NameToLayer("Player");
+
             effector.colliderMask &= ~playerLayerMask;
-            gameObject.layer = LayerMask.NameToLayer ("Default");
+            gameObject.layer = LayerMask.NameToLayer("Default");
 
             yield return new WaitForSeconds(0.5f);
 
             effector.colliderMask |= playerLayerMask;
-            gameObject.layer = LayerMask.NameToLayer ("Platform");
+            gameObject.layer = LayerMask.NameToLayer("Platform");
 
             Destroy(this);
         }

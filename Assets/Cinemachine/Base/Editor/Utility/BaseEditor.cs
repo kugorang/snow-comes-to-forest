@@ -1,18 +1,27 @@
-﻿using UnityEditor;
+﻿#region
+
 using System;
 using System.Collections.Generic;
-using Cinemachine.Utility;
 using System.Linq.Expressions;
+using Cinemachine.Utility;
+using UnityEditor;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
     public class BaseEditor<T> : UnityEditor.Editor where T : class
     {
-        protected T Target { get { return target as T; } }
+        private List<string> mAdditionalExcluded;
+
+        protected T Target
+        {
+            get { return target as T; }
+        }
 
         protected SerializedProperty FindAndExcludeProperty<TValue>(Expression<Func<T, TValue>> expr)
         {
-            SerializedProperty p = FindProperty(expr);
+            var p = FindProperty(expr);
             ExcludeProperty(p.name);
             return p;
         }
@@ -29,13 +38,12 @@ namespace Cinemachine.Editor
 
         protected virtual List<string> GetExcludedPropertiesInInspector()
         {
-            var excluded = new List<string>() { "m_Script" }; 
+            var excluded = new List<string> {"m_Script"};
             if (mAdditionalExcluded != null)
                 excluded.AddRange(mAdditionalExcluded);
             return excluded;
         }
 
-        List<string> mAdditionalExcluded;
         protected void ExcludeProperty(string propertyName)
         {
             if (mAdditionalExcluded == null)
@@ -57,7 +65,7 @@ namespace Cinemachine.Editor
 
         protected virtual void DrawPropertyInInspector(SerializedProperty p)
         {
-            List<string> excluded = GetExcludedPropertiesInInspector();
+            var excluded = GetExcludedPropertiesInInspector();
             if (!excluded.Contains(p.name))
             {
                 EditorGUI.BeginChangeCheck();

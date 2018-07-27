@@ -1,44 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 
-public class SpeechBubble : MonoBehaviour {
+#endregion
+
+public class SpeechBubble : MonoBehaviour
+{
+    public bool isTouching;
+    public float jumpForce;
 
     private Rigidbody2D rb2D;
-	public float jumpForce;
 
-    public bool isTouching = false;
-  
-    void Start()
+    private void Start()
     {
-        rb2D = this.gameObject.GetComponent<Rigidbody2D>();
+        rb2D = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        if (isTouching)
-        {
-            rb2D.AddForce(Vector2.up * jumpForce);
-         }
-
+        if (isTouching) rb2D.AddForce(Vector2.up * jumpForce);
     }
-    
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("speechBubble"))
-        {
-            isTouching = true;
-        }
-
+        if (other.gameObject.CompareTag("speechBubble")) isTouching = true;
     }
-    
+
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("speechBubble"))
-        {
-            isTouching = false;
-        }
-
+        if (other.gameObject.CompareTag("speechBubble")) isTouching = false;
     }
-
 }

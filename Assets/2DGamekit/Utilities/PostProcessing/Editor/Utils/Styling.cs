@@ -1,5 +1,9 @@
+#region
+
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
@@ -40,8 +44,8 @@ namespace UnityEditor.Rendering.PostProcessing
             miniLabelButton.onNormal = activeState;
             miniLabelButton.onActive = activeState;
 
-            paneOptionsIconDark = (Texture2D)EditorGUIUtility.Load("Builtin Skins/DarkSkin/Images/pane options.png");
-            paneOptionsIconLight = (Texture2D)EditorGUIUtility.Load("Builtin Skins/LightSkin/Images/pane options.png");
+            paneOptionsIconDark = (Texture2D) EditorGUIUtility.Load("Builtin Skins/DarkSkin/Images/pane options.png");
+            paneOptionsIconLight = (Texture2D) EditorGUIUtility.Load("Builtin Skins/LightSkin/Images/pane options.png");
 
             labelHeader = new GUIStyle(EditorStyles.miniLabel);
 
@@ -57,4 +61,4 @@ namespace UnityEditor.Rendering.PostProcessing
             preLabel = new GUIStyle("ShurikenLabel");
         }
     }
-} 
+}

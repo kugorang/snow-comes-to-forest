@@ -1,14 +1,19 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
     public class DefaultPostProcessEffectEditor : PostProcessEffectBaseEditor
     {
-        List<SerializedParameterOverride> m_Parameters; 
+        private List<SerializedParameterOverride> m_Parameters;
 
         public override void OnEnable()
         {
@@ -18,8 +23,8 @@ namespace UnityEditor.Rendering.PostProcessing
                 .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(t => t.FieldType.IsSubclassOf(typeof(ParameterOverride)) && t.Name != "enabled")
                 .Where(t =>
-                    (t.IsPublic && t.GetCustomAttributes(typeof(NonSerializedAttribute), false).Length == 0)
-                    || (t.GetCustomAttributes(typeof(UnityEngine.SerializeField), false).Length > 0)
+                    t.IsPublic && t.GetCustomAttributes(typeof(NonSerializedAttribute), false).Length == 0
+                    || t.GetCustomAttributes(typeof(SerializeField), false).Length > 0
                 )
                 .ToList();
 

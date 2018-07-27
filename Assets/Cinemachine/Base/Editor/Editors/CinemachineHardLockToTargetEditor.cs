@@ -1,5 +1,9 @@
+#region
+
 using UnityEditor;
 using UnityEngine;
+
+#endregion
 
 namespace Cinemachine.Editor
 {

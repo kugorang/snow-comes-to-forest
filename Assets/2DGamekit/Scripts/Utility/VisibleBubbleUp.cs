@@ -1,6 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -8,7 +11,7 @@ namespace Gamekit2D
     //be notified when a child become visible
     public class VisibleBubbleUp : MonoBehaviour
     {
-        public System.Action<VisibleBubbleUp> objectBecameVisible;
+        public Action<VisibleBubbleUp> objectBecameVisible;
 
         private void OnBecameVisible()
         {

@@ -1,8 +1,11 @@
+#region
+
 using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
-using UnityEngine.UI;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -13,7 +16,7 @@ namespace Gamekit2D
     {
         public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
         {
-            return ScriptPlayable<ScrollingTextMixerBehaviour>.Create (graph, inputCount);
+            return ScriptPlayable<ScrollingTextMixerBehaviour>.Create(graph, inputCount);
         }
     }
 }

@@ -1,31 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿#region
+
 using UnityEditor;
+using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
-    public class MovingPlatformPreview 
+    public class MovingPlatformPreview
     {
-        static public MovingPlatformPreview s_Preview = null;
-        static public GameObject preview;
+        public static MovingPlatformPreview s_Preview = null;
+        public static GameObject preview;
 
-        static protected MovingPlatform movingPlatform;
+        protected static MovingPlatform movingPlatform;
 
         static MovingPlatformPreview()
         {
             Selection.selectionChanged += SelectionChanged;
         }
 
-        static void SelectionChanged()
+        private static void SelectionChanged()
         {
-            if (movingPlatform != null && Selection.activeGameObject != movingPlatform.gameObject)
-            {
-                DestroyPreview();
-            }
+            if (movingPlatform != null && Selection.activeGameObject != movingPlatform.gameObject) DestroyPreview();
         }
 
-        static public void DestroyPreview()
+        public static void DestroyPreview()
         {
             if (preview == null)
                 return;
@@ -35,24 +34,21 @@ namespace Gamekit2D
             movingPlatform = null;
         }
 
-        static public void CreateNewPreview(MovingPlatform origin)
+        public static void CreateNewPreview(MovingPlatform origin)
         {
-            if(preview != null)
-            {
-                Object.DestroyImmediate(preview);
-            }
+            if (preview != null) Object.DestroyImmediate(preview);
 
-            movingPlatform = origin; 
+            movingPlatform = origin;
 
             preview = Object.Instantiate(origin.gameObject);
             preview.hideFlags = HideFlags.DontSave;
-            MovingPlatform plt = preview.GetComponentInChildren<MovingPlatform>();
+            var plt = preview.GetComponentInChildren<MovingPlatform>();
             Object.DestroyImmediate(plt);
 
 
-            Color c = new Color(0.2f, 0.2f, 0.2f, 0.4f);
-            SpriteRenderer[] rends = preview.GetComponentsInChildren<SpriteRenderer>();
-            for (int i = 0; i < rends.Length; ++i)
+            var c = new Color(0.2f, 0.2f, 0.2f, 0.4f);
+            var rends = preview.GetComponentsInChildren<SpriteRenderer>();
+            for (var i = 0; i < rends.Length; ++i)
                 rends[i].color = c;
         }
     }

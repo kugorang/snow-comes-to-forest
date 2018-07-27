@@ -1,20 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.Events;
+
+#endregion
 
 namespace Gamekit2D
 {
     [RequireComponent(typeof(SphereCollider))]
     public class InteractOnTrigger : MonoBehaviour
     {
-        public LayerMask layers;
-        public UnityEvent OnEnter, OnExit;
         public InventoryController.InventoryChecker[] inventoryChecks;
+        public LayerMask layers;
 
-        SphereCollider m_Collider;
+        private SphereCollider m_Collider;
+        public UnityEvent OnEnter, OnExit;
 
-        void Reset()
+        private void Reset()
         {
             layers = LayerMask.NameToLayer("Everything");
             m_Collider = GetComponent<SphereCollider>();
@@ -22,29 +24,21 @@ namespace Gamekit2D
             m_Collider.isTrigger = true;
         }
 
-        void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
-            if (layers.Contains (other.gameObject))
-            {
-                ExecuteOnEnter(other);
-            }
+            if (layers.Contains(other.gameObject)) ExecuteOnEnter(other);
         }
 
         protected virtual void ExecuteOnEnter(Collider other)
         {
             OnEnter.Invoke();
             for (var i = 0; i < inventoryChecks.Length; i++)
-            {
                 inventoryChecks[i].CheckInventory(other.GetComponentInChildren<InventoryController>());
-            }
         }
 
-        void OnTriggerExit(Collider other)
+        private void OnTriggerExit(Collider other)
         {
-            if (layers.Contains (other.gameObject))
-            {
-                ExecuteOnExit(other);
-            }
+            if (layers.Contains(other.gameObject)) ExecuteOnExit(other);
         }
 
         protected virtual void ExecuteOnExit(Collider other)
@@ -52,7 +46,7 @@ namespace Gamekit2D
             OnExit.Invoke();
         }
 
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             Gizmos.DrawIcon(transform.position, "InteractionTrigger", false);
         }

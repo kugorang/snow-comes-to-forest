@@ -1,19 +1,22 @@
-﻿using System.Collections;
+﻿#region
+
 using System.Collections.Generic;
 using UnityEngine;
+
+#endregion
 
 namespace BTAI
 {
     public class SendSignal : StateMachineBehaviour
     {
+        private readonly List<WaitForAnimatorSignal> listeners = new List<WaitForAnimatorSignal>();
+        public bool fired;
 
         public string signal = "";
-        [Range(0, 1)]
-        public float time = 0;
-        public bool fired = false;
-        List<WaitForAnimatorSignal> listeners = new List<WaitForAnimatorSignal>();
 
-        override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        [Range(0, 1)] public float time;
+
+        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             fired = false;
             SetFalse();
@@ -25,12 +28,12 @@ namespace BTAI
                 n.isSet = false;
         }
 
-        override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             SetFalse();
         }
 
-        override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             if (!fired && stateInfo.normalizedTime >= time)
             {
@@ -38,20 +41,18 @@ namespace BTAI
                     n.isSet = true;
                 fired = true;
             }
-
         }
 
         public static void Register(Animator animator, string name, WaitForAnimatorSignal node)
         {
             var found = false;
             foreach (var ss in animator.GetBehaviours<SendSignal>())
-            {
                 if (ss.signal == name)
                 {
                     found = true;
                     ss.listeners.Add(node);
                 }
-            }
+
             if (!found) Debug.LogError("Signal does not exist in animator: " + name);
         }
     }

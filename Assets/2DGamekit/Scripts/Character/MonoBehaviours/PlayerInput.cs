@@ -1,52 +1,93 @@
-﻿using UnityEngine;
+﻿#region
+
+using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class PlayerInput : InputComponent, IDataPersister
     {
+        protected static PlayerInput s_Instance;
+
+        [HideInInspector] public DataSettings dataSettings;
+
+        public InputAxis Horizontal = new InputAxis(KeyCode.D, KeyCode.A, XboxControllerAxes.LeftstickHorizontal);
+        public InputButton Interact = new InputButton(KeyCode.E, XboxControllerButtons.Y);
+        public InputButton Jump = new InputButton(KeyCode.Space, XboxControllerButtons.A);
+
+        protected bool m_DebugMenuIsOpen;
+
+        protected bool m_HaveControl = true;
+        public InputButton MeleeAttack = new InputButton(KeyCode.K, XboxControllerButtons.X);
+
+        public InputButton Pause = new InputButton(KeyCode.Escape, XboxControllerButtons.Menu);
+        public InputButton RangedAttack = new InputButton(KeyCode.O, XboxControllerButtons.B);
+        public InputAxis Vertical = new InputAxis(KeyCode.W, KeyCode.S, XboxControllerAxes.LeftstickVertical);
+
         public static PlayerInput Instance
         {
             get { return s_Instance; }
         }
 
-        protected static PlayerInput s_Instance;
-    
-    
-        public bool HaveControl { get { return m_HaveControl; } }
 
-        public InputButton Pause = new InputButton(KeyCode.Escape, XboxControllerButtons.Menu);
-        public InputButton Interact = new InputButton(KeyCode.E, XboxControllerButtons.Y);
-        public InputButton MeleeAttack = new InputButton(KeyCode.K, XboxControllerButtons.X);
-        public InputButton RangedAttack = new InputButton(KeyCode.O, XboxControllerButtons.B);
-        public InputButton Jump = new InputButton(KeyCode.Space, XboxControllerButtons.A);
-        public InputAxis Horizontal = new InputAxis(KeyCode.D, KeyCode.A, XboxControllerAxes.LeftstickHorizontal);
-        public InputAxis Vertical = new InputAxis(KeyCode.W, KeyCode.S, XboxControllerAxes.LeftstickVertical);
-        [HideInInspector]
-        public DataSettings dataSettings;
+        public bool HaveControl
+        {
+            get { return m_HaveControl; }
+        }
 
-        protected bool m_HaveControl = true;
+        public DataSettings GetDataSettings()
+        {
+            return dataSettings;
+        }
 
-        protected bool m_DebugMenuIsOpen = false;
+        public void SetDataSettings(string dataTag, DataSettings.PersistenceType persistenceType)
+        {
+            dataSettings.dataTag = dataTag;
+            dataSettings.persistenceType = persistenceType;
+        }
 
-        void Awake ()
+        public Data SaveData()
+        {
+            return new Data<bool, bool>(MeleeAttack.Enabled, RangedAttack.Enabled);
+        }
+
+        public void LoadData(Data data)
+        {
+            var playerInputData = (Data<bool, bool>) data;
+
+            if (playerInputData.value0)
+                MeleeAttack.Enable();
+            else
+                MeleeAttack.Disable();
+
+            if (playerInputData.value1)
+                RangedAttack.Enable();
+            else
+                RangedAttack.Disable();
+        }
+
+        private void Awake()
         {
             if (s_Instance == null)
                 s_Instance = this;
             else
-                throw new UnityException("There cannot be more than one PlayerInput script.  The instances are " + s_Instance.name + " and " + name + ".");
+                throw new UnityException("There cannot be more than one PlayerInput script.  The instances are " +
+                                         s_Instance.name + " and " + name + ".");
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (s_Instance == null)
                 s_Instance = this;
-            else if(s_Instance != this)
-                throw new UnityException("There cannot be more than one PlayerInput script.  The instances are " + s_Instance.name + " and " + name + ".");
-        
+            else if (s_Instance != this)
+                throw new UnityException("There cannot be more than one PlayerInput script.  The instances are " +
+                                         s_Instance.name + " and " + name + ".");
+
             PersistentDataManager.RegisterPersister(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             PersistentDataManager.UnregisterPersister(this);
 
@@ -63,10 +104,7 @@ namespace Gamekit2D
             Horizontal.Get(inputType);
             Vertical.Get(inputType);
 
-            if (Input.GetKeyDown(KeyCode.F12))
-            {
-                m_DebugMenuIsOpen = !m_DebugMenuIsOpen;
-            }
+            if (Input.GetKeyDown(KeyCode.F12)) m_DebugMenuIsOpen = !m_DebugMenuIsOpen;
         }
 
         public override void GainControl()
@@ -115,38 +153,7 @@ namespace Gamekit2D
             RangedAttack.Enable();
         }
 
-        public DataSettings GetDataSettings()
-        {
-            return dataSettings;
-        }
-
-        public void SetDataSettings(string dataTag, DataSettings.PersistenceType persistenceType)
-        {
-            dataSettings.dataTag = dataTag;
-            dataSettings.persistenceType = persistenceType;
-        }
-
-        public Data SaveData()
-        {
-            return new Data<bool, bool>(MeleeAttack.Enabled, RangedAttack.Enabled);
-        }
-
-        public void LoadData(Data data)
-        {
-            Data<bool, bool> playerInputData = (Data<bool, bool>)data;
-
-            if (playerInputData.value0)
-                MeleeAttack.Enable();
-            else
-                MeleeAttack.Disable();
-
-            if (playerInputData.value1)
-                RangedAttack.Enable();
-            else
-                RangedAttack.Disable();
-        }
-
-        void OnGUI()
+        private void OnGUI()
         {
             if (m_DebugMenuIsOpen)
             {
@@ -157,8 +164,8 @@ namespace Gamekit2D
                 GUILayout.BeginVertical("box");
                 GUILayout.Label("Press F12 to close");
 
-                bool meleeAttackEnabled = GUILayout.Toggle(MeleeAttack.Enabled, "Enable Melee Attack");
-                bool rangeAttackEnabled = GUILayout.Toggle(RangedAttack.Enabled, "Enable Range Attack");
+                var meleeAttackEnabled = GUILayout.Toggle(MeleeAttack.Enabled, "Enable Melee Attack");
+                var rangeAttackEnabled = GUILayout.Toggle(RangedAttack.Enabled, "Enable Range Attack");
 
                 if (meleeAttackEnabled != MeleeAttack.Enabled)
                 {
@@ -175,6 +182,7 @@ namespace Gamekit2D
                     else
                         RangedAttack.Disable();
                 }
+
                 GUILayout.EndVertical();
                 GUILayout.EndArea();
             }

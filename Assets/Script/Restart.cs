@@ -1,21 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Restart : MonoBehaviour {
+#endregion
 
-    public GameObject player;
+public class Restart : MonoBehaviour
+{
     public int height;
 
-    void FixedUpdate()
+    public GameObject player;
+
+    private void FixedUpdate()
     {
-        if (player.transform.position.y < height)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+        if (player.transform.position.y < height) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-
-
 }

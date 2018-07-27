@@ -1,6 +1,10 @@
+#region
+
 using System;
 using System.Linq.Expressions;
 using UnityEngine.Rendering.PostProcessing;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {

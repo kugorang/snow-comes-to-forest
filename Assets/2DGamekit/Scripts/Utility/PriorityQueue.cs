@@ -1,22 +1,21 @@
+#region
+
 using System;
 using System.Collections.Generic;
+
+#endregion
 
 namespace Gamekit2D
 {
     /// <summary>
-    /// A fast priority queue or heap implementation.
+    ///     A fast priority queue or heap implementation.
     /// </summary>
     public class PriorityQueue<T> where T : IComparable<T>
     {
         /// <summary>
-        /// The internal list used by the queue. Use with care.
+        ///     The internal list used by the queue. Use with care.
         /// </summary>
         public readonly List<T> items;
-
-        public bool Contains(T item)
-        {
-            return items.Contains(item);
-        }
 
         public PriorityQueue()
         {
@@ -32,12 +31,14 @@ namespace Gamekit2D
         {
             get
             {
-                if (items.Count > 1)
-                {
-                    return items[0];
-                }
+                if (items.Count > 1) return items[0];
                 return items[items.Count - 1];
             }
+        }
+
+        public bool Contains(T item)
+        {
+            return items.Contains(item);
         }
 
         public void Push(T item)
@@ -66,16 +67,17 @@ namespace Gamekit2D
                 {
                     item = last;
                 }
+
                 return item;
             }
         }
 
-        int Compare(T A, T B)
+        private int Compare(T A, T B)
         {
             return A.CompareTo(B);
         }
 
-        void SiftDown(int startpos, int pos)
+        private void SiftDown(int startpos, int pos)
         {
             var newitem = items[pos];
             while (pos > startpos)
@@ -87,10 +89,11 @@ namespace Gamekit2D
                 items[pos] = parent;
                 pos = parentpos;
             }
+
             items[pos] = newitem;
         }
 
-        void SiftUp(int pos)
+        private void SiftUp(int pos)
         {
             var endpos = items.Count;
             var startpos = pos;
@@ -105,6 +108,7 @@ namespace Gamekit2D
                 pos = childpos;
                 childpos = 2 * pos + 1;
             }
+
             items[pos] = newitem;
             SiftDown(startpos, pos);
         }

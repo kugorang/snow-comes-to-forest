@@ -1,18 +1,21 @@
+#region
+
 using System;
 using System.Collections.Generic;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
     public sealed class PostProcessProfile : ScriptableObject
     {
+        // Editor only, doesn't have any use outside of it
+        [NonSerialized] public bool isDirty = true;
+
         [Tooltip("A list of all settings & overrides.")]
         public List<PostProcessEffectSettings> settings = new List<PostProcessEffectSettings>();
 
-        // Editor only, doesn't have any use outside of it
-        [NonSerialized]
-        public bool isDirty = true;
-
-        void OnEnable()
+        private void OnEnable()
         {
             // Make sure every setting is valid. If a profile holds a script that doesn't exist
             // anymore, nuke it to keep the profile clean. Note that if you delete a script that is
@@ -30,7 +33,7 @@ namespace UnityEngine.Rendering.PostProcessing
         public T AddSettings<T>()
             where T : PostProcessEffectSettings
         {
-            return (T)AddSettings(typeof(T));
+            return (T) AddSettings(typeof(T));
         }
 
         public PostProcessEffectSettings AddSettings(Type type)
@@ -38,7 +41,7 @@ namespace UnityEngine.Rendering.PostProcessing
             if (HasSettings(type))
                 throw new InvalidOperationException("Effect already exists in the stack");
 
-            var effect = (PostProcessEffectSettings)CreateInstance(type);
+            var effect = (PostProcessEffectSettings) CreateInstance(type);
             effect.hideFlags = HideFlags.HideInInspector | HideFlags.HideInHierarchy;
             effect.name = type.Name;
             effect.enabled.value = true;
@@ -65,16 +68,14 @@ namespace UnityEngine.Rendering.PostProcessing
 
         public void RemoveSettings(Type type)
         {
-            int toRemove = -1;
+            var toRemove = -1;
 
-            for (int i = 0; i < settings.Count; i++)
-            {
+            for (var i = 0; i < settings.Count; i++)
                 if (settings[i].GetType() == type)
                 {
                     toRemove = i;
                     break;
                 }
-            }
 
             if (toRemove < 0)
                 throw new InvalidOperationException("Effect doesn't exist in the stack");
@@ -92,10 +93,8 @@ namespace UnityEngine.Rendering.PostProcessing
         public bool HasSettings(Type type)
         {
             foreach (var setting in settings)
-            {
                 if (setting.GetType() == type)
                     return true;
-            }
 
             return false;
         }
@@ -107,13 +106,11 @@ namespace UnityEngine.Rendering.PostProcessing
             outSetting = null;
 
             foreach (var setting in settings)
-            {
                 if (setting.GetType() == type)
                 {
-                    outSetting = (T)setting;
+                    outSetting = (T) setting;
                     return true;
                 }
-            }
 
             return false;
         }

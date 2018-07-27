@@ -1,58 +1,57 @@
-﻿using System;
+﻿#region
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+#endregion
 
 public class FadeIn : MonoBehaviour
 {
+    private readonly float end = 0f;
 
-	public float animTime = 2f;
+    private readonly float start = 1f;
+    public float animTime = 2f;
 
-	private Image fadeImage;
+    private Image fadeImage;
 
-	private float start = 1f;
-	private float end = 0f;
-	private float time = 0f;
+    private bool isPlaying;
+    private float time;
 
-	private bool isPlaying = false;
+    private void Awake()
+    {
+        fadeImage = GetComponent<Image>();
+    }
 
-	void Awake()
-	{
-		fadeImage = GetComponent<Image>();
-	}
+    public void StartFadeAnim()
+    {
+        Debug.Log("버튼 눌림");
 
-	public void StartFadeAnim()
-	{
-		Debug.Log("버튼 눌림");
-			
-		if (isPlaying == true)
-			return;
+        if (isPlaying)
+            return;
 
-		StartCoroutine("PlayFadeIn");
-	}
+        StartCoroutine("PlayFadeIn");
+    }
 
-	IEnumerator PlayFadeIn()
-	{
-		isPlaying = true;
+    private IEnumerator PlayFadeIn()
+    {
+        isPlaying = true;
 
-		Color color = fadeImage.color;
-		time = 0f;
-		color.a = Mathf.Lerp(start, end, time);
+        var color = fadeImage.color;
+        time = 0f;
+        color.a = Mathf.Lerp(start, end, time);
 
-		while (color.a > 0f)
-		{
-			time += Time.deltaTime / animTime;
+        while (color.a > 0f)
+        {
+            time += Time.deltaTime / animTime;
 
-			color.a = Mathf.Lerp(start, end, time);
+            color.a = Mathf.Lerp(start, end, time);
 
-			fadeImage.color = color;
+            fadeImage.color = color;
 
-			yield return null;
-		}
+            yield return null;
+        }
 
-		isPlaying = false;
-	}
-	
+        isPlaying = false;
+    }
 }

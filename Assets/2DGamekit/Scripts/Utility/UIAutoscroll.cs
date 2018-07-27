@@ -1,27 +1,31 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIAutoscroll : MonoBehaviour {
+#endregion
+
+public class UIAutoscroll : MonoBehaviour
+{
+    public float duration = 30.0f;
+    public Scrollbar scrollbar;
 
     public ScrollRect scrollRect;
-    public Scrollbar scrollbar;
     public float scrollValue;
-    public float duration = 30.0f;
 
-    void OnEnable()
+    private void OnEnable()
     {
         StartCoroutine(Scroller());
     }
 
-    IEnumerator Scroller()
+    private IEnumerator Scroller()
     {
         var t = 0.0f;
         while (true)
         {
             t += Time.deltaTime / duration;
-            scrollRect.verticalNormalizedPosition = 1- Mathf.PingPong(t,1);
+            scrollRect.verticalNormalizedPosition = 1 - Mathf.PingPong(t, 1);
             yield return null;
         }
     }

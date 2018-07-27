@@ -1,11 +1,21 @@
-﻿using System.Collections;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class PersistentDataManager : MonoBehaviour
     {
+        protected static PersistentDataManager instance;
+        protected static bool quitting;
+
+        protected HashSet<IDataPersister> m_DataPersisters = new HashSet<IDataPersister>();
+        protected Dictionary<string, Data> m_Store = new Dictionary<string, Data>();
+
         public static PersistentDataManager Instance
         {
             get
@@ -16,27 +26,22 @@ namespace Gamekit2D
                 if (instance != null)
                     return instance;
 
-                Create ();
+                Create();
                 return instance;
             }
         }
 
-        protected static PersistentDataManager instance;
-        protected static bool quitting;
-
-        public static PersistentDataManager Create ()
+        public static PersistentDataManager Create()
         {
-            GameObject dataManagerGameObject = new GameObject("PersistentDataManager");
+            var dataManagerGameObject = new GameObject("PersistentDataManager");
             DontDestroyOnLoad(dataManagerGameObject);
             instance = dataManagerGameObject.AddComponent<PersistentDataManager>();
             return instance;
         }
 
-        protected HashSet<IDataPersister> m_DataPersisters = new HashSet<IDataPersister>();
-        protected Dictionary<string, Data> m_Store = new Dictionary<string, Data>();
-        event System.Action schedule = null;
+        private event Action schedule;
 
-        void Update()
+        private void Update()
         {
             if (schedule != null)
             {
@@ -45,13 +50,13 @@ namespace Gamekit2D
             }
         }
 
-        void Awake()
+        private void Awake()
         {
             if (Instance != this)
                 Destroy(gameObject);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (instance == this)
                 quitting = true;
@@ -60,18 +65,12 @@ namespace Gamekit2D
         public static void RegisterPersister(IDataPersister persister)
         {
             var ds = persister.GetDataSettings();
-            if (!string.IsNullOrEmpty(ds.dataTag))
-            {
-                Instance.Register(persister);
-            }
+            if (!string.IsNullOrEmpty(ds.dataTag)) Instance.Register(persister);
         }
 
         public static void UnregisterPersister(IDataPersister persister)
         {
-            if (!quitting)
-            {
-                Instance.Unregister(persister);
-            }
+            if (!quitting) Instance.Unregister(persister);
         }
 
         public static void SaveAllData()
@@ -88,6 +87,7 @@ namespace Gamekit2D
         {
             Instance.m_DataPersisters.Clear();
         }
+
         public static void SetDirty(IDataPersister dp)
         {
             Instance.Save(dp);
@@ -95,18 +95,12 @@ namespace Gamekit2D
 
         protected void SaveAllDataInternal()
         {
-            foreach (var dp in m_DataPersisters)
-            {
-                Save(dp);
-            }
+            foreach (var dp in m_DataPersisters) Save(dp);
         }
 
         protected void Register(IDataPersister persister)
         {
-            schedule += () =>
-            {
-                m_DataPersisters.Add(persister);
-            };
+            schedule += () => { m_DataPersisters.Add(persister); };
         }
 
         protected void Unregister(IDataPersister persister)
@@ -117,12 +111,10 @@ namespace Gamekit2D
         protected void Save(IDataPersister dp)
         {
             var dataSettings = dp.GetDataSettings();
-            if (dataSettings.persistenceType == DataSettings.PersistenceType.ReadOnly || dataSettings.persistenceType == DataSettings.PersistenceType.DoNotPersist)
+            if (dataSettings.persistenceType == DataSettings.PersistenceType.ReadOnly ||
+                dataSettings.persistenceType == DataSettings.PersistenceType.DoNotPersist)
                 return;
-            if (!string.IsNullOrEmpty(dataSettings.dataTag))
-            {
-                m_Store[dataSettings.dataTag] = dp.SaveData();
-            }
+            if (!string.IsNullOrEmpty(dataSettings.dataTag)) m_Store[dataSettings.dataTag] = dp.SaveData();
         }
 
         protected void LoadAllDataInternal()
@@ -132,18 +124,14 @@ namespace Gamekit2D
                 foreach (var dp in m_DataPersisters)
                 {
                     var dataSettings = dp.GetDataSettings();
-                    if (dataSettings.persistenceType == DataSettings.PersistenceType.WriteOnly || dataSettings.persistenceType == DataSettings.PersistenceType.DoNotPersist)
+                    if (dataSettings.persistenceType == DataSettings.PersistenceType.WriteOnly ||
+                        dataSettings.persistenceType == DataSettings.PersistenceType.DoNotPersist)
                         continue;
                     if (!string.IsNullOrEmpty(dataSettings.dataTag))
-                    {
                         if (m_Store.ContainsKey(dataSettings.dataTag))
-                        {
                             dp.LoadData(m_Store[dataSettings.dataTag]);
-                        }
-                    }
                 }
             };
         }
-
     }
 }

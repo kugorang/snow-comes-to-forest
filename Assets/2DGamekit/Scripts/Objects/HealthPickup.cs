@@ -1,7 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
 using UnityEngine.Events;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -12,12 +14,13 @@ namespace Gamekit2D
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if(other.gameObject == PlayerCharacter.PlayerInstance.gameObject)
+            if (other.gameObject == PlayerCharacter.PlayerInstance.gameObject)
             {
-                Damageable damageable = PlayerCharacter.PlayerInstance.damageable;
+                var damageable = PlayerCharacter.PlayerInstance.damageable;
                 if (damageable.CurrentHealth < damageable.startingHealth)
                 {
-                    damageable.GainHealth(Mathf.Min(healthAmount, damageable.startingHealth - damageable.CurrentHealth));
+                    damageable.GainHealth(Mathf.Min(healthAmount,
+                        damageable.startingHealth - damageable.CurrentHealth));
                     OnGivingHealth.Invoke();
                 }
             }

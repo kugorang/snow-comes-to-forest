@@ -1,30 +1,34 @@
-﻿using UnityEditor;
+﻿#region
+
+using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     [CustomEditor(typeof(Damager))]
     public class DamagerEditor : Editor
     {
-        static BoxBoundsHandle s_BoxBoundsHandle = new BoxBoundsHandle();
-        static Color s_EnabledColor = Color.green + Color.grey;
+        private static readonly BoxBoundsHandle s_BoxBoundsHandle = new BoxBoundsHandle();
+        private static readonly Color s_EnabledColor = Color.green + Color.grey;
+        private SerializedProperty m_CanHitTriggersProp;
 
-        SerializedProperty m_DamageProp;
-        SerializedProperty m_OffsetProp;
-        SerializedProperty m_SizeProp;
-        SerializedProperty m_OffsetBasedOnSpriteFacingProp;
-        SerializedProperty m_SpriteRendererProp;
-        SerializedProperty m_CanHitTriggersProp;
-        SerializedProperty m_ForceRespawnProp;
-        SerializedProperty m_IgnoreInvincibilityProp;
-        SerializedProperty m_HittableLayersProp;
-        SerializedProperty m_OnDamageableHitProp;
-        SerializedProperty m_OnNonDamageableHitProp;
+        private SerializedProperty m_DamageProp;
+        private SerializedProperty m_ForceRespawnProp;
+        private SerializedProperty m_HittableLayersProp;
+        private SerializedProperty m_IgnoreInvincibilityProp;
+        private SerializedProperty m_OffsetBasedOnSpriteFacingProp;
+        private SerializedProperty m_OffsetProp;
+        private SerializedProperty m_OnDamageableHitProp;
+        private SerializedProperty m_OnNonDamageableHitProp;
+        private SerializedProperty m_SizeProp;
+        private SerializedProperty m_SpriteRendererProp;
 
-        void OnEnable ()
+        private void OnEnable()
         {
-            m_DamageProp = serializedObject.FindProperty ("damage");
+            m_DamageProp = serializedObject.FindProperty("damage");
             m_OffsetProp = serializedObject.FindProperty("offset");
             m_SizeProp = serializedObject.FindProperty("size");
             m_OffsetBasedOnSpriteFacingProp = serializedObject.FindProperty("offsetBasedOnSpriteFacing");
@@ -37,15 +41,15 @@ namespace Gamekit2D
             m_OnNonDamageableHitProp = serializedObject.FindProperty("OnNonDamageableHit");
         }
 
-        public override void OnInspectorGUI ()
+        public override void OnInspectorGUI()
         {
-            serializedObject.Update ();
+            serializedObject.Update();
 
             EditorGUILayout.PropertyField(m_DamageProp);
             EditorGUILayout.PropertyField(m_OffsetProp);
             EditorGUILayout.PropertyField(m_SizeProp);
             EditorGUILayout.PropertyField(m_OffsetBasedOnSpriteFacingProp);
-            if(m_OffsetBasedOnSpriteFacingProp.boolValue)
+            if (m_OffsetBasedOnSpriteFacingProp.boolValue)
                 EditorGUILayout.PropertyField(m_SpriteRendererProp);
             EditorGUILayout.PropertyField(m_CanHitTriggersProp);
             EditorGUILayout.PropertyField(m_ForceRespawnProp);
@@ -54,17 +58,17 @@ namespace Gamekit2D
             EditorGUILayout.PropertyField(m_OnDamageableHitProp);
             EditorGUILayout.PropertyField(m_OnNonDamageableHitProp);
 
-            serializedObject.ApplyModifiedProperties ();
+            serializedObject.ApplyModifiedProperties();
         }
 
-        void OnSceneGUI ()
+        private void OnSceneGUI()
         {
-            Damager damager = (Damager)target;
+            var damager = (Damager) target;
 
             if (!damager.enabled)
                 return;
 
-            Matrix4x4 handleMatrix = damager.transform.localToWorldMatrix;
+            var handleMatrix = damager.transform.localToWorldMatrix;
             handleMatrix.SetRow(0, Vector4.Scale(handleMatrix.GetRow(0), new Vector4(1f, 1f, 0f, 1f)));
             handleMatrix.SetRow(1, Vector4.Scale(handleMatrix.GetRow(1), new Vector4(1f, 1f, 0f, 1f)));
             handleMatrix.SetRow(2, new Vector4(0f, 0f, 1f, damager.transform.position.z));

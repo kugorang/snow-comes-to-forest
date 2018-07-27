@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿#region
+
+using UnityEngine;
+
+#endregion
 
 public class CollisionItem : MonoBehaviour
 {
+    private bool checkContact;
     public float jumpValue;
     public float windValue;
-    private bool checkContact;
 
     private void Awake()
     {
@@ -13,10 +17,7 @@ public class CollisionItem : MonoBehaviour
 
     private void Update()
     {
-        if (GetComponent<Rigidbody2D>().gravityScale < 1)
-        {
-            GetComponent<Rigidbody2D>().gravityScale += 0.001f;
-        }
+        if (GetComponent<Rigidbody2D>().gravityScale < 1) GetComponent<Rigidbody2D>().gravityScale += 0.001f;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

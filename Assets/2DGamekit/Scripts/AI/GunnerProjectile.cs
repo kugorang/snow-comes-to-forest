@@ -1,21 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class GunnerProjectile : MonoBehaviour
     {
-        public Vector2 initialForce;
-        public float timer = 1;
-        public float fuse = 0.01f;
         public GameObject explosion;
         public float explosionTimer = 3;
-        new Rigidbody2D rigidbody;
+        public float fuse = 0.01f;
+        public Vector2 initialForce;
 
         protected GameObject m_HitEffect;
+        private new Rigidbody2D rigidbody;
+        public float timer = 1;
 
-        void OnEnable()
+        private void OnEnable()
         {
             rigidbody = GetComponent<Rigidbody2D>();
             Destroy(gameObject, timer);
@@ -28,11 +30,11 @@ namespace Gamekit2D
         {
             m_HitEffect.transform.position = transform.position;
             m_HitEffect.SetActive(true);
-            GameObject.Destroy(m_HitEffect, explosionTimer);
+            Destroy(m_HitEffect, explosionTimer);
             Destroy(gameObject);
         }
 
-        void Start()
+        private void Start()
         {
             rigidbody.AddForce(initialForce);
         }

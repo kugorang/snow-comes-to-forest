@@ -2,14 +2,14 @@ namespace UnityEngine.Rendering.PostProcessing
 {
     public sealed class PropertySheet
     {
-        public MaterialPropertyBlock properties { get; private set; }
-        internal Material material { get; private set; }
-
         internal PropertySheet(Material material)
         {
             this.material = material;
             properties = new MaterialPropertyBlock();
         }
+
+        public MaterialPropertyBlock properties { get; private set; }
+        internal Material material { get; private set; }
 
         public void ClearKeywords()
         {

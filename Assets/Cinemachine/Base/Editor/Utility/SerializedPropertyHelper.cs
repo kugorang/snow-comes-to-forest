@@ -1,6 +1,10 @@
+#region
+
 using System;
 using System.Linq.Expressions;
 using UnityEditor;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
@@ -10,32 +14,33 @@ namespace Cinemachine.Editor
         /// generate errors for invalid fields.  Much better than directly using strings.
         /// Usage: instead of
         /// <example>
-        /// "m_MyField";
+        ///     "m_MyField";
         /// </example>
         /// do this:
         /// <example>
-        /// MyClass myclass = null;
-        /// SerializedPropertyHelper.PropertyName( () => myClass.m_MyField);
+        ///     MyClass myclass = null;
+        ///     SerializedPropertyHelper.PropertyName( () => myClass.m_MyField);
         /// </example>
         public static string PropertyName(Expression<Func<object>> exp)
         {
             var body = exp.Body as MemberExpression;
             if (body == null)
             {
-                var ubody = (UnaryExpression)exp.Body;
+                var ubody = (UnaryExpression) exp.Body;
                 body = ubody.Operand as MemberExpression;
             }
+
             return body.Member.Name;
         }
 
         /// Usage: instead of
         /// <example>
-        /// mySerializedObject.FindProperty("m_MyField");
+        ///     mySerializedObject.FindProperty("m_MyField");
         /// </example>
         /// do this:
         /// <example>
-        /// MyClass myclass = null;
-        /// mySerializedObject.FindProperty( () => myClass.m_MyField);
+        ///     MyClass myclass = null;
+        ///     mySerializedObject.FindProperty( () => myClass.m_MyField);
         /// </example>
         public static SerializedProperty FindProperty(this SerializedObject obj, Expression<Func<object>> exp)
         {
@@ -44,12 +49,12 @@ namespace Cinemachine.Editor
 
         /// Usage: instead of
         /// <example>
-        /// mySerializedProperty.FindPropertyRelative("m_MyField");
+        ///     mySerializedProperty.FindPropertyRelative("m_MyField");
         /// </example>
         /// do this:
         /// <example>
-        /// MyClass myclass = null;
-        /// mySerializedProperty.FindPropertyRelative( () => myClass.m_MyField);
+        ///     MyClass myclass = null;
+        ///     mySerializedProperty.FindPropertyRelative( () => myClass.m_MyField);
         /// </example>
         public static SerializedProperty FindPropertyRelative(this SerializedProperty obj, Expression<Func<object>> exp)
         {

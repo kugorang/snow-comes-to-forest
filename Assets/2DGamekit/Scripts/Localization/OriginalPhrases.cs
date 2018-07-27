@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -14,11 +18,9 @@ namespace Gamekit2D
         {
             get
             {
-                for (int i = 0; i < phrases.Count; i++)
-                {
+                for (var i = 0; i < phrases.Count; i++)
                     if (phrases[i].key == key)
                         return phrases[i].value;
-                }
 
                 return "Key not found.";
             }

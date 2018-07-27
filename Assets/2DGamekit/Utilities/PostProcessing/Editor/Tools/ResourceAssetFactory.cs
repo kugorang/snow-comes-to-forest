@@ -1,14 +1,18 @@
+#region
+
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
+#endregion
+
 namespace UnityEditor.Rendering.PostProcessing
 {
-    static class ResourceAssetFactory
+    internal static class ResourceAssetFactory
     {
 #if POSTFX_DEBUG_MENUS
         [MenuItem("Tools/Post-processing/Create Resources Asset")]
 #endif
-        static void CreateAsset()
+        private static void CreateAsset()
         {
             var asset = ScriptableObject.CreateInstance<PostProcessResources>();
             AssetDatabase.CreateAsset(asset, "Assets/PostProcessResources.asset");

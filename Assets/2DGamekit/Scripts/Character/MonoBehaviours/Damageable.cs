@@ -1,48 +1,65 @@
-﻿using System;
+﻿#region
+
+using System;
 using UnityEngine;
 using UnityEngine.Events;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class Damageable : MonoBehaviour, IDataPersister
     {
-        [Serializable]
-        public class HealthEvent : UnityEvent<Damageable>
-        { }
-
-        [Serializable]
-        public class DamageEvent : UnityEvent<Damager, Damageable>
-        { }
-
-        [Serializable]
-        public class HealEvent : UnityEvent<int, Damageable>
-        { }
-
-        public int startingHealth = 5;
-        public bool invulnerableAfterDamage = true;
-        public float invulnerabilityDuration = 3f;
-        public bool disableOnDeath = false;
         [Tooltip("An offset from the obejct position used to set from where the distance to the damager is computed")]
         public Vector2 centreOffset = new Vector2(0f, 1f);
-        public HealthEvent OnHealthSet;
-        public DamageEvent OnTakeDamage;
-        public DamageEvent OnDie;
-        public HealEvent OnGainHealth;
-        [HideInInspector]
-        public DataSettings dataSettings;
 
-        protected bool m_Invulnerable;
-        protected float m_InulnerabilityTimer;
+        [HideInInspector] public DataSettings dataSettings;
+
+        public bool disableOnDeath;
+        public float invulnerabilityDuration = 3f;
+        public bool invulnerableAfterDamage = true;
         protected int m_CurrentHealth;
         protected Vector2 m_DamageDirection;
+        protected float m_InulnerabilityTimer;
+
+        protected bool m_Invulnerable;
         protected bool m_ResetHealthOnSceneReload;
+        public DamageEvent OnDie;
+        public HealEvent OnGainHealth;
+        public HealthEvent OnHealthSet;
+        public DamageEvent OnTakeDamage;
+
+        public int startingHealth = 5;
 
         public int CurrentHealth
         {
             get { return m_CurrentHealth; }
         }
 
-        void OnEnable()
+        public DataSettings GetDataSettings()
+        {
+            return dataSettings;
+        }
+
+        public void SetDataSettings(string dataTag, DataSettings.PersistenceType persistenceType)
+        {
+            dataSettings.dataTag = dataTag;
+            dataSettings.persistenceType = persistenceType;
+        }
+
+        public Data SaveData()
+        {
+            return new Data<int, bool>(CurrentHealth, m_ResetHealthOnSceneReload);
+        }
+
+        public void LoadData(Data data)
+        {
+            var healthData = (Data<int, bool>) data;
+            m_CurrentHealth = healthData.value1 ? startingHealth : healthData.value0;
+            OnHealthSet.Invoke(this);
+        }
+
+        private void OnEnable()
         {
             PersistentDataManager.RegisterPersister(this);
             m_CurrentHealth = startingHealth;
@@ -52,21 +69,18 @@ namespace Gamekit2D
             DisableInvulnerability();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             PersistentDataManager.UnregisterPersister(this);
         }
 
-        void Update()
+        private void Update()
         {
             if (m_Invulnerable)
             {
                 m_InulnerabilityTimer -= Time.deltaTime;
 
-                if (m_InulnerabilityTimer <= 0f)
-                {
-                    m_Invulnerable = false;
-                }
+                if (m_InulnerabilityTimer <= 0f) m_Invulnerable = false;
             }
         }
 
@@ -89,7 +103,7 @@ namespace Gamekit2D
 
         public void TakeDamage(Damager damager, bool ignoreInvincible = false)
         {
-            if ((m_Invulnerable && !ignoreInvincible) || m_CurrentHealth <= 0)
+            if (m_Invulnerable && !ignoreInvincible || m_CurrentHealth <= 0)
                 return;
 
             //we can reach that point if the damager was one that was ignoring invincible state.
@@ -100,7 +114,7 @@ namespace Gamekit2D
                 OnHealthSet.Invoke(this);
             }
 
-            m_DamageDirection = transform.position + (Vector3)centreOffset - damager.transform.position;
+            m_DamageDirection = transform.position + (Vector3) centreOffset - damager.transform.position;
 
             OnTakeDamage.Invoke(damager, this);
 
@@ -132,29 +146,19 @@ namespace Gamekit2D
             OnHealthSet.Invoke(this);
         }
 
-        public DataSettings GetDataSettings()
+        [Serializable]
+        public class HealthEvent : UnityEvent<Damageable>
         {
-            return dataSettings;
         }
 
-        public void SetDataSettings(string dataTag, DataSettings.PersistenceType persistenceType)
+        [Serializable]
+        public class DamageEvent : UnityEvent<Damager, Damageable>
         {
-            dataSettings.dataTag = dataTag;
-            dataSettings.persistenceType = persistenceType;
         }
 
-        public Data SaveData()
+        [Serializable]
+        public class HealEvent : UnityEvent<int, Damageable>
         {
-            return new Data<int, bool>(CurrentHealth, m_ResetHealthOnSceneReload);
         }
-
-        public void LoadData(Data data)
-        {
-            Data<int, bool> healthData = (Data<int, bool>)data;
-            m_CurrentHealth = healthData.value1 ? startingHealth : healthData.value0;
-            OnHealthSet.Invoke(this);
-        }
-
-
     }
 }

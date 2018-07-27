@@ -1,45 +1,45 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     public class BossDoorStateManager : MonoBehaviour
     {
+        public DoorState[] doorStates;
+
+
+        public InventoryController inventoryController;
+
+        protected int m_Keys;
+        public SpriteRenderer spriteRenderer;
+
+        private void Start()
+        {
+            UpdateStates();
+        }
+
+        public void UpdateStates()
+        {
+            for (var i = 0; i < doorStates.Length; i++) doorStates[i].UpdateState(inventoryController, spriteRenderer);
+        }
+
         [Serializable]
         public class DoorState
         {
             public string keyInventoryName;
-            public Sprite sprite;
             public Light light;
+            public Sprite sprite;
 
-            public void UpdateState (InventoryController inventoryController, SpriteRenderer spriteRenderer)
+            public void UpdateState(InventoryController inventoryController, SpriteRenderer spriteRenderer)
             {
-                bool hasKey = inventoryController.HasItem (keyInventoryName);
+                var hasKey = inventoryController.HasItem(keyInventoryName);
                 if (hasKey)
                     spriteRenderer.sprite = sprite;
                 light.enabled = hasKey;
-            }
-        }
-
-
-        public InventoryController inventoryController;
-        public SpriteRenderer spriteRenderer;
-        public DoorState[] doorStates;
-    
-        protected int m_Keys;
-    
-        void Start ()
-        {
-            UpdateStates ();
-        }
-
-        public void UpdateStates ()
-        {
-            for (int i = 0; i < doorStates.Length; i++)
-            {
-                doorStates[i].UpdateState(inventoryController, spriteRenderer);
             }
         }
     }

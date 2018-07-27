@@ -1,7 +1,11 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
@@ -10,7 +14,21 @@ namespace Gamekit2D
         public enum InputType
         {
             MouseAndKeyboard,
-            Controller,
+            Controller
+        }
+
+
+        public enum XboxControllerAxes
+        {
+            None,
+            LeftstickHorizontal,
+            LeftstickVertical,
+            DpadHorizontal,
+            DpadVertical,
+            RightstickHorizontal,
+            RightstickVertical,
+            LeftTrigger,
+            RightTrigger
         }
 
 
@@ -26,65 +44,95 @@ namespace Gamekit2D
             View,
             Menu,
             LeftBumper,
-            RightBumper,
+            RightBumper
         }
 
+        public InputType inputType = InputType.MouseAndKeyboard;
 
-        public enum XboxControllerAxes
+        private bool m_FixedUpdateHappened;
+
+        private void Update()
         {
-            None,
-            LeftstickHorizontal,
-            LeftstickVertical,
-            DpadHorizontal,
-            DpadVertical,
-            RightstickHorizontal,
-            RightstickVertical,
-            LeftTrigger,
-            RightTrigger,
+            GetInputs(m_FixedUpdateHappened || Mathf.Approximately(Time.timeScale, 0));
+
+            m_FixedUpdateHappened = false;
+        }
+
+        private void FixedUpdate()
+        {
+            m_FixedUpdateHappened = true;
+        }
+
+        protected abstract void GetInputs(bool fixedUpdateHappened);
+
+        public abstract void GainControl();
+
+        public abstract void ReleaseControl(bool resetValues = true);
+
+        protected void GainControl(InputButton inputButton)
+        {
+            inputButton.GainControl();
+        }
+
+        protected void GainControl(InputAxis inputAxis)
+        {
+            inputAxis.GainControl();
+        }
+
+        protected void ReleaseControl(InputButton inputButton, bool resetValues)
+        {
+            StartCoroutine(inputButton.ReleaseControl(resetValues));
+        }
+
+        protected void ReleaseControl(InputAxis inputAxis, bool resetValues)
+        {
+            inputAxis.ReleaseControl(resetValues);
         }
 
 
         [Serializable]
         public class InputButton
         {
-            public KeyCode key;
-            public XboxControllerButtons controllerButton;
-            public bool Down { get; protected set; }
-            public bool Held { get; protected set; }
-            public bool Up { get; protected set; }
-            public bool Enabled
+            protected static readonly Dictionary<int, string> k_ButtonsToName = new Dictionary<int, string>
             {
-                get { return m_Enabled; }
-            }
+                {(int) XboxControllerButtons.A, "A"},
+                {(int) XboxControllerButtons.B, "B"},
+                {(int) XboxControllerButtons.X, "X"},
+                {(int) XboxControllerButtons.Y, "Y"},
+                {(int) XboxControllerButtons.Leftstick, "Leftstick"},
+                {(int) XboxControllerButtons.Rightstick, "Rightstick"},
+                {(int) XboxControllerButtons.View, "View"},
+                {(int) XboxControllerButtons.Menu, "Menu"},
+                {(int) XboxControllerButtons.LeftBumper, "Left Bumper"},
+                {(int) XboxControllerButtons.RightBumper, "Right Bumper"}
+            };
 
-            [SerializeField]
-            protected bool m_Enabled = true;
-            protected bool m_GettingInput = true;
+            public XboxControllerButtons controllerButton;
+            public KeyCode key;
 
             //This is used to change the state of a button (Down, Up) only if at least a FixedUpdate happened between the previous Frame
             //and this one. Since movement are made in FixedUpdate, without that an input could be missed it get press/release between fixedupdate
-            bool m_AfterFixedUpdateDown;
-            bool m_AfterFixedUpdateHeld;
-            bool m_AfterFixedUpdateUp;
+            private bool m_AfterFixedUpdateDown;
+            private bool m_AfterFixedUpdateHeld;
+            private bool m_AfterFixedUpdateUp;
 
-            protected static readonly Dictionary<int, string> k_ButtonsToName = new Dictionary<int, string>
-            {
-                {(int)XboxControllerButtons.A, "A"},
-                {(int)XboxControllerButtons.B, "B"},
-                {(int)XboxControllerButtons.X, "X"},
-                {(int)XboxControllerButtons.Y, "Y"},
-                {(int)XboxControllerButtons.Leftstick, "Leftstick"},
-                {(int)XboxControllerButtons.Rightstick, "Rightstick"},
-                {(int)XboxControllerButtons.View, "View"},
-                {(int)XboxControllerButtons.Menu, "Menu"},
-                {(int)XboxControllerButtons.LeftBumper, "Left Bumper"},
-                {(int)XboxControllerButtons.RightBumper, "Right Bumper"},
-            };
+            [SerializeField] protected bool m_Enabled = true;
+
+            protected bool m_GettingInput = true;
 
             public InputButton(KeyCode key, XboxControllerButtons controllerButton)
             {
                 this.key = key;
                 this.controllerButton = controllerButton;
+            }
+
+            public bool Down { get; protected set; }
+            public bool Held { get; protected set; }
+            public bool Up { get; protected set; }
+
+            public bool Enabled
+            {
+                get { return m_Enabled; }
             }
 
             public void Get(bool fixedUpdateHappened, InputType inputType)
@@ -104,9 +152,9 @@ namespace Gamekit2D
                 {
                     if (fixedUpdateHappened)
                     {
-                        Down = Input.GetButtonDown(k_ButtonsToName[(int)controllerButton]);
-                        Held = Input.GetButton(k_ButtonsToName[(int)controllerButton]);
-                        Up = Input.GetButtonUp(k_ButtonsToName[(int)controllerButton]);
+                        Down = Input.GetButtonDown(k_ButtonsToName[(int) controllerButton]);
+                        Held = Input.GetButton(k_ButtonsToName[(int) controllerButton]);
+                        Up = Input.GetButtonUp(k_ButtonsToName[(int) controllerButton]);
 
                         m_AfterFixedUpdateDown = Down;
                         m_AfterFixedUpdateHeld = Held;
@@ -114,9 +162,9 @@ namespace Gamekit2D
                     }
                     else
                     {
-                        Down = Input.GetButtonDown(k_ButtonsToName[(int)controllerButton]) || m_AfterFixedUpdateDown;
-                        Held = Input.GetButton(k_ButtonsToName[(int)controllerButton]) || m_AfterFixedUpdateHeld;
-                        Up = Input.GetButtonUp(k_ButtonsToName[(int)controllerButton]) || m_AfterFixedUpdateUp;
+                        Down = Input.GetButtonDown(k_ButtonsToName[(int) controllerButton]) || m_AfterFixedUpdateDown;
+                        Held = Input.GetButton(k_ButtonsToName[(int) controllerButton]) || m_AfterFixedUpdateHeld;
+                        Up = Input.GetButtonUp(k_ButtonsToName[(int) controllerButton]) || m_AfterFixedUpdateUp;
 
                         m_AfterFixedUpdateDown |= Down;
                         m_AfterFixedUpdateHeld |= Held;
@@ -188,35 +236,38 @@ namespace Gamekit2D
         [Serializable]
         public class InputAxis
         {
-            public KeyCode positive;
-            public KeyCode negative;
-            public XboxControllerAxes controllerAxis;
-            public float Value { get; protected set; }
-            public bool ReceivingInput { get; protected set; }
-            public bool Enabled
+            protected static readonly Dictionary<int, string> k_AxisToName = new Dictionary<int, string>
             {
-                get { return m_Enabled; }
-            }
+                {(int) XboxControllerAxes.LeftstickHorizontal, "Leftstick Horizontal"},
+                {(int) XboxControllerAxes.LeftstickVertical, "Leftstick Vertical"},
+                {(int) XboxControllerAxes.DpadHorizontal, "Dpad Horizontal"},
+                {(int) XboxControllerAxes.DpadVertical, "Dpad Vertical"},
+                {(int) XboxControllerAxes.RightstickHorizontal, "Rightstick Horizontal"},
+                {(int) XboxControllerAxes.RightstickVertical, "Rightstick Vertical"},
+                {(int) XboxControllerAxes.LeftTrigger, "Left Trigger"},
+                {(int) XboxControllerAxes.RightTrigger, "Right Trigger"}
+            };
+
+            public XboxControllerAxes controllerAxis;
 
             protected bool m_Enabled = true;
             protected bool m_GettingInput = true;
-
-            protected readonly static Dictionary<int, string> k_AxisToName = new Dictionary<int, string> {
-                {(int)XboxControllerAxes.LeftstickHorizontal, "Leftstick Horizontal"},
-                {(int)XboxControllerAxes.LeftstickVertical, "Leftstick Vertical"},
-                {(int)XboxControllerAxes.DpadHorizontal, "Dpad Horizontal"},
-                {(int)XboxControllerAxes.DpadVertical, "Dpad Vertical"},
-                {(int)XboxControllerAxes.RightstickHorizontal, "Rightstick Horizontal"},
-                {(int)XboxControllerAxes.RightstickVertical, "Rightstick Vertical"},
-                {(int)XboxControllerAxes.LeftTrigger, "Left Trigger"},
-                {(int)XboxControllerAxes.RightTrigger, "Right Trigger"},
-            };
+            public KeyCode negative;
+            public KeyCode positive;
 
             public InputAxis(KeyCode positive, KeyCode negative, XboxControllerAxes controllerAxis)
             {
                 this.positive = positive;
                 this.negative = negative;
                 this.controllerAxis = controllerAxis;
+            }
+
+            public float Value { get; protected set; }
+            public bool ReceivingInput { get; protected set; }
+
+            public bool Enabled
+            {
+                get { return m_Enabled; }
             }
 
             public void Get(InputType inputType)
@@ -230,14 +281,14 @@ namespace Gamekit2D
                 if (!m_GettingInput)
                     return;
 
-                bool positiveHeld = false;
-                bool negativeHeld = false;
+                var positiveHeld = false;
+                var negativeHeld = false;
 
                 if (inputType == InputType.Controller)
                 {
-                    float value = Input.GetAxisRaw(k_AxisToName[(int)controllerAxis]);
-                    positiveHeld = value > Single.Epsilon;
-                    negativeHeld = value < -Single.Epsilon;
+                    var value = Input.GetAxisRaw(k_AxisToName[(int) controllerAxis]);
+                    positiveHeld = value > float.Epsilon;
+                    negativeHeld = value < -float.Epsilon;
                 }
                 else if (inputType == InputType.MouseAndKeyboard)
                 {
@@ -279,48 +330,6 @@ namespace Gamekit2D
                     ReceivingInput = false;
                 }
             }
-        }
-
-        public InputType inputType = InputType.MouseAndKeyboard;
-
-        bool m_FixedUpdateHappened;
-
-        void Update()
-        {
-            GetInputs(m_FixedUpdateHappened || Mathf.Approximately(Time.timeScale,0));
-
-            m_FixedUpdateHappened = false;
-        }
-
-        void FixedUpdate()
-        {
-            m_FixedUpdateHappened = true;
-        }
-
-        protected abstract void GetInputs(bool fixedUpdateHappened);
-
-        public abstract void GainControl();
-
-        public abstract void ReleaseControl(bool resetValues = true);
-
-        protected void GainControl(InputButton inputButton)
-        {
-            inputButton.GainControl();
-        }
-
-        protected void GainControl(InputAxis inputAxis)
-        {
-            inputAxis.GainControl();
-        }
-
-        protected void ReleaseControl(InputButton inputButton, bool resetValues)
-        {
-            StartCoroutine(inputButton.ReleaseControl(resetValues));
-        }
-
-        protected void ReleaseControl(InputAxis inputAxis, bool resetValues)
-        {
-            inputAxis.ReleaseControl(resetValues);
         }
     }
 }

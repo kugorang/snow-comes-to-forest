@@ -1,14 +1,20 @@
+#region
+
 using System;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
+
+#endregion
 
 namespace UnityEditor.Rendering.PostProcessing
 {
     [Decorator(typeof(RangeAttribute))]
     public sealed class RangeDecorator : AttributeDecorator
     {
-        public override bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title, Attribute attribute)
+        public override bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title,
+            Attribute attribute)
         {
-            var attr = (RangeAttribute)attribute;
+            var attr = (RangeAttribute) attribute;
 
             if (property.propertyType == SerializedPropertyType.Float)
             {
@@ -18,7 +24,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
             if (property.propertyType == SerializedPropertyType.Integer)
             {
-                property.intValue = EditorGUILayout.IntSlider(title, property.intValue, (int)attr.min, (int)attr.max);
+                property.intValue = EditorGUILayout.IntSlider(title, property.intValue, (int) attr.min, (int) attr.max);
                 return true;
             }
 
@@ -26,24 +32,25 @@ namespace UnityEditor.Rendering.PostProcessing
         }
     }
 
-    [Decorator(typeof(UnityEngine.Rendering.PostProcessing.MinAttribute))]
+    [Decorator(typeof(MinAttribute))]
     public sealed class MinDecorator : AttributeDecorator
     {
-        public override bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title, Attribute attribute)
+        public override bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title,
+            Attribute attribute)
         {
-            var attr = (UnityEngine.Rendering.PostProcessing.MinAttribute)attribute;
+            var attr = (MinAttribute) attribute;
 
             if (property.propertyType == SerializedPropertyType.Float)
             {
-                float v = EditorGUILayout.FloatField(title, property.floatValue);
+                var v = EditorGUILayout.FloatField(title, property.floatValue);
                 property.floatValue = Mathf.Max(v, attr.min);
                 return true;
             }
 
             if (property.propertyType == SerializedPropertyType.Integer)
             {
-                int v = EditorGUILayout.IntField(title, property.intValue);
-                property.intValue = Mathf.Max(v, (int)attr.min);
+                var v = EditorGUILayout.IntField(title, property.intValue);
+                property.intValue = Mathf.Max(v, (int) attr.min);
                 return true;
             }
 
@@ -51,24 +58,25 @@ namespace UnityEditor.Rendering.PostProcessing
         }
     }
 
-    [Decorator(typeof(UnityEngine.Rendering.PostProcessing.MaxAttribute))]
+    [Decorator(typeof(MaxAttribute))]
     public sealed class MaxDecorator : AttributeDecorator
     {
-        public override bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title, Attribute attribute)
+        public override bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title,
+            Attribute attribute)
         {
-            var attr = (UnityEngine.Rendering.PostProcessing.MaxAttribute)attribute;
+            var attr = (MaxAttribute) attribute;
 
             if (property.propertyType == SerializedPropertyType.Float)
             {
-                float v = EditorGUILayout.FloatField(title, property.floatValue);
+                var v = EditorGUILayout.FloatField(title, property.floatValue);
                 property.floatValue = Mathf.Min(v, attr.max);
                 return true;
             }
 
             if (property.propertyType == SerializedPropertyType.Integer)
             {
-                int v = EditorGUILayout.IntField(title, property.intValue);
-                property.intValue = Mathf.Min(v, (int)attr.max);
+                var v = EditorGUILayout.IntField(title, property.intValue);
+                property.intValue = Mathf.Min(v, (int) attr.max);
                 return true;
             }
 
@@ -76,24 +84,25 @@ namespace UnityEditor.Rendering.PostProcessing
         }
     }
 
-    [Decorator(typeof(UnityEngine.Rendering.PostProcessing.MinMaxAttribute))]
+    [Decorator(typeof(MinMaxAttribute))]
     public sealed class MinMaxDecorator : AttributeDecorator
     {
-        public override bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title, Attribute attribute)
+        public override bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title,
+            Attribute attribute)
         {
-            var attr = (UnityEngine.Rendering.PostProcessing.MinMaxAttribute)attribute;
+            var attr = (MinMaxAttribute) attribute;
 
             if (property.propertyType == SerializedPropertyType.Float)
             {
-                float v = EditorGUILayout.FloatField(title, property.floatValue);
+                var v = EditorGUILayout.FloatField(title, property.floatValue);
                 property.floatValue = Mathf.Clamp(v, attr.min, attr.max);
                 return true;
             }
 
             if (property.propertyType == SerializedPropertyType.Integer)
             {
-                int v = EditorGUILayout.IntField(title, property.intValue);
-                property.intValue = Mathf.Clamp(v, (int)attr.min, (int)attr.max);
+                var v = EditorGUILayout.IntField(title, property.intValue);
+                property.intValue = Mathf.Clamp(v, (int) attr.min, (int) attr.max);
                 return true;
             }
 
@@ -112,29 +121,30 @@ namespace UnityEditor.Rendering.PostProcessing
     [Decorator(typeof(ColorUsageAttribute))]
     public sealed class ColorUsageDecorator : AttributeDecorator
     {
-        public override bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title, Attribute attribute)
+        public override bool OnGUI(SerializedProperty property, SerializedProperty overrideState, GUIContent title,
+            Attribute attribute)
         {
-            var attr = (ColorUsageAttribute)attribute;
+            var attr = (ColorUsageAttribute) attribute;
 
             if (property.propertyType != SerializedPropertyType.Color)
                 return false;
 
 #if UNITY_2018_1_OR_NEWER
-            property.colorValue = EditorGUILayout.ColorField(title, property.colorValue, true, attr.showAlpha, attr.hdr);
+            property.colorValue =
+ EditorGUILayout.ColorField(title, property.colorValue, true, attr.showAlpha, attr.hdr);
 #else
             ColorPickerHDRConfig hdrConfig = null;
 
             if (attr.hdr)
-            {
                 hdrConfig = new ColorPickerHDRConfig(
                     attr.minBrightness,
                     attr.maxBrightness,
                     attr.minExposureValue,
                     attr.maxExposureValue
                 );
-            }
 
-            property.colorValue = EditorGUILayout.ColorField(title, property.colorValue, true, attr.showAlpha, attr.hdr, hdrConfig);
+            property.colorValue =
+                EditorGUILayout.ColorField(title, property.colorValue, true, attr.showAlpha, attr.hdr, hdrConfig);
 #endif
 
             return true;

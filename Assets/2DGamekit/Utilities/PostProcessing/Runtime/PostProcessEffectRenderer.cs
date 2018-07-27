@@ -37,7 +37,7 @@ namespace UnityEngine.Rendering.PostProcessing
 
         internal override void SetSettings(PostProcessEffectSettings settings)
         {
-            this.settings = (T)settings;
+            this.settings = (T) settings;
         }
     }
 }

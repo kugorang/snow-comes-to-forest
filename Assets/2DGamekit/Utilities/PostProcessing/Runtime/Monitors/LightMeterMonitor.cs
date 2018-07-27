@@ -1,15 +1,19 @@
-﻿using System;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace UnityEngine.Rendering.PostProcessing
 {
     [Serializable]
     public sealed class LightMeterMonitor : Monitor
     {
-        public int width = 512;
         public int height = 256;
 
         // Note: only works with HDR grading, as this monitor only makes sense when working in HDR
         public bool showCurves = true;
+        public int width = 512;
 
         internal override void Render(PostProcessRenderContext context)
         {
@@ -37,8 +41,8 @@ namespace UnityEngine.Rendering.PostProcessing
             if (autoExpo != null)
             {
                 // Make sure filtering values are correct to avoid apocalyptic consequences
-                float lowPercent = autoExpo.filtering.value.x;
-                float highPercent = autoExpo.filtering.value.y;
+                var lowPercent = autoExpo.filtering.value.x;
+                var highPercent = autoExpo.filtering.value.y;
                 const float kMinDelta = 1e-2f;
                 highPercent = Mathf.Clamp(highPercent, 1f + kMinDelta, 99f);
                 lowPercent = Mathf.Clamp(lowPercent, 1f, highPercent - kMinDelta);

@@ -1,32 +1,29 @@
-﻿using System;
-using System.Collections;
+﻿#region
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
+
+#endregion
 
 namespace Light2D
 {
     /// <summary>
-    /// This class apply post processing effect to light obstacles texture.
-    /// It is drawing one pixel wide white border on light obstacles texture.
-    /// Whithout it light sources with off screen origin may not work.
+    ///     This class apply post processing effect to light obstacles texture.
+    ///     It is drawing one pixel wide white border on light obstacles texture.
+    ///     Whithout it light sources with off screen origin may not work.
     /// </summary>
     public class ObstacleCameraPostPorcessor
     {
+        private readonly List<Color32> _colors32 = new List<Color32>();
+        private readonly List<int> _indices = new List<int>();
+        private readonly Material _material;
+        private readonly List<Vector3> _vertices = new List<Vector3>();
         private Mesh _mesh;
-        private Material _material;
         private Point2 _oldCameraSize;
-        private List<Color32> _colors32 = new List<Color32>();
-        private List<Vector3> _vertices = new List<Vector3>();
-        private List<int> _indices = new List<int>();
 
         public ObstacleCameraPostPorcessor()
         {
-            if (_material == null)
-            {
-                _material = new Material(Shader.Find("Light2D/Obstacle Texture Post Porcessor"));
-            }
+            if (_material == null) _material = new Material(Shader.Find("Light2D/Obstacle Texture Post Porcessor"));
         }
 
         public void DrawMesh(Camera camera, float pixelWidth)
@@ -43,11 +40,11 @@ namespace Light2D
         }
 
         /// <summary>
-        /// Generating mesh with one pixel wide white border.
+        ///     Generating mesh with one pixel wide white border.
         /// </summary>
         private void CreateMesh(Camera camera, float pixelWidth)
         {
-            var pixelSize = new Vector2(1f/camera.pixelWidth, 1f/camera.pixelHeight)*pixelWidth;
+            var pixelSize = new Vector2(1f / camera.pixelWidth, 1f / camera.pixelHeight) * pixelWidth;
 
             _vertices.Clear();
             _colors32.Clear();
@@ -70,10 +67,10 @@ namespace Light2D
 
         private void CreateQuad(Color32 color, Vector2 min, Vector2 max)
         {
-            min = min*2 - Vector2.one;
-            max = max*2 - Vector2.one;
+            min = min * 2 - Vector2.one;
+            max = max * 2 - Vector2.one;
 
-            int startVertex = _vertices.Count;
+            var startVertex = _vertices.Count;
 
             _indices.Add(0 + startVertex);
             _indices.Add(1 + startVertex);
@@ -87,7 +84,7 @@ namespace Light2D
             _vertices.Add(new Vector3(max.x, max.y, 1));
             _vertices.Add(new Vector3(max.x, min.y, 1));
 
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
                 _colors32.Add(color);
         }
     }

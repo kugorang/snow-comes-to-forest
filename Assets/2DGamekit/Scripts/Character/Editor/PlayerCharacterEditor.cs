@@ -1,139 +1,154 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEditor;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     [CustomEditor(typeof(PlayerCharacter))]
     public class PlayerCharacterEditor : Editor
     {
-        SerializedProperty m_SpriteRendererProp;
-        SerializedProperty m_DamageableProp;
-        SerializedProperty m_MeleeDamagerProp;
-        SerializedProperty m_FacingLeftBulletSpawnPointProp;
-        SerializedProperty m_FacingRightBulletSpawnPointProp;
-        SerializedProperty m_BulletPoolProp;
-        SerializedProperty m_CameraFollowTargetProp;
+        private readonly GUIContent m_AirborneAccelProportionContent = new GUIContent("Airborne Accel Proportion");
+        private readonly GUIContent m_AirborneDecelProportionContent = new GUIContent("Airborne Decel Proportion");
+        private readonly GUIContent m_AirborneSettingsContent = new GUIContent("Airborne Settings");
+        private readonly GUIContent m_AudioSettingsContent = new GUIContent("Audio Settings");
+        private readonly GUIContent m_BulletPoolContent = new GUIContent("Bullet Pool");
+        private readonly GUIContent m_BulletSpeedContent = new GUIContent("Bullet Speed");
+        private readonly GUIContent m_CameraFollowSettingsContent = new GUIContent("Camera Follow Settings");
+        private readonly GUIContent m_CameraFollowTargetContent = new GUIContent("Camera Follow Target");
 
-        SerializedProperty m_MaxSpeedProp;
-        SerializedProperty m_GroundAccelerationProp;
-        SerializedProperty m_GroundDecelerationProp;
-        SerializedProperty m_PushingSpeedProportionProp;
+        private readonly GUIContent m_CameraHorizontalFacingOffsetContent =
+            new GUIContent("Camera Horizontal Facing Offset");
 
-        SerializedProperty m_AirborneAccelProportionProp;
-        SerializedProperty m_AirborneDecelProportionProp;
-        SerializedProperty m_GravityProp;
-        SerializedProperty m_JumpSpeedProp;
-        SerializedProperty m_JumpAbortSpeedReductionProp;
-    
-        SerializedProperty m_HurtJumpAngleProp;
-        SerializedProperty m_HurtJumpSpeedProp;
-        SerializedProperty m_FlickeringDurationProp;
-    
-        SerializedProperty m_MeleeAttackDashSpeedProp;
-        SerializedProperty m_DashWhileAirborneProp;
-    
-        SerializedProperty m_ShotsPerSecondProp;
-        SerializedProperty m_BulletSpeedProp;
-        SerializedProperty m_HoldingGunTimeoutDurationProp;
-        SerializedProperty m_RightBulletSpawnPointAnimatedProp;
+        private readonly GUIContent m_CameraHorizontalSpeedOffsetContent =
+            new GUIContent("Camera Horizontal Speed Offset");
 
-        SerializedProperty m_FootstepAudioPlayerProp;
-        SerializedProperty m_LandingAudioPlayerProp;
-        SerializedProperty m_HurtAudioPlayerProp;
-        SerializedProperty m_MeleeAttackAudioPlayerProp;
-        SerializedProperty m_RangedAttackAudioPlayerProp;
+        private readonly GUIContent m_CameraVerticalInputOffsetContent = new GUIContent("Camera Vertical Input Offset");
+        private readonly GUIContent m_DamageableContent = new GUIContent("Damageable");
+        private readonly GUIContent m_DashWhileAirborneContent = new GUIContent("Dash While Airborne");
 
-        SerializedProperty m_CameraHorizontalFacingOffsetProp;
-        SerializedProperty m_CameraHorizontalSpeedOffsetProp;
-        SerializedProperty m_CameraVerticalInputOffsetProp;
-        SerializedProperty m_MaxHorizontalDeltaDampTimeProp;
-        SerializedProperty m_MaxVerticalDeltaDampTimeProp;
-        SerializedProperty m_VerticalCameraOffsetDelayProp;
+        private readonly GUIContent m_FacingLeftBulletSpawnPointContent =
+            new GUIContent("Facing Left Bullet Spawn Point");
 
-        SerializedProperty m_SpriteOriginallyFacesLeftProp;
+        private readonly GUIContent m_FacingRightBulletSpawnPointContent =
+            new GUIContent("Facing Right Bullet Spawn Point");
 
-        bool m_ReferencesFoldout;
-        bool m_MovementSettingsFoldout;
-        bool m_AirborneSettingsFoldout;
-        bool m_HurtSettingsFoldout;
-        bool m_MeleeSettingsFoldout;
-        bool m_RangedSettingsFoldout;
-        bool m_AudioSettingsFoldout;
-        bool m_CameraFollowSettingsFoldout;
-        bool m_MiscSettingsFoldout;
+        private readonly GUIContent m_FlickeringDurationContent = new GUIContent("Flicking Duration",
+            "When the player is hurt she becomes invulnerable for a short time and the SpriteRenderer flickers on and off to indicate this.  This field is the duration in seconds the SpriteRenderer stays either on or off whilst flickering.  To adjust the duration of invulnerability see the Damageable component.");
 
-        readonly GUIContent m_SpriteRendererContent = new GUIContent("Sprite Renderer");
-        readonly GUIContent m_DamageableContent = new GUIContent("Damageable");
-        readonly GUIContent m_MeleeDamagerContent = new GUIContent("Melee Damager");
-        readonly GUIContent m_FacingLeftBulletSpawnPointContent = new GUIContent("Facing Left Bullet Spawn Point");
-        readonly GUIContent m_FacingRightBulletSpawnPointContent = new GUIContent("Facing Right Bullet Spawn Point");
-        readonly GUIContent m_BulletPoolContent = new GUIContent("Bullet Pool");
-        readonly GUIContent m_CameraFollowTargetContent = new GUIContent("Camera Follow Target");
+        private readonly GUIContent m_FootstepPlayerContent = new GUIContent("Footstep Audio Player");
+        private readonly GUIContent m_GravityContent = new GUIContent("Gravity");
+        private readonly GUIContent m_GroundAccelerationContent = new GUIContent("Ground Acceleration");
+        private readonly GUIContent m_GroundDecelerationContent = new GUIContent("Ground Deceleration");
+        private readonly GUIContent m_HoldingGunTimeoutDurationContent = new GUIContent("Holding Gun Timeout Duration");
+        private readonly GUIContent m_HurtAudioPlayerContent = new GUIContent("Hurt Audio Player");
 
-        readonly GUIContent m_MaxSpeedContent = new GUIContent("Max Speed");
-        readonly GUIContent m_GroundAccelerationContent = new GUIContent("Ground Acceleration");
-        readonly GUIContent m_GroundDecelerationContent = new GUIContent("Ground Deceleration");
-        readonly GUIContent m_PushingSpeedProportionContent = new GUIContent("Pushing Speed Proportion");
+        private readonly GUIContent m_HurtJumpAngleContent = new GUIContent("Hurt Jump Angle");
+        private readonly GUIContent m_HurtJumpSpeedContent = new GUIContent("Hurt Jump Speed");
+        private readonly GUIContent m_HurtSettingsContent = new GUIContent("Hurt Settings");
+        private readonly GUIContent m_JumpAbortSpeedReductionContent = new GUIContent("Jump Abort Speed Reduction");
+        private readonly GUIContent m_JumpSpeedContent = new GUIContent("Jump Speed");
+        private readonly GUIContent m_LandingAudioPlayerContent = new GUIContent("Landing Audio Player");
 
-        readonly GUIContent m_AirborneAccelProportionContent = new GUIContent("Airborne Accel Proportion");
-        readonly GUIContent m_AirborneDecelProportionContent = new GUIContent("Airborne Decel Proportion");
-        readonly GUIContent m_GravityContent = new GUIContent("Gravity");
-        readonly GUIContent m_JumpSpeedContent = new GUIContent("Jump Speed");
-        readonly GUIContent m_JumpAbortSpeedReductionContent = new GUIContent("Jump Abort Speed Reduction");
+        private readonly GUIContent m_MaxHorizontalDeltaDampTimeContent =
+            new GUIContent("Max Horizontal Delta Damp Time");
 
-        readonly GUIContent m_HurtJumpAngleContent = new GUIContent("Hurt Jump Angle");
-        readonly GUIContent m_HurtJumpSpeedContent = new GUIContent("Hurt Jump Speed");
-        readonly GUIContent m_FlickeringDurationContent = new GUIContent("Flicking Duration", "When the player is hurt she becomes invulnerable for a short time and the SpriteRenderer flickers on and off to indicate this.  This field is the duration in seconds the SpriteRenderer stays either on or off whilst flickering.  To adjust the duration of invulnerability see the Damageable component.");
+        private readonly GUIContent m_MaxSpeedContent = new GUIContent("Max Speed");
+        private readonly GUIContent m_MaxVerticalDeltaDampTimeContent = new GUIContent("Max Vertical Delta Damp Time");
+        private readonly GUIContent m_MeleeAttackAudioPlayerContent = new GUIContent("Melee Attack Audio Player");
 
-        readonly GUIContent m_MeleeAttackDashSpeedContent = new GUIContent("Melee Attack Dash Speed");
-        readonly GUIContent m_DashWhileAirborneContent = new GUIContent("Dash While Airborne");
+        private readonly GUIContent m_MeleeAttackDashSpeedContent = new GUIContent("Melee Attack Dash Speed");
+        private readonly GUIContent m_MeleeDamagerContent = new GUIContent("Melee Damager");
+        private readonly GUIContent m_MeleeSettingsContent = new GUIContent("Melee Settings");
+        private readonly GUIContent m_MiscSettingsContent = new GUIContent("Misc Settings");
+        private readonly GUIContent m_MovementSettingsContent = new GUIContent("Movement Settings");
+        private readonly GUIContent m_PushingSpeedProportionContent = new GUIContent("Pushing Speed Proportion");
+        private readonly GUIContent m_RangedAttackAudioPlayerContent = new GUIContent("Ranged Attack Audio Player");
+        private readonly GUIContent m_RangedSettingsContent = new GUIContent("Ranged Settings");
 
-        readonly GUIContent m_ShotsPerSecondContent = new GUIContent("Shots Per Second");
-        readonly GUIContent m_BulletSpeedContent = new GUIContent("Bullet Speed");
-        readonly GUIContent m_HoldingGunTimeoutDurationContent = new GUIContent("Holding Gun Timeout Duration");
-        readonly GUIContent m_RightBulletSpawnPointAnimatedContent = new GUIContent("Right Bullet Spawn Point Animated");
+        private readonly GUIContent m_ReferencesContent = new GUIContent("References");
 
-        readonly GUIContent m_FootstepPlayerContent = new GUIContent("Footstep Audio Player");
-        readonly GUIContent m_LandingAudioPlayerContent = new GUIContent("Landing Audio Player");
-        readonly GUIContent m_HurtAudioPlayerContent = new GUIContent("Hurt Audio Player");
-        readonly GUIContent m_MeleeAttackAudioPlayerContent = new GUIContent("Melee Attack Audio Player");
-        readonly GUIContent m_RangedAttackAudioPlayerContent = new GUIContent("Ranged Attack Audio Player");
+        private readonly GUIContent m_RightBulletSpawnPointAnimatedContent =
+            new GUIContent("Right Bullet Spawn Point Animated");
 
-        readonly GUIContent m_CameraHorizontalFacingOffsetContent = new GUIContent("Camera Horizontal Facing Offset");
-        readonly GUIContent m_CameraHorizontalSpeedOffsetContent = new GUIContent("Camera Horizontal Speed Offset");
-        readonly GUIContent m_CameraVerticalInputOffsetContent = new GUIContent("Camera Vertical Input Offset");
-        readonly GUIContent m_MaxHorizontalDeltaDampTimeContent = new GUIContent("Max Horizontal Delta Damp Time");
-        readonly GUIContent m_MaxVerticalDeltaDampTimeContent = new GUIContent("Max Vertical Delta Damp Time");
-        readonly GUIContent m_VerticalCameraOffsetDelayContent = new GUIContent("Vertical Camera Offset Delay");
+        private readonly GUIContent m_ShotsPerSecondContent = new GUIContent("Shots Per Second");
 
-        readonly GUIContent m_SpriteOriginallyFacesLeftContent = new GUIContent("Sprite Originally Faces Left");
+        private readonly GUIContent m_SpriteOriginallyFacesLeftContent = new GUIContent("Sprite Originally Faces Left");
 
-        readonly GUIContent m_ReferencesContent = new GUIContent("References");
-        readonly GUIContent m_MovementSettingsContent = new GUIContent("Movement Settings");
-        readonly GUIContent m_AirborneSettingsContent = new GUIContent("Airborne Settings");
-        readonly GUIContent m_HurtSettingsContent = new GUIContent("Hurt Settings");
-        readonly GUIContent m_MeleeSettingsContent = new GUIContent("Melee Settings");
-        readonly GUIContent m_RangedSettingsContent = new GUIContent("Ranged Settings");
-        readonly GUIContent m_AudioSettingsContent = new GUIContent("Audio Settings");
-        readonly GUIContent m_CameraFollowSettingsContent = new GUIContent("Camera Follow Settings");
-        readonly GUIContent m_MiscSettingsContent = new GUIContent("Misc Settings");
+        private readonly GUIContent m_SpriteRendererContent = new GUIContent("Sprite Renderer");
+        private readonly GUIContent m_VerticalCameraOffsetDelayContent = new GUIContent("Vertical Camera Offset Delay");
 
-        void OnEnable ()
+        private SerializedProperty m_AirborneAccelProportionProp;
+        private SerializedProperty m_AirborneDecelProportionProp;
+        private bool m_AirborneSettingsFoldout;
+        private bool m_AudioSettingsFoldout;
+        private SerializedProperty m_BulletPoolProp;
+        private SerializedProperty m_BulletSpeedProp;
+        private bool m_CameraFollowSettingsFoldout;
+        private SerializedProperty m_CameraFollowTargetProp;
+
+        private SerializedProperty m_CameraHorizontalFacingOffsetProp;
+        private SerializedProperty m_CameraHorizontalSpeedOffsetProp;
+        private SerializedProperty m_CameraVerticalInputOffsetProp;
+        private SerializedProperty m_DamageableProp;
+        private SerializedProperty m_DashWhileAirborneProp;
+        private SerializedProperty m_FacingLeftBulletSpawnPointProp;
+        private SerializedProperty m_FacingRightBulletSpawnPointProp;
+        private SerializedProperty m_FlickeringDurationProp;
+
+        private SerializedProperty m_FootstepAudioPlayerProp;
+        private SerializedProperty m_GravityProp;
+        private SerializedProperty m_GroundAccelerationProp;
+        private SerializedProperty m_GroundDecelerationProp;
+        private SerializedProperty m_HoldingGunTimeoutDurationProp;
+        private SerializedProperty m_HurtAudioPlayerProp;
+
+        private SerializedProperty m_HurtJumpAngleProp;
+        private SerializedProperty m_HurtJumpSpeedProp;
+        private bool m_HurtSettingsFoldout;
+        private SerializedProperty m_JumpAbortSpeedReductionProp;
+        private SerializedProperty m_JumpSpeedProp;
+        private SerializedProperty m_LandingAudioPlayerProp;
+        private SerializedProperty m_MaxHorizontalDeltaDampTimeProp;
+
+        private SerializedProperty m_MaxSpeedProp;
+        private SerializedProperty m_MaxVerticalDeltaDampTimeProp;
+        private SerializedProperty m_MeleeAttackAudioPlayerProp;
+
+        private SerializedProperty m_MeleeAttackDashSpeedProp;
+        private SerializedProperty m_MeleeDamagerProp;
+        private bool m_MeleeSettingsFoldout;
+        private bool m_MiscSettingsFoldout;
+        private bool m_MovementSettingsFoldout;
+        private SerializedProperty m_PushingSpeedProportionProp;
+        private SerializedProperty m_RangedAttackAudioPlayerProp;
+        private bool m_RangedSettingsFoldout;
+
+        private bool m_ReferencesFoldout;
+        private SerializedProperty m_RightBulletSpawnPointAnimatedProp;
+
+        private SerializedProperty m_ShotsPerSecondProp;
+
+        private SerializedProperty m_SpriteOriginallyFacesLeftProp;
+        private SerializedProperty m_SpriteRendererProp;
+        private SerializedProperty m_VerticalCameraOffsetDelayProp;
+
+        private void OnEnable()
         {
             m_SpriteRendererProp = serializedObject.FindProperty("spriteRenderer");
             m_DamageableProp = serializedObject.FindProperty("damageable");
             m_MeleeDamagerProp = serializedObject.FindProperty("meleeDamager");
             m_FacingLeftBulletSpawnPointProp = serializedObject.FindProperty("facingLeftBulletSpawnPoint");
-            m_FacingRightBulletSpawnPointProp = serializedObject.FindProperty ("facingRightBulletSpawnPoint");
+            m_FacingRightBulletSpawnPointProp = serializedObject.FindProperty("facingRightBulletSpawnPoint");
             m_BulletPoolProp = serializedObject.FindProperty("bulletPool");
-            m_CameraFollowTargetProp = serializedObject.FindProperty ("cameraFollowTarget");
+            m_CameraFollowTargetProp = serializedObject.FindProperty("cameraFollowTarget");
 
             m_MaxSpeedProp = serializedObject.FindProperty("maxSpeed");
             m_GroundAccelerationProp = serializedObject.FindProperty("groundAcceleration");
             m_GroundDecelerationProp = serializedObject.FindProperty("groundDeceleration");
-            m_PushingSpeedProportionProp = serializedObject.FindProperty ("pushingSpeedProportion");
+            m_PushingSpeedProportionProp = serializedObject.FindProperty("pushingSpeedProportion");
 
             m_AirborneAccelProportionProp = serializedObject.FindProperty("airborneAccelProportion");
             m_AirborneDecelProportionProp = serializedObject.FindProperty("airborneDecelProportion");
@@ -143,15 +158,15 @@ namespace Gamekit2D
 
             m_HurtJumpAngleProp = serializedObject.FindProperty("hurtJumpAngle");
             m_HurtJumpSpeedProp = serializedObject.FindProperty("hurtJumpSpeed");
-            m_FlickeringDurationProp = serializedObject.FindProperty ("flickeringDuration");
+            m_FlickeringDurationProp = serializedObject.FindProperty("flickeringDuration");
 
             m_MeleeAttackDashSpeedProp = serializedObject.FindProperty("meleeAttackDashSpeed");
-            m_DashWhileAirborneProp = serializedObject.FindProperty ("dashWhileAirborne");
+            m_DashWhileAirborneProp = serializedObject.FindProperty("dashWhileAirborne");
 
             m_ShotsPerSecondProp = serializedObject.FindProperty("shotsPerSecond");
             m_BulletSpeedProp = serializedObject.FindProperty("bulletSpeed");
             m_HoldingGunTimeoutDurationProp = serializedObject.FindProperty("holdingGunTimeoutDuration");
-            m_RightBulletSpawnPointAnimatedProp = serializedObject.FindProperty ("rightBulletSpawnPointAnimated");
+            m_RightBulletSpawnPointAnimatedProp = serializedObject.FindProperty("rightBulletSpawnPointAnimated");
 
             m_FootstepAudioPlayerProp = serializedObject.FindProperty("footstepAudioPlayer");
             m_LandingAudioPlayerProp = serializedObject.FindProperty("landingAudioPlayer");
@@ -166,31 +181,31 @@ namespace Gamekit2D
             m_MaxVerticalDeltaDampTimeProp = serializedObject.FindProperty("maxVerticalDeltaDampTime");
             m_VerticalCameraOffsetDelayProp = serializedObject.FindProperty("verticalCameraOffsetDelay");
 
-            m_SpriteOriginallyFacesLeftProp = serializedObject.FindProperty ("spriteOriginallyFacesLeft");
+            m_SpriteOriginallyFacesLeftProp = serializedObject.FindProperty("spriteOriginallyFacesLeft");
         }
 
-        public override void OnInspectorGUI ()
+        public override void OnInspectorGUI()
         {
-            serializedObject.Update ();
+            serializedObject.Update();
 
-            EditorGUILayout.BeginVertical (GUI.skin.box);
+            EditorGUILayout.BeginVertical(GUI.skin.box);
             EditorGUI.indentLevel++;
 
-            m_ReferencesFoldout = EditorGUILayout.Foldout (m_ReferencesFoldout, m_ReferencesContent);
+            m_ReferencesFoldout = EditorGUILayout.Foldout(m_ReferencesFoldout, m_ReferencesContent);
 
             if (m_ReferencesFoldout)
             {
-                EditorGUILayout.PropertyField (m_SpriteRendererProp, m_SpriteRendererContent);
-                EditorGUILayout.PropertyField (m_DamageableProp, m_DamageableContent);
-                EditorGUILayout.PropertyField (m_MeleeDamagerProp, m_MeleeDamagerContent);
-                EditorGUILayout.PropertyField (m_FacingLeftBulletSpawnPointProp, m_FacingLeftBulletSpawnPointContent);
-                EditorGUILayout.PropertyField (m_FacingRightBulletSpawnPointProp, m_FacingRightBulletSpawnPointContent);
-                EditorGUILayout.PropertyField (m_BulletPoolProp, m_BulletPoolContent);
-                EditorGUILayout.PropertyField (m_CameraFollowTargetProp, m_CameraFollowTargetContent);
+                EditorGUILayout.PropertyField(m_SpriteRendererProp, m_SpriteRendererContent);
+                EditorGUILayout.PropertyField(m_DamageableProp, m_DamageableContent);
+                EditorGUILayout.PropertyField(m_MeleeDamagerProp, m_MeleeDamagerContent);
+                EditorGUILayout.PropertyField(m_FacingLeftBulletSpawnPointProp, m_FacingLeftBulletSpawnPointContent);
+                EditorGUILayout.PropertyField(m_FacingRightBulletSpawnPointProp, m_FacingRightBulletSpawnPointContent);
+                EditorGUILayout.PropertyField(m_BulletPoolProp, m_BulletPoolContent);
+                EditorGUILayout.PropertyField(m_CameraFollowTargetProp, m_CameraFollowTargetContent);
             }
 
             EditorGUI.indentLevel--;
-            EditorGUILayout.EndVertical ();
+            EditorGUILayout.EndVertical();
 
             EditorGUILayout.BeginVertical(GUI.skin.box);
             EditorGUI.indentLevel++;
@@ -202,7 +217,7 @@ namespace Gamekit2D
                 EditorGUILayout.PropertyField(m_MaxSpeedProp, m_MaxSpeedContent);
                 EditorGUILayout.PropertyField(m_GroundAccelerationProp, m_GroundAccelerationContent);
                 EditorGUILayout.PropertyField(m_GroundDecelerationProp, m_GroundDecelerationContent);
-                EditorGUILayout.PropertyField (m_PushingSpeedProportionProp, m_PushingSpeedProportionContent);
+                EditorGUILayout.PropertyField(m_PushingSpeedProportionProp, m_PushingSpeedProportionContent);
             }
 
             EditorGUI.indentLevel--;
@@ -232,9 +247,9 @@ namespace Gamekit2D
 
             if (m_HurtSettingsFoldout)
             {
-                EditorGUILayout.PropertyField (m_HurtJumpAngleProp, m_HurtJumpAngleContent);
-                EditorGUILayout.PropertyField (m_HurtJumpSpeedProp, m_HurtJumpSpeedContent);
-                EditorGUILayout.PropertyField (m_FlickeringDurationProp, m_FlickeringDurationContent);
+                EditorGUILayout.PropertyField(m_HurtJumpAngleProp, m_HurtJumpAngleContent);
+                EditorGUILayout.PropertyField(m_HurtJumpSpeedProp, m_HurtJumpSpeedContent);
+                EditorGUILayout.PropertyField(m_FlickeringDurationProp, m_FlickeringDurationContent);
             }
 
             EditorGUI.indentLevel--;
@@ -264,7 +279,8 @@ namespace Gamekit2D
                 EditorGUILayout.PropertyField(m_ShotsPerSecondProp, m_ShotsPerSecondContent);
                 EditorGUILayout.PropertyField(m_BulletSpeedProp, m_BulletSpeedContent);
                 EditorGUILayout.PropertyField(m_HoldingGunTimeoutDurationProp, m_HoldingGunTimeoutDurationContent);
-                EditorGUILayout.PropertyField(m_RightBulletSpawnPointAnimatedProp, m_RightBulletSpawnPointAnimatedContent);
+                EditorGUILayout.PropertyField(m_RightBulletSpawnPointAnimatedProp,
+                    m_RightBulletSpawnPointAnimatedContent);
             }
 
             EditorGUI.indentLevel--;
@@ -290,35 +306,35 @@ namespace Gamekit2D
             EditorGUILayout.BeginVertical(GUI.skin.box);
             EditorGUI.indentLevel++;
 
-            m_CameraFollowSettingsFoldout = EditorGUILayout.Foldout(m_CameraFollowSettingsFoldout, m_CameraFollowSettingsContent);
+            m_CameraFollowSettingsFoldout =
+                EditorGUILayout.Foldout(m_CameraFollowSettingsFoldout, m_CameraFollowSettingsContent);
 
             if (m_CameraFollowSettingsFoldout)
             {
-                EditorGUILayout.PropertyField (m_CameraHorizontalFacingOffsetProp, m_CameraHorizontalFacingOffsetContent);
-                EditorGUILayout.PropertyField (m_CameraHorizontalSpeedOffsetProp, m_CameraHorizontalSpeedOffsetContent);
-                EditorGUILayout.PropertyField (m_CameraVerticalInputOffsetProp, m_CameraVerticalInputOffsetContent);
-                EditorGUILayout.PropertyField (m_MaxHorizontalDeltaDampTimeProp, m_MaxHorizontalDeltaDampTimeContent);
-                EditorGUILayout.PropertyField (m_MaxVerticalDeltaDampTimeProp, m_MaxVerticalDeltaDampTimeContent);
-                EditorGUILayout.PropertyField (m_VerticalCameraOffsetDelayProp, m_VerticalCameraOffsetDelayContent);
+                EditorGUILayout.PropertyField(m_CameraHorizontalFacingOffsetProp,
+                    m_CameraHorizontalFacingOffsetContent);
+                EditorGUILayout.PropertyField(m_CameraHorizontalSpeedOffsetProp, m_CameraHorizontalSpeedOffsetContent);
+                EditorGUILayout.PropertyField(m_CameraVerticalInputOffsetProp, m_CameraVerticalInputOffsetContent);
+                EditorGUILayout.PropertyField(m_MaxHorizontalDeltaDampTimeProp, m_MaxHorizontalDeltaDampTimeContent);
+                EditorGUILayout.PropertyField(m_MaxVerticalDeltaDampTimeProp, m_MaxVerticalDeltaDampTimeContent);
+                EditorGUILayout.PropertyField(m_VerticalCameraOffsetDelayProp, m_VerticalCameraOffsetDelayContent);
             }
 
             EditorGUI.indentLevel--;
             EditorGUILayout.EndVertical();
-        
+
             EditorGUILayout.BeginVertical(GUI.skin.box);
             EditorGUI.indentLevel++;
 
             m_MiscSettingsFoldout = EditorGUILayout.Foldout(m_MiscSettingsFoldout, m_MiscSettingsContent);
 
             if (m_MiscSettingsFoldout)
-            {
                 EditorGUILayout.PropertyField(m_SpriteOriginallyFacesLeftProp, m_SpriteOriginallyFacesLeftContent);
-            }
 
             EditorGUI.indentLevel--;
             EditorGUILayout.EndVertical();
 
-            serializedObject.ApplyModifiedProperties ();
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }

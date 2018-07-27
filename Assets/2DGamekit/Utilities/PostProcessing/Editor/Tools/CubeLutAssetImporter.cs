@@ -1,13 +1,17 @@
+#region
+
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
 
+#endregion
+
 namespace UnityEditor.Rendering.PostProcessing
 {
-    sealed class CubeLutAssetImporter : AssetPostprocessor
+    internal sealed class CubeLutAssetImporter : AssetPostprocessor
     {
-        static List<string> s_Excluded = new List<string>()
+        private static readonly List<string> s_Excluded = new List<string>
         {
             "Linear to sRGB r1",
             "Linear to Unity Log r1",
@@ -17,12 +21,13 @@ namespace UnityEditor.Rendering.PostProcessing
             "Unity Log to sRGB r1"
         };
 
-        static void OnPostprocessAllAssets(string[] imported, string[] deleted, string[] moved, string[] movedFrom)
+        private static void OnPostprocessAllAssets(string[] imported, string[] deleted, string[] moved,
+            string[] movedFrom)
         {
-            foreach (string path in imported)
+            foreach (var path in imported)
             {
-                string ext = Path.GetExtension(path);
-                string filename = Path.GetFileNameWithoutExtension(path);
+                var ext = Path.GetExtension(path);
+                var filename = Path.GetFileNameWithoutExtension(path);
 
                 if (string.IsNullOrEmpty(ext) || s_Excluded.Contains(filename))
                     continue;
@@ -35,19 +40,19 @@ namespace UnityEditor.Rendering.PostProcessing
 
         // Basic CUBE lut parser
         // Specs: http://wwwimages.adobe.com/content/dam/Adobe/en/products/speedgrade/cc/pdfs/cube-lut-specification-1.0.pdf
-        static void ImportCubeLut(string path)
+        private static void ImportCubeLut(string path)
         {
             // Remove the 'Assets' part of the path & build absolute path
-            string fullpath = path.Substring(7);
+            var fullpath = path.Substring(7);
             fullpath = Path.Combine(Application.dataPath, fullpath);
 
             // Read the lut data
-            string[] lines = File.ReadAllLines(fullpath);
+            var lines = File.ReadAllLines(fullpath);
 
             // Start parsing
-            int i = 0;
-            int size = -1;
-            int sizeCube = -1;
+            var i = 0;
+            var size = -1;
+            var sizeCube = -1;
             var table = new List<Color>();
             var domainMin = Color.black;
             var domainMax = Color.white;
@@ -62,7 +67,7 @@ namespace UnityEditor.Rendering.PostProcessing
                     break;
                 }
 
-                string line = FilterLine(lines[i]);
+                var line = FilterLine(lines[i]);
 
                 if (string.IsNullOrEmpty(line))
                     goto next;
@@ -73,7 +78,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
                 if (line.StartsWith("LUT_3D_SIZE"))
                 {
-                    string sizeStr = line.Substring(11).TrimStart();
+                    var sizeStr = line.Substring(11).TrimStart();
 
                     if (!int.TryParse(sizeStr, out size))
                     {
@@ -104,7 +109,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 }
 
                 // Table
-                string[] row = line.Split();
+                var row = line.Split();
 
                 if (row.Length != 3)
                 {
@@ -113,7 +118,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 }
 
                 var color = Color.black;
-                for (int j = 0; j < 3; j++)
+                for (var j = 0; j < 3; j++)
                 {
                     float d;
                     if (!float.TryParse(row[j], out d))
@@ -127,7 +132,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
                 table.Add(color);
 
-            next:
+                next:
                 i++;
             }
 
@@ -139,7 +144,7 @@ namespace UnityEditor.Rendering.PostProcessing
 
             // Check if the Texture3D already exists, update it in this case (better workflow for
             // the user)
-            string assetPath = Path.ChangeExtension(path, ".asset");
+            var assetPath = Path.ChangeExtension(path, ".asset");
             var tex = AssetDatabase.LoadAssetAtPath<Texture3D>(assetPath);
 
             if (tex != null)
@@ -154,7 +159,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 {
                     anisoLevel = 0,
                     filterMode = FilterMode.Bilinear,
-                    wrapMode = TextureWrapMode.Clamp,
+                    wrapMode = TextureWrapMode.Clamp
                 };
 
                 tex.SetPixels(table.ToArray(), 0);
@@ -168,16 +173,16 @@ namespace UnityEditor.Rendering.PostProcessing
             AssetDatabase.Refresh();
         }
 
-        static string FilterLine(string line)
+        private static string FilterLine(string line)
         {
             var filtered = new StringBuilder();
             line = line.TrimStart().TrimEnd();
-            int len = line.Length;
-            int i = 0;
+            var len = line.Length;
+            var i = 0;
 
             while (i < len)
             {
-                char c = line[i];
+                var c = line[i];
 
                 if (c == '#') // Filters comment out
                     break;
@@ -189,9 +194,9 @@ namespace UnityEditor.Rendering.PostProcessing
             return filtered.ToString();
         }
 
-        static bool ParseDomain(int i, string line, ref Color domain)
+        private static bool ParseDomain(int i, string line, ref Color domain)
         {
-            string[] domainStrs = line.Substring(10).TrimStart().Split();
+            var domainStrs = line.Substring(10).TrimStart().Split();
 
             if (domainStrs.Length != 3)
             {
@@ -199,7 +204,7 @@ namespace UnityEditor.Rendering.PostProcessing
                 return false;
             }
 
-            for (int j = 0; j < 3; j++)
+            for (var j = 0; j < 3; j++)
             {
                 float d;
                 if (!float.TryParse(domainStrs[j], out d))

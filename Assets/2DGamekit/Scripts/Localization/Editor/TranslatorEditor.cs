@@ -1,42 +1,44 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿#region
+
 using UnityEditor;
 using UnityEngine;
+
+#endregion
 
 namespace Gamekit2D
 {
     [CustomEditor(typeof(Translator))]
     public class TranslatorEditor : Editor
     {
-        SerializedProperty m_PhrasesProp;
-        SerializedProperty m_LanguageIndexProp;
-        Translator m_Translator;
-        string[] m_AvailableLanguages;
+        private string[] m_AvailableLanguages;
+        private SerializedProperty m_LanguageIndexProp;
+        private SerializedProperty m_PhrasesProp;
+        private Translator m_Translator;
 
-        void OnEnable ()
+        private void OnEnable()
         {
-            m_PhrasesProp = serializedObject.FindProperty ("phrases");
-            m_LanguageIndexProp = serializedObject.FindProperty ("m_LanguageIndex");
+            m_PhrasesProp = serializedObject.FindProperty("phrases");
+            m_LanguageIndexProp = serializedObject.FindProperty("m_LanguageIndex");
 
-            m_Translator = (Translator)target;
+            m_Translator = (Translator) target;
 
-            if(AllOriginalPhrasesNonNull ())
-                SetupLanguages ();
+            if (AllOriginalPhrasesNonNull())
+                SetupLanguages();
         }
 
-        public override void OnInspectorGUI ()
+        public override void OnInspectorGUI()
         {
-            serializedObject.Update ();
+            serializedObject.Update();
 
-            if (m_PhrasesProp.arraySize > 0 && AllOriginalPhrasesNonNull ())
+            if (m_PhrasesProp.arraySize > 0 && AllOriginalPhrasesNonNull())
             {
-                m_LanguageIndexProp.intValue = EditorGUILayout.Popup("Language", m_LanguageIndexProp.intValue, m_AvailableLanguages);
+                m_LanguageIndexProp.intValue =
+                    EditorGUILayout.Popup("Language", m_LanguageIndexProp.intValue, m_AvailableLanguages);
 
-                OriginalPhrases selectedPhrases = m_Translator.phrases[m_LanguageIndexProp.intValue];
-                for (int i = 0; i < selectedPhrases.phrases.Count; i++)
+                var selectedPhrases = m_Translator.phrases[m_LanguageIndexProp.intValue];
+                for (var i = 0; i < selectedPhrases.phrases.Count; i++)
                 {
-                    Rect labelRect = EditorGUILayout.GetControlRect(GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                    var labelRect = EditorGUILayout.GetControlRect(GUILayout.Height(EditorGUIUtility.singleLineHeight));
                     labelRect.width *= 0.25f;
 
                     EditorGUI.LabelField(labelRect, selectedPhrases.phrases[i].key);
@@ -48,52 +50,51 @@ namespace Gamekit2D
                 }
             }
 
-            Rect phrasesNameRect = EditorGUILayout.GetControlRect (GUILayout.Height (EditorGUIUtility.singleLineHeight));
+            var phrasesNameRect = EditorGUILayout.GetControlRect(GUILayout.Height(EditorGUIUtility.singleLineHeight));
             phrasesNameRect.width *= 0.5f;
 
-            m_PhrasesProp.isExpanded = EditorGUI.Foldout (phrasesNameRect, m_PhrasesProp.isExpanded, "Phrases");
+            m_PhrasesProp.isExpanded = EditorGUI.Foldout(phrasesNameRect, m_PhrasesProp.isExpanded, "Phrases");
 
             phrasesNameRect.x += phrasesNameRect.width;
-            m_PhrasesProp.arraySize = EditorGUI.IntField (phrasesNameRect, GUIContent.none, m_PhrasesProp.arraySize);
+            m_PhrasesProp.arraySize = EditorGUI.IntField(phrasesNameRect, GUIContent.none, m_PhrasesProp.arraySize);
 
             if (m_PhrasesProp.isExpanded)
             {
                 EditorGUI.indentLevel++;
                 EditorGUI.BeginChangeCheck();
-                for (int i = 0; i < m_PhrasesProp.arraySize; i++)
+                for (var i = 0; i < m_PhrasesProp.arraySize; i++)
                 {
-                    SerializedProperty element = m_PhrasesProp.GetArrayElementAtIndex (i);
-                    EditorGUILayout.PropertyField (element);
+                    var element = m_PhrasesProp.GetArrayElementAtIndex(i);
+                    EditorGUILayout.PropertyField(element);
                 }
-                if (EditorGUI.EndChangeCheck () && AllOriginalPhrasesNonNull ())
-                {
-                    SetupLanguages ();
-                }
+
+                if (EditorGUI.EndChangeCheck() && AllOriginalPhrasesNonNull()) SetupLanguages();
                 EditorGUI.indentLevel--;
             }
 
-            serializedObject.ApplyModifiedProperties ();
+            serializedObject.ApplyModifiedProperties();
         }
 
-        void SetupLanguages ()
+        private void SetupLanguages()
         {
             m_AvailableLanguages = new string[m_PhrasesProp.arraySize];
-            for (int i = 0; i < m_AvailableLanguages.Length; i++)
+            for (var i = 0; i < m_AvailableLanguages.Length; i++)
             {
-                SerializedProperty element = m_PhrasesProp.GetArrayElementAtIndex (i);
-                OriginalPhrases originalPhrases = element.objectReferenceValue as OriginalPhrases;
+                var element = m_PhrasesProp.GetArrayElementAtIndex(i);
+                var originalPhrases = element.objectReferenceValue as OriginalPhrases;
                 m_AvailableLanguages[i] = originalPhrases.language;
             }
         }
 
-        bool AllOriginalPhrasesNonNull ()
+        private bool AllOriginalPhrasesNonNull()
         {
-            for (int i = 0; i < m_PhrasesProp.arraySize; i++)
+            for (var i = 0; i < m_PhrasesProp.arraySize; i++)
             {
-                SerializedProperty element = m_PhrasesProp.GetArrayElementAtIndex(i);
+                var element = m_PhrasesProp.GetArrayElementAtIndex(i);
                 if (element.objectReferenceValue == null)
                     return false;
             }
+
             return true;
         }
     }

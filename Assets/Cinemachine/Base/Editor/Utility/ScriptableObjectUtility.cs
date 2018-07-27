@@ -1,8 +1,12 @@
-using UnityEngine;
-using UnityEditor;
+#region
+
+using System;
 using System.IO;
 using System.Linq;
-using System;
+using UnityEditor;
+using UnityEngine;
+
+#endregion
 
 namespace Cinemachine.Editor
 {
@@ -17,22 +21,22 @@ namespace Cinemachine.Editor
         {
             get
             {
-                ScriptableObject dummy = ScriptableObject.CreateInstance<ScriptableObjectUtility>();
-                string path = AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(dummy));
+                ScriptableObject dummy = CreateInstance<ScriptableObjectUtility>();
+                var path = AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(dummy));
                 DestroyImmediate(dummy);
                 path = path.Substring(0, path.LastIndexOf("/Base"));
                 return path;
             }
         }
 
-        public static bool CinemachineIsPackage 
-        { 
-            get { return CinemachineInstallAssetPath.StartsWith("Packages"); } 
+        public static bool CinemachineIsPackage
+        {
+            get { return CinemachineInstallAssetPath.StartsWith("Packages"); }
         }
 
         public static bool AddDefineForAllBuildTargets(string k_Define)
         {
-            bool added = false;
+            var added = false;
             var targets = Enum.GetValues(typeof(BuildTargetGroup))
                 .Cast<BuildTargetGroup>()
                 .Where(x => x != BuildTargetGroup.Unknown)
@@ -55,10 +59,11 @@ namespace Cinemachine.Editor
                     added = true;
                 }
             }
+
             return added;
         }
 
-        static bool BuildTargetIsObsolete(BuildTargetGroup group)
+        private static bool BuildTargetIsObsolete(BuildTargetGroup group)
         {
             var attrs = typeof(BuildTargetGroup)
                 .GetField(group.ToString())
@@ -69,23 +74,23 @@ namespace Cinemachine.Editor
 
         public static void Create<T>(bool prependFolderName = false, bool trimName = true) where T : ScriptableObject
         {
-            string className = typeof(T).Name;
-            string assetName = className;
-            string folder = GetSelectedAssetFolder();
+            var className = typeof(T).Name;
+            var assetName = className;
+            var folder = GetSelectedAssetFolder();
 
             if (trimName)
             {
-                string[] standardNames = new string[] { "Asset", "Attributes", "Container" };
-                foreach (string standardName in standardNames)
-                {
-                    assetName = assetName.Replace(standardName, "");
-                }
+                var standardNames = new[] {"Asset", "Attributes", "Container"};
+                assetName = standardNames.Aggregate(assetName,
+                    (current, standardName) => current.Replace(standardName, ""));
             }
 
             if (prependFolderName)
             {
-                string folderName = Path.GetFileName(folder);
-                assetName = (string.IsNullOrEmpty(assetName) ? folderName : string.Format("{0}_{1}", folderName, assetName));
+                var folderName = Path.GetFileName(folder);
+                assetName = string.IsNullOrEmpty(assetName)
+                    ? folderName
+                    : string.Format("{0}_{1}", folderName, assetName);
             }
 
             Create(className, assetName, folder);
@@ -93,7 +98,7 @@ namespace Cinemachine.Editor
 
         public static T CreateAt<T>(string assetPath) where T : ScriptableObject
         {
-            T asset = ScriptableObject.CreateInstance<T>();
+            var asset = CreateInstance<T>();
             if (asset == null)
             {
                 Debug.LogError("failed to create instance of " + typeof(T).Name);
@@ -107,7 +112,7 @@ namespace Cinemachine.Editor
 
         private static ScriptableObject Create(string className, string assetName, string folder)
         {
-            ScriptableObject asset = ScriptableObject.CreateInstance(className);
+            var asset = CreateInstance(className);
             if (asset == null)
             {
                 Debug.LogError("failed to create instance of " + className);
@@ -116,7 +121,7 @@ namespace Cinemachine.Editor
 
             asset.name = assetName ?? className;
 
-            string assetPath = GetUnusedAssetPath(folder, asset.name);
+            var assetPath = GetUnusedAssetPath(folder, asset.name);
             AssetDatabase.CreateAsset(asset, assetPath);
 
             return asset;
@@ -124,19 +129,15 @@ namespace Cinemachine.Editor
 
         private static string GetSelectedAssetFolder()
         {
-            if ((Selection.activeObject != null) && AssetDatabase.Contains(Selection.activeObject))
+            if (Selection.activeObject != null && AssetDatabase.Contains(Selection.activeObject))
             {
-                string assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
-                string assetPathAbsolute = string.Format("{0}/{1}", Path.GetDirectoryName(Application.dataPath), assetPath);
+                var assetPath = AssetDatabase.GetAssetPath(Selection.activeObject);
+                var assetPathAbsolute =
+                    string.Format("{0}/{1}", Path.GetDirectoryName(Application.dataPath), assetPath);
 
                 if (Directory.Exists(assetPathAbsolute))
-                {
                     return assetPath;
-                }
-                else
-                {
-                    return Path.GetDirectoryName(assetPath);
-                }
+                return Path.GetDirectoryName(assetPath);
             }
 
             return "Assets";
@@ -144,14 +145,11 @@ namespace Cinemachine.Editor
 
         private static string GetUnusedAssetPath(string folder, string assetName)
         {
-            for (int n = 0; n < 9999; n++)
+            for (var n = 0; n < 9999; n++)
             {
-                string assetPath = string.Format("{0}/{1}{2}.asset", folder, assetName, (n == 0 ? "" : n.ToString()));
-                string existingGUID = AssetDatabase.AssetPathToGUID(assetPath);
-                if (string.IsNullOrEmpty(existingGUID))
-                {
-                    return assetPath;
-                }
+                var assetPath = string.Format("{0}/{1}{2}.asset", folder, assetName, n == 0 ? "" : n.ToString());
+                var existingGUID = AssetDatabase.AssetPathToGUID(assetPath);
+                if (string.IsNullOrEmpty(existingGUID)) return assetPath;
             }
 
             return null;

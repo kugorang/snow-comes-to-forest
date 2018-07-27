@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿#region
+
 using UnityEditor;
 using UnityEngine;
+
+#endregion
 
 namespace Light2D
 {
@@ -15,8 +15,8 @@ namespace Light2D
         private SerializedProperty _lightCameraFovAdd;
         private SerializedProperty _enableAmbientLight;
         private SerializedProperty _blurLightSources;
-        private SerializedProperty _blurAmbientLight ;
-        private SerializedProperty  _hdr ;
+        private SerializedProperty _blurAmbientLight;
+        private SerializedProperty _hdr;
         private SerializedProperty _lightObstaclesAntialiasing;
         private SerializedProperty _ambientLightComputeMaterial;
         private SerializedProperty _lightOverlayMaterial;
@@ -35,7 +35,7 @@ namespace Light2D
         private DateTime _sizeChangeTime;
 #endif
 
-        void OnEnable()
+        private void OnEnable()
         {
             _lightPixelSize = serializedObject.FindProperty("LightPixelSize");
             _lightCameraSizeAdd = serializedObject.FindProperty("LightCameraSizeAdd");
@@ -67,19 +67,16 @@ namespace Light2D
             if (Application.isPlaying)
                 GUI.enabled = false;
 
-            var lightingSystem = (LightingSystem)target;
+            var lightingSystem = (LightingSystem) target;
             var cam = lightingSystem.GetComponent<Camera>();
-            bool isMobileTarget = EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS ||
-                                EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android;
+            var isMobileTarget = EditorUserBuildSettings.activeBuildTarget == BuildTarget.iOS ||
+                                 EditorUserBuildSettings.activeBuildTarget == BuildTarget.Android;
 
-            if (cam == null)
-            {
-                EditorGUILayout.LabelField("WARNING: No attached camera found.");
-            }
+            if (cam == null) EditorGUILayout.LabelField("WARNING: No attached camera found.");
 
             EditorGUILayout.PropertyField(_lightPixelSize, new GUIContent("Light Pixel Size"));
 
-            bool sizeChanged = false;
+            var sizeChanged = false;
 #if LIGHT2D_2DTK
             var tk2dCamera = lightingSystem.GetComponent<tk2dCamera>();
             var tk2dCamSize = tk2dCamera == null
@@ -99,21 +96,21 @@ namespace Light2D
                     float zoom = (tk2dCamera == null ? 1 : tk2dCamera.ZoomFactor);
                     size = (cam.orthographicSize*zoom + _lightCameraSizeAdd.floatValue) * 2f;
 #else
-                    size = (cam.orthographicSize + _lightCameraSizeAdd.floatValue)*2f;
+                    size = (cam.orthographicSize + _lightCameraSizeAdd.floatValue) * 2f;
 #endif
                 }
                 else
                 {
-                    var halfFov = (cam.fieldOfView + _lightCameraFovAdd.floatValue)*Mathf.Deg2Rad/2f;
-                    size = Mathf.Tan(halfFov)*_lightObstaclesDistance.floatValue*2;
+                    var halfFov = (cam.fieldOfView + _lightCameraFovAdd.floatValue) * Mathf.Deg2Rad / 2f;
+                    size = Mathf.Tan(halfFov) * _lightObstaclesDistance.floatValue * 2;
                 }
+
                 if (!Application.isPlaying)
                 {
-
-                    int lightTextureHeight = Mathf.RoundToInt(size/_lightPixelSize.floatValue);
+                    var lightTextureHeight = Mathf.RoundToInt(size / _lightPixelSize.floatValue);
                     var oldSize = lightTextureHeight;
                     lightTextureHeight = EditorGUILayout.IntField("Light Texture Height", lightTextureHeight);
-                    if (lightTextureHeight%2 != 0)
+                    if (lightTextureHeight % 2 != 0)
                         lightTextureHeight++;
                     if (lightTextureHeight < 16)
                     {
@@ -122,6 +119,7 @@ namespace Light2D
                         EditorGUILayout.LabelField("WARNING: Light Texture Height is too small.");
                         EditorGUILayout.LabelField(" 50-180 is recommended.");
                     }
+
                     if (lightTextureHeight > (isMobileTarget ? 200 : 400))
                     {
                         if (lightTextureHeight > 1024)
@@ -129,10 +127,9 @@ namespace Light2D
                         EditorGUILayout.LabelField("WARNING: Light Texture Height is too big.");
                         EditorGUILayout.LabelField(" 50-180 is recommended.");
                     }
+
                     if (oldSize != lightTextureHeight && !sizeChanged)
-                    {
-                        _lightPixelSize.floatValue = size/lightTextureHeight;
-                    }
+                        _lightPixelSize.floatValue = size / lightTextureHeight;
                 }
             }
 
@@ -143,23 +140,22 @@ namespace Light2D
             else
             {
                 EditorGUILayout.PropertyField(_lightCameraFovAdd, new GUIContent("Light Camera Fov Add"));
-                EditorGUILayout.PropertyField(_lightObstaclesDistance, new GUIContent("Camera To Light Obstacles Distance"));
+                EditorGUILayout.PropertyField(_lightObstaclesDistance,
+                    new GUIContent("Camera To Light Obstacles Distance"));
             }
 
             EditorGUILayout.PropertyField(_hdr, new GUIContent("64 Bit Color"));
             EditorGUILayout.PropertyField(_lightObstaclesAntialiasing, new GUIContent("Light Obstacles Antialiasing"));
             EditorGUILayout.PropertyField(_enableNormalMapping, new GUIContent("Normal Mapping"));
             if (_enableNormalMapping.boolValue && isMobileTarget)
-            {
                 EditorGUILayout.LabelField("WARNING: Normal mapping is not supported on mobiles.");
-            }
             //EditorGUILayout.PropertyField(_affectOnlyThisCamera, new GUIContent("Affect Only This Camera"));
-            _lightTexturesFilterMode.enumValueIndex = (int)(FilterMode)EditorGUILayout.EnumPopup(
-                "Texture Filtering", (FilterMode)_lightTexturesFilterMode.enumValueIndex);
+            _lightTexturesFilterMode.enumValueIndex = (int) (FilterMode) EditorGUILayout.EnumPopup(
+                "Texture Filtering", (FilterMode) _lightTexturesFilterMode.enumValueIndex);
 
             EditorGUILayout.PropertyField(_blurLightSources, new GUIContent("Blur Light Sources"));
 
-            bool normalGuiEnableState = GUI.enabled;
+            var normalGuiEnableState = GUI.enabled;
             if (!_blurLightSources.boolValue)
                 GUI.enabled = false;
             EditorGUILayout.PropertyField(_lightSourcesBlurMaterial, new GUIContent("   Light Sources Blur Material"));
@@ -174,14 +170,18 @@ namespace Light2D
                 GUI.enabled = false;
             EditorGUILayout.PropertyField(_ambientLightBlurMaterial, new GUIContent("   Ambient Light Blur Material"));
             GUI.enabled = oldEnabled;
-            EditorGUILayout.PropertyField(_ambientLightComputeMaterial, new GUIContent("   Ambient Light Compute Material"));
+            EditorGUILayout.PropertyField(_ambientLightComputeMaterial,
+                new GUIContent("   Ambient Light Compute Material"));
             GUI.enabled = normalGuiEnableState;
 
             EditorGUILayout.PropertyField(_lightOverlayMaterial, new GUIContent("Light Overlay Material"));
             EditorGUILayout.PropertyField(_lightCamera, new GUIContent("Lighting Camera"));
-            _lightSourcesLayer.intValue = EditorGUILayout.LayerField(new GUIContent("Light Sources Layer"), _lightSourcesLayer.intValue);
-            _lightObstaclesLayer.intValue = EditorGUILayout.LayerField(new GUIContent("Light Obstacles Layer"), _lightObstaclesLayer.intValue);
-            _ambientLightLayer.intValue = EditorGUILayout.LayerField(new GUIContent("Ambient Light Layer"), _ambientLightLayer.intValue);
+            _lightSourcesLayer.intValue =
+                EditorGUILayout.LayerField(new GUIContent("Light Sources Layer"), _lightSourcesLayer.intValue);
+            _lightObstaclesLayer.intValue = EditorGUILayout.LayerField(new GUIContent("Light Obstacles Layer"),
+                _lightObstaclesLayer.intValue);
+            _ambientLightLayer.intValue =
+                EditorGUILayout.LayerField(new GUIContent("Ambient Light Layer"), _ambientLightLayer.intValue);
 
             // Apply changes to the serializedProperty - always do this in the end of OnInspectorGUI.
             serializedObject.ApplyModifiedProperties();

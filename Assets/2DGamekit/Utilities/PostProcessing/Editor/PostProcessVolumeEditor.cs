@@ -1,21 +1,26 @@
+#region
+
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
+#endregion
+
 namespace UnityEditor.Rendering.PostProcessing
 {
-    [CanEditMultipleObjects, CustomEditor(typeof(PostProcessVolume))]
+    [CanEditMultipleObjects]
+    [CustomEditor(typeof(PostProcessVolume))]
     public sealed class PostProcessVolumeEditor : BaseEditor<PostProcessVolume>
     {
-        SerializedProperty m_Profile;
+        private SerializedProperty m_BlendRadius;
 
-        SerializedProperty m_IsGlobal;
-        SerializedProperty m_BlendRadius;
-        SerializedProperty m_Weight;
-        SerializedProperty m_Priority;
+        private EffectListEditor m_EffectList;
 
-        EffectListEditor m_EffectList;
+        private SerializedProperty m_IsGlobal;
+        private SerializedProperty m_Priority;
+        private SerializedProperty m_Profile;
+        private SerializedProperty m_Weight;
 
-        void OnEnable()
+        private void OnEnable()
         {
             m_Profile = FindProperty(x => x.sharedProfile);
 
@@ -28,13 +33,13 @@ namespace UnityEditor.Rendering.PostProcessing
             RefreshEffectListEditor(m_Target.sharedProfile);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (m_EffectList != null)
                 m_EffectList.Clear();
         }
 
-        void RefreshEffectListEditor(PostProcessProfile asset)
+        private void RefreshEffectListEditor(PostProcessProfile asset)
         {
             m_EffectList.Clear();
 
@@ -50,21 +55,23 @@ namespace UnityEditor.Rendering.PostProcessing
 
             if (!m_IsGlobal.boolValue) // Blend radius is not needed for global volumes
                 EditorGUILayout.PropertyField(m_BlendRadius);
-            
+
             EditorGUILayout.PropertyField(m_Weight);
             EditorGUILayout.PropertyField(m_Priority);
-            
-            bool assetHasChanged = false;
-            bool showCopy = m_Profile.objectReferenceValue != null;
-            bool multiEdit = m_Profile.hasMultipleDifferentValues;
+
+            var assetHasChanged = false;
+            var showCopy = m_Profile.objectReferenceValue != null;
+            var multiEdit = m_Profile.hasMultipleDifferentValues;
 
             // The layout system sort of break alignement when mixing inspector fields with custom
             // layouted fields, do the layout manually instead
-            int buttonWidth = showCopy ? 45 : 60;
-            float indentOffset = EditorGUI.indentLevel * 15f;
+            var buttonWidth = showCopy ? 45 : 60;
+            var indentOffset = EditorGUI.indentLevel * 15f;
             var lineRect = GUILayoutUtility.GetRect(1, EditorGUIUtility.singleLineHeight);
-            var labelRect = new Rect(lineRect.x, lineRect.y, EditorGUIUtility.labelWidth - indentOffset, lineRect.height);
-            var fieldRect = new Rect(labelRect.xMax, lineRect.y, lineRect.width - labelRect.width - buttonWidth * (showCopy ? 2 : 1), lineRect.height);
+            var labelRect = new Rect(lineRect.x, lineRect.y, EditorGUIUtility.labelWidth - indentOffset,
+                lineRect.height);
+            var fieldRect = new Rect(labelRect.xMax, lineRect.y,
+                lineRect.width - labelRect.width - buttonWidth * (showCopy ? 2 : 1), lineRect.height);
             var buttonNewRect = new Rect(fieldRect.xMax, lineRect.y, buttonWidth, lineRect.height);
             var buttonCopyRect = new Rect(buttonNewRect.xMax, lineRect.y, buttonWidth, lineRect.height);
 
@@ -74,7 +81,8 @@ namespace UnityEditor.Rendering.PostProcessing
             {
                 EditorGUI.BeginProperty(fieldRect, GUIContent.none, m_Profile);
 
-                var profile = (PostProcessProfile)EditorGUI.ObjectField(fieldRect, m_Profile.objectReferenceValue, typeof(PostProcessProfile), false);
+                var profile = (PostProcessProfile) EditorGUI.ObjectField(fieldRect, m_Profile.objectReferenceValue,
+                    typeof(PostProcessProfile), false);
 
                 if (scope.changed)
                 {
@@ -87,7 +95,8 @@ namespace UnityEditor.Rendering.PostProcessing
 
             using (new EditorGUI.DisabledScope(multiEdit))
             {
-                if (GUI.Button(buttonNewRect, EditorUtilities.GetContent("New|Create a new profile."), showCopy ? EditorStyles.miniButtonLeft : EditorStyles.miniButton))
+                if (GUI.Button(buttonNewRect, EditorUtilities.GetContent("New|Create a new profile."),
+                    showCopy ? EditorStyles.miniButtonLeft : EditorStyles.miniButton))
                 {
                     // By default, try to put assets in a folder next to the currently active
                     // scene file. If the user isn't a scene, put them in root instead.
@@ -98,10 +107,13 @@ namespace UnityEditor.Rendering.PostProcessing
                     assetHasChanged = true;
                 }
 
-                if (showCopy && GUI.Button(buttonCopyRect, EditorUtilities.GetContent("Clone|Create a new profile and copy the content of the currently assigned profile."), EditorStyles.miniButtonRight))
+                if (showCopy && GUI.Button(buttonCopyRect,
+                        EditorUtilities.GetContent(
+                            "Clone|Create a new profile and copy the content of the currently assigned profile."),
+                        EditorStyles.miniButtonRight))
                 {
                     // Duplicate the currently assigned profile and save it as a new profile
-                    var origin = (PostProcessProfile)m_Profile.objectReferenceValue;
+                    var origin = (PostProcessProfile) m_Profile.objectReferenceValue;
                     var path = AssetDatabase.GetAssetPath(origin);
                     path = AssetDatabase.GenerateUniqueAssetPath(path);
 
@@ -133,12 +145,14 @@ namespace UnityEditor.Rendering.PostProcessing
                 if (assetHasChanged)
                     m_EffectList.Clear(); // Asset wasn't null before, do some cleanup
 
-                EditorGUILayout.HelpBox("Assign a Post-process Profile to this volume using the \"Asset\" field or create one automatically by clicking the \"New\" button.\nAssets are automatically put in a folder next to your scene file. If you scene hasn't been saved yet they will be created at the root of the Assets folder.", MessageType.Info);
+                EditorGUILayout.HelpBox(
+                    "Assign a Post-process Profile to this volume using the \"Asset\" field or create one automatically by clicking the \"New\" button.\nAssets are automatically put in a folder next to your scene file. If you scene hasn't been saved yet they will be created at the root of the Assets folder.",
+                    MessageType.Info);
             }
             else
             {
                 if (assetHasChanged)
-                    RefreshEffectListEditor((PostProcessProfile)m_Profile.objectReferenceValue);
+                    RefreshEffectListEditor((PostProcessProfile) m_Profile.objectReferenceValue);
 
                 if (!multiEdit)
                     m_EffectList.OnGUI();
@@ -147,4 +161,4 @@ namespace UnityEditor.Rendering.PostProcessing
             serializedObject.ApplyModifiedProperties();
         }
     }
-} 
+}
