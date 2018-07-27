@@ -129,9 +129,11 @@ public class PlayerPlatformerController : PhysicsObject
         if (Input.GetButtonDown("Jump") && grounded)
         {
             velocity.y = jumpTakeOffSpeed;
+            //animator.SetBool("isJumping", true);
         }
         else if (Input.GetButtonUp("Jump"))
         {
+            //animator.SetBool("isJumping", false);
             if (velocity.y > 0)
             {
                 velocity.y *= 0.5f;
